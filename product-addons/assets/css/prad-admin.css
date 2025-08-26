@@ -1,0 +1,25 @@
+#adminmenu .toplevel_page_prad-dashboard .wp-menu-image img {
+	padding-top: 8px !important;
+	opacity: 0.8;
+}
+#toplevel_page_prad-dashboard .wp-submenu a.prad-go-pro {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	color: white;
+	background-color: #86a62c;
+	margin-inline: 10px;
+	border-radius: 6px;
+	margin-top: 6px;
+	padding-block: 6px;
+	box-shadow: none;
+	white-space: nowrap;
+	transition: background-color 200ms ease;
+}
+#toplevel_page_prad-dashboard .wp-submenu a.prad-go-pro:hover {
+	background-color: #7c9731;
+	color: white;
+}
+#toplevel_page_prad-dashboard .wp-submenu a[href*="prad-pro"] {
+	display: none;
+}
