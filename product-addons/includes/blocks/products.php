@@ -2,6 +2,8 @@
 
 namespace PRAD;
 
+use PRAD\Includes\RenderBlocks;
+
 /**
  * Unified template for checkbox, radio, and swatches blocks
  */
@@ -51,7 +53,7 @@ foreach ( $manual_products as $item ) {
 	}
 }
 
-if ( ! product_addons()->handle_all_pro_block() && is_array( $_options ) && count( $_options ) > 2 ) {
+if ( ! product_addons()->is_pro_feature_available() && is_array( $_options ) && count( $_options ) > 2 ) {
 	$_options = array_slice( $_options, 0, 2 );
 }
 
@@ -143,13 +145,13 @@ if ( ! product_addons()->handle_all_pro_block() && is_array( $_options ) && coun
 						</div>
 						<?php
 						if ( $layout === '_overlay' ) {
-							echo Render_Blocks::prad_render_block_content( $item, $index, $blockid, $price_obj, $enableCount, $min, $max, $prad_allowed_html_tags );
+							echo RenderBlocks::prad_render_block_content( $item, $index, $blockid, $price_obj, $enableCount, $min, $max, $prad_allowed_html_tags );
 						}
 						?>
 					</div>
 					<?php
 					if ( $layout === '_default' ) {
-						echo Render_Blocks::prad_render_block_content( $item, $index, $blockid, $price_obj, $enableCount, $min, $max, $prad_allowed_html_tags, $variation_select_html );
+						echo RenderBlocks::prad_render_block_content( $item, $index, $blockid, $price_obj, $enableCount, $min, $max, $prad_allowed_html_tags, $variation_select_html );
 					}
 					if ( $enableCount && $layout == '_img' ) :
 						?>
@@ -211,7 +213,7 @@ if ( ! product_addons()->handle_all_pro_block() && is_array( $_options ) && coun
 									</div>
 								<?php endif; ?>
 								<div class="prad-block-content prad-d-flex prad-item-center">
-									<?php if ( isset( $item->img ) && $item->img && product_addons()->handle_all_pro_block() ) : ?>
+									<?php if ( isset( $item->img ) && $item->img && product_addons()->is_pro_feature_available() ) : ?>
 										<img class="prad-block-item-img" src="<?php echo esc_url( $item->img ); ?>" alt="Item" />
 									<?php endif; ?>
 									<?php if ( $variation_select_html ) : ?>

@@ -6,9 +6,9 @@
  * @since
  */
 
-namespace PRAD;
+namespace PRAD\Includes;
 
-use PRAD\DurbinClient;
+use PRAD\Includes\Admin\Durbin\DurbinClient;
 
 defined( 'ABSPATH' ) || exit;
 

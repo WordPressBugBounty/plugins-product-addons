@@ -1,12 +1,12 @@
 <?php //phpcs:ignore
-namespace PRAD;
+namespace PRAD\Includes\Admin\Product;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Plugin Notice
  */
-class Product_Edit {
+class ProductEdit {
 
 	/**
 	 * Notice Constructor

@@ -1,6 +1,6 @@
 <?php
 
-namespace PRAD;
+namespace PRAD\Includes\Admin\Durbin;
 
 defined( 'ABSPATH' ) || exit;
 

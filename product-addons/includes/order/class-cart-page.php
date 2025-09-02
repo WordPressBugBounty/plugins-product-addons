@@ -1,20 +1,20 @@
 <?php	// phpcs:ignore
 /**
- * Cart_Page.
+ * CartPage.
  *
  * @package PRAD
  * @since v.1.0.0
  */
-namespace PRAD;
+namespace PRAD\Includes\Order;
 
 use PRAD\Includes\Common\SafeMathEvaluator;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Render_Blocks class.
+ * CartPage class.
  */
-class Cart_Page {
+class CartPage {
 	/**
 	 * Constructor
 	 */
@@ -201,7 +201,7 @@ class Cart_Page {
 	 * @return array
 	 */
 	public function calculate_option_price( $prad_selection, $product_id, $option_ids, $variation_id = '' ) {
-		$pro_active = product_addons()->handle_all_pro_block();
+		$pro_active = product_addons()->is_pro_feature_available();
 		$extra_data = array();
 		$price      = 0;
 		$price_data = array();

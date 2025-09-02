@@ -1,8 +1,8 @@
 <?php //phpcs:ignore
-namespace PRAD;
+namespace PRAD\Includes\Admin;
 
+use PRAD\Includes\Admin\Durbin\DurbinClient;
 use PRAD\Includes\Xpo;
-use PRAD\DurbinClient;
 
 defined( 'ABSPATH' ) || exit;
 

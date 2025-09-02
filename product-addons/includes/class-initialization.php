@@ -5,14 +5,26 @@
  * @package PRAD
  * @since 1.0.0
  */
-namespace PRAD;
+namespace PRAD\Includes;
+
+use PRAD\Includes\Admin\Notice;
+use PRAD\Includes\Admin\Options;
+use PRAD\Includes\Admin\OurPlugins;
+use PRAD\Includes\Admin\Product\ProductEdit;
+use PRAD\Includes\Common\Hooks;
+use PRAD\Includes\Common\SafeMathEvaluator;
+use PRAD\Includes\Compatibility\Compatibility;
+use PRAD\Includes\Compatibility\ShopCompatibilty;
+use PRAD\Includes\Order\CartPage;
+use PRAD\Includes\Order\CheckoutPage;
+use PRAD\Includes\Restapi\RequestApi;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Initialization class.
  */
-class PRAD_Initialization {
+class Initialization {
 
 	/**
 	 * Setup class.
@@ -32,46 +44,27 @@ class PRAD_Initialization {
 	 * @return void
 	 */
 	public function requires() {
-		require_once PRAD_PATH . 'includes/class-deactive.php';
-		require_once PRAD_PATH . 'includes/class-post-type.php';
-		require_once PRAD_PATH . 'includes/class-render-blocks.php';
-		require_once PRAD_PATH . 'includes/class-prad-analytics.php';
-		require_once PRAD_PATH . 'includes/class-xpo.php';
 
-		require_once PRAD_PATH . 'includes/admin/class-options.php';
-		require_once PRAD_PATH . 'includes/admin/class-notice.php';
-		require_once PRAD_PATH . 'includes/admin/durbin/class-durbin-client.php';
-		require_once PRAD_PATH . 'includes/admin/product/class-product-edit.php';
-		require_once PRAD_PATH . 'includes/admin/class-our-plugins.php';
+		new Deactive();
+		new PostType();
+		new RenderBlocks();
+		new Analytics();
+		new Xpo();
 
-		require_once PRAD_PATH . 'includes/order/class-cart-page.php';
-		require_once PRAD_PATH . 'includes/order/class-checkout-page.php';
+		new Options();
+		new Notice();
 
-		require_once PRAD_PATH . 'includes/common/class-hooks.php';
-		require_once PRAD_PATH . 'includes/rest_api/class-request-api.php';
-		require_once PRAD_PATH . 'includes/compatibility/class-compatibility.php';
-		require_once PRAD_PATH . 'includes/compatibility/class-shop-compatibilty.php';
-		require_once PRAD_PATH . 'includes/common/class-safe-math-evaluator.php';
+		new ProductEdit();
+		new OurPlugins();
 
-		new \PRAD\Deactive();
-		new \PRAD\PostType();
-		new \PRAD\Render_Blocks();
-		new \PRAD\PRAD_Analytics();
-		new \PRAD\Includes\Xpo();
+		new CartPage();
+		new CheckoutPage();
 
-		new \PRAD\Options();
-		new \PRAD\Notice();
-		new \PRAD\Product_Edit();
-		new \PRAD\Includes\OurPlugins();
-
-		new \PRAD\Cart_Page();
-		new \PRAD\Checkout_Page();
-
-		new \PRAD\Hooks();
-		new \PRAD\RequestAPI();
-		new \PRAD\Compatibility();
-		new \PRAD\Includes\Compatibility\ShopCompatibilty();
-		new \PRAD\Includes\Common\SafeMathEvaluator();
+		new Hooks();
+		new RequestApi();
+		new Compatibility();
+		new ShopCompatibilty();
+		new SafeMathEvaluator();
 	}
 
 
@@ -104,7 +97,7 @@ class PRAD_Initialization {
 				wp_enqueue_media();
 				wp_localize_script(
 					'prad-editor-script',
-					'prad_backend',
+					'pradBackendData',
 					array_merge(
 						array(
 							'url'            => PRAD_URL,

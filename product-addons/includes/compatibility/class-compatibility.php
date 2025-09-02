@@ -5,7 +5,7 @@
  * @package PRAD\Compatibility
  * @since v.1.0.4
  */
-namespace PRAD;
+namespace PRAD\Includes\Compatibility;
 
 defined( 'ABSPATH' ) || exit;
 

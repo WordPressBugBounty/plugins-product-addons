@@ -68,7 +68,7 @@ $price_obj = apply_filters( 'prad_blocks_price_both_show', $item->type, $item->r
 					<div class="prad-switch-thumb"></div>
 				</div>
 				<div class="prad-block-content prad-d-flex prad-item-center">
-					<?php if ( isset( $item->img ) && $item->img && product_addons()->handle_all_pro_block() ) : ?>
+					<?php if ( isset( $item->img ) && $item->img && product_addons()->is_pro_feature_available() ) : ?>
 						<img
 							class="prad-block-item-img"
 							src= "<?php echo esc_url( $item->img ); ?>"

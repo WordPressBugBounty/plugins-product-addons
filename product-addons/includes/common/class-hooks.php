@@ -5,7 +5,7 @@
  * @package WowAddons
  */
 
-namespace PRAD;
+namespace PRAD\Includes\Common;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -112,7 +112,7 @@ class Hooks {
 	 * @return bool True if both prices should be shown, false otherwise.
 	 */
 	public function handle_prad_sale_price_return( $sale ) {
-		if ( ! product_addons()->handle_all_pro_block() ) {
+		if ( ! product_addons()->is_pro_feature_available() ) {
 			$sale = null;
 		}
 		return $sale ? floatval( $sale ) : null;
@@ -167,6 +167,7 @@ class Hooks {
 	public function handle_prad_blocks_price_both_show( $type, $regular, $sale, $product_id ) {
 		$type = $type ? $type : 'fixed';
 		return array(
+			'type'  => $type,
 			'price' => $this->handle_prad_blocks_price_return( $type, $regular, $sale, $product_id ),
 			'html'  => $this->handle_prad_blocks_price_html_return( $type, $regular, $sale, $product_id ),
 		);

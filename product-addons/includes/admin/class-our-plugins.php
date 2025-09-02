@@ -3,7 +3,7 @@
  * Options Action.
  */
 
-namespace PRAD\Includes;
+namespace PRAD\Includes\Admin;
 
 defined( 'ABSPATH' ) || exit;
 

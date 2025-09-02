@@ -6,7 +6,7 @@
  * @since v.1.0.0
  */
 
-namespace PRAD;
+namespace PRAD\Includes\Admin;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -193,6 +193,7 @@ class Options {
 	 * @return void
 	 */
 	public static function tab_page_content() {
+		// echo '<div id="prad-dashboard-wrap"></div>';
 		echo wp_kses( '<div id="prad-dashboard-wrap"></div>', apply_filters( 'get_prad_allowed_html_tags', array() ) );
 	}
 

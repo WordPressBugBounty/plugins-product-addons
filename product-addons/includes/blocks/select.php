@@ -53,7 +53,7 @@ defined( 'ABSPATH' ) || exit;
 					
 					<div class="prad-d-flex prad-item-center prad-gap-8">
 						<div class="prad-block-content prad-d-flex prad-item-center">
-							<?php if ( isset( $item->img ) && $item->img && product_addons()->handle_all_pro_block() ) : ?>
+							<?php if ( isset( $item->img ) && $item->img && product_addons()->is_pro_feature_available() ) : ?>
 								<img
 									class="prad-block-item-img"
 									src= "<?php echo esc_url( $item->img ); ?>"

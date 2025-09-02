@@ -1,18 +1,18 @@
 <?php	// phpcs:ignore
 /**
- * Cart_Page.
+ * CartPage.
  *
  * @package PRAD
  * @since v.1.0.0
  */
-namespace PRAD;
+namespace PRAD\Includes\Order;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Render_Blocks class.
+ * CheckoutPage class.
  */
-class Checkout_Page {
+class CheckoutPage {
 	/**
 	 * Constructor
 	 */

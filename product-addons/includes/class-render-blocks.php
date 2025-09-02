@@ -1,19 +1,19 @@
 <?php //phpcs:ignore
 /**
- * Render_Blocks Action.
+ * RenderBlocks Action.
  *
  * @package PRAD
  * @since 1.0.0
  */
 
-namespace PRAD;
+namespace PRAD\Includes;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Render_Blocks class.
+ * RenderBlocks class.
  */
-class Render_Blocks {
+class RenderBlocks {
 
 
 	/**
@@ -22,8 +22,8 @@ class Render_Blocks {
 	 * @since 1.0.0
 	 */
 	public function __construct() {
-		add_action( 'woocommerce_before_add_to_cart_button', array( $this, 'before_add_to_cart_button' ), 100 );
-		add_filter( 'woocommerce_product_get_gallery_image_ids', array( $this, 'prad_add_custom_gallery_image' ), 99, 2 );
+		// add_action( 'woocommerce_before_add_to_cart_button', array( $this, 'before_add_to_cart_button' ), 100 );
+		// add_filter( 'woocommerce_product_get_gallery_image_ids', array( $this, 'prad_add_custom_gallery_image' ), 99, 2 );
 	}
 
 	public function prad_add_custom_gallery_image( $gallery_image_ids, $product ) {
@@ -89,7 +89,7 @@ class Render_Blocks {
 					$content = json_decode( $content );
 
 					if ( ! empty( $content ) ) {
-						product_addons()->render_addon_css( $opt_id );
+						// product_addons()->render_addon_css( $opt_id );
 						$option_data[ $opt_id ] = $content;
 						$published_ids[]        = $opt_id;
 					}
@@ -129,11 +129,12 @@ class Render_Blocks {
 	 * @return string
 	 */
 	public function build_prad_blocks( $option_data, $productid, $output = '' ) {
-		$pro_lock               = ! product_addons()->handle_all_pro_block();
+		$pro_lock               = ! product_addons()->is_pro_feature_available();
 		$prad_allowed_html_tags = apply_filters( 'get_prad_allowed_html_tags', array() );
 		foreach ( $option_data as $single_option ) {
 			$name      = $this->get_property( $single_option, 'type', '' );
-			$file_path = product_addons()->handle_all_pro_block() && in_array( $name, array( 'switch', 'color_switch', 'img_switch', 'upload', 'button' ) ) ? PRAD_PRO_PATH . "frontend/blocks/$name.php" : PRAD_PATH . "includes/blocks/$name.php";
+			$file_path = product_addons()->is_pro_feature_available() && in_array( $name, array( 'switch', 'color_switch', 'img_switch', 'upload', 'button' ) ) ? PRAD_PRO_PATH . "frontend/blocks/$name.php" : PRAD_PATH . "includes/blocks/$name.php";
+			$file_path = PRAD_PATH . "includes/blocks/$name.php";
 			$args      = array();
 
 			ob_start();

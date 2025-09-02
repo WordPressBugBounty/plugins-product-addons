@@ -2,6 +2,8 @@
 
 namespace PRAD;
 
+use PRAD\Includes\RenderBlocks;
+
 /**
  *
  *
@@ -96,13 +98,13 @@ if ( $layoutVisibility == 'hover_show' ) {
 					</div>
 					<?php
 					if ( $layout == '_overlay' ) {
-						echo Render_Blocks::prad_render_block_content( $item, $index, $blockid, $price_obj, $enableCount, $min, $max, $prad_allowed_html_tags );
+						echo RenderBlocks::prad_render_block_content( $item, $index, $blockid, $price_obj, $enableCount, $min, $max, $prad_allowed_html_tags );
 					}
 					?>
 				</div>
 				<?php
 				if ( $layout == '_default' ) {
-					echo Render_Blocks::prad_render_block_content( $item, $index, $blockid, $price_obj, $enableCount, $min, $max, $prad_allowed_html_tags );
+					echo RenderBlocks::prad_render_block_content( $item, $index, $blockid, $price_obj, $enableCount, $min, $max, $prad_allowed_html_tags );
 				}
 				if ( $enableCount && $layout == '_img' ) :
 					?>

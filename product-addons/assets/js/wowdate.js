@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 ( function ( $ ) {
 	'use strict';
 	/*	Initialize data  */

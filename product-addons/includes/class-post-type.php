@@ -5,7 +5,7 @@
  * @package PRAD\Options
  * @since v.1.0.0
  */
-namespace PRAD;
+namespace PRAD\Includes;
 
 defined( 'ABSPATH' ) || exit;
 
