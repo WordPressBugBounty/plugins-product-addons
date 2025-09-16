@@ -164,7 +164,7 @@ class Notice {
 			array(
 				'key'                => 'prad_dashboard_content_notice_flash_sale',
 				'start'              => '2025-09-01 00:00 Asia/Dhaka',
-				'end'                => '2025-09-21 23:59 Asia/Dhaka',
+				'end'                => '2025-09-17 23:59 Asia/Dhaka',
 				'url'                => Xpo::generate_utm_link(
 					array(
 						'utmKey' => 'flash_sale',
@@ -173,9 +173,9 @@ class Notice {
 				'visibility'         => ! Xpo::is_lc_active(),
 				'content_heading'    => __( 'Grab the Flash Sale Offer:', 'product-addons' ),
 				'content_subheading' => __( 'Sale on <strong> WowAddons </strong> - Enjoy %s on this all-in-one extra product options tool!', 'product-addons' ),
-				'discount_content'   => 'up to 50% OFF',
+				'discount_content'   => 'up to 45% OFF',
 				'border_color'       => '#86a62c',
-				'icon'               => PRAD_URL . 'assets/img/icons/50_orange.svg',
+				'icon'               => PRAD_URL . 'assets/img/icons/45_red.svg',
 				'button_text'        => __( 'Claim Your Discount!', 'product-addons' ),
 				'is_discount_logo'   => true,
 			),
@@ -196,7 +196,7 @@ class Notice {
 				'icon'               => PRAD_URL . 'assets/img/logo-sm.svg',
 				'button_text'        => __( 'Upgrade to Pro &nbsp;➤', 'product-addons' ),
 				'is_discount_logo'   => false,
-				'background_color'   => '#e58b06',
+				'background_color'   => '#86a62c',
 			),
 		);
 
