@@ -4,7 +4,7 @@ Tags: product addons, woocommerce product addons, extra product options, product
 Requires at least: 5.0
 Tested up to: 6.8
 Requires PHP: 5.6
-Stable tag: 1.0.16
+Stable tag: 1.0.17
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -197,6 +197,9 @@ No, for some product fields like Headings, Texts, advanced custom logic options 
 7. Strategic Cross-selling
 
 == Changelog ==
+= 1.0.17 – 18th September 2025 =
+* Fix: Resolved an error in the Products field that was causing unexpected behavior.
+
 = 1.0.16 – 16th September 2025 =
 * Fix: Conditional logic issue in formula field.
 
