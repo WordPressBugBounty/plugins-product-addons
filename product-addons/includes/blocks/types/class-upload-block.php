@@ -49,9 +49,9 @@ class Upload_Block extends Abstract_Block {
 		);
 
 		$html  = sprintf( '<div %s>', $this->build_attributes( $attributes ) );
-		$html .= $this->render_header( $item, $price_info );
-		$html .= $this->render_description();
+		$html .= $this->render_title_description_price_with_position( $price_info );
 		$html .= $this->render_upload_section( $item, $price_info );
+		$html .= $this->render_description_below_field();
 		$html .= '</div>';
 
 		return $html;
@@ -77,7 +77,7 @@ class Upload_Block extends Abstract_Block {
 				array_filter(
 					$allowed,
 					function ( $ext ) {
-						return ( $ext === 'jpg' || $ext === 'png' || 'jpeg' );
+						return in_array( $ext, array( 'jpg', 'jpeg', 'png' ), true );
 					}
 				)
 			);
@@ -100,37 +100,6 @@ class Upload_Block extends Abstract_Block {
 		return $attributes;
 	}
 
-	/**
-	 * Render header section with title and price
-	 *
-	 * @param object $item Upload item
-	 * @param array  $price_info Price information
-	 * @return string
-	 */
-	private function render_header( $item, array $price_info ): string {
-		$hide = $this->get_property( 'hide', false );
-
-		if ( $hide && $item['type'] === 'no_cost' ) {
-			return '';
-		}
-
-		$html = '<div class="prad-d-flex prad-item-center prad-gap-12 prad-mb-12">';
-
-		if ( ! $hide ) {
-			$html .= $this->render_title_with_required();
-		}
-
-		if ( $item['type'] !== 'no_cost' ) {
-			$html .= sprintf(
-				'<div class="prad-block-price prad-text-upper">%s</div>',
-				wp_kses( $price_info['html'], $this->allowed_html_tags )
-			);
-		}
-
-		$html .= '</div>';
-
-		return $html;
-	}
 
 	/**
 	 * Render upload section
@@ -145,7 +114,11 @@ class Upload_Block extends Abstract_Block {
 		$accept_types  = $this->get_accept_types( $allowed_types );
 
 		$html  = '<div class="prad-upload-wrapper">';
+		$html .= '<div class="">';
+		$html .= '<div class="prad-block-upload-title prad-d-flex prad-item-center prad-gap-4 prad-w-full">';
 		$html .= $this->render_upload_label( $block_id, $price_info, $accept_types );
+		$html .= ' </div>';
+		$html .= ' </div>';
 		$html .= '<div class="prad-upload-result"></div>';
 		$html .= '</div>';
 
@@ -161,23 +134,24 @@ class Upload_Block extends Abstract_Block {
 	 * @return string
 	 */
 	private function render_upload_label( string $block_id, array $price_info, string $accept_types ): string {
-		$html = sprintf(
-			'<label for="prad_block_upload_%s" class="prad-drop-zone prad-upload-container prad-border-none prad-bg-transparent prad-m-0">',
+		$drag_drop_text = $this->get_property( 'dragDropText', 'Click or drag and drop' );
+		$html           = sprintf(
+			'<label for="prad_block_upload_%s" class="prad-upload-container prad-drop-zone prad-border-none prad-bg-transparent prad-m-0 prad-w-full">',
 			esc_attr( $block_id )
 		);
 
-		// Upload icon
-		$html .= $this->render_upload_icon();
+		$html .= '<div class="prad-d-flex prad-item-center prad-gap-12">';
 
-		// Upload title and input
-		$html .= '<div class="prad-block-upload-title prad-d-flex prad-item-center prad-gap-4 prad-w-fit prad-center-horizontal prad-mb-12">';
-		$html .= $this->render_file_input( $block_id, $price_info, $accept_types );
-		$html .= '<div class="prad-block-upload-link prad-cursor-pointer prad-color-text-dark prad-text-underline">';
-		$html .= esc_html__( 'Click to upload', 'product-addons' );
-		$html .= '</div><div>' . esc_html__( 'or drag and drop', 'product-addons' ) . '</div></div>';
+			// Upload icon
+			$html         .= $this->render_upload_icon();
+			$html         .= '<div class="prad-block-upload-text prad-block-upload-title">';
+				$html     .= $this->render_file_input( $block_id, $price_info, $accept_types );
+				$html     .= '<div class="prad-cursor-pointer">';
+					$html .= esc_html( $drag_drop_text );
+				$html     .= '</div>';
+			$html         .= '</div>';
 
-		// Upload info texts
-		$html .= $this->render_upload_info();
+		$html .= '</div>';
 
 		$html .= '</label>';
 
@@ -215,57 +189,27 @@ class Upload_Block extends Abstract_Block {
 	 * @return string
 	 */
 	private function render_upload_icon(): string {
-		return '<div class="prad-block-upload-icon prad-lh-0 prad-mb-8">
-            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="none">
-                <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="3"
-                    d="M17.625 27.65C12.488 28.87 8.667 33.49 8.667 39c0 6.444 5.223 11.667 11.667 11.667 1.105 0 2.174-.154 3.188-.441M46.065 27.65C51.2 28.87 55.02 33.49 55.02 39c0 6.444-5.223 11.667-11.667 11.667-1.105 0-2.174-.154-3.187-.441M46 27.333c0-7.731-6.268-14-14-14-7.731 0-14 6.269-14 14m5.91 9.195L32 28.41l8.321 8.256m-8.32 11.666V31.54"
-                />
-            </svg>
-        </div>';
+		$upload_text = $this->get_property( 'uploadText', 'Upload' );
+		return '<div class="prad-block-upload-icon prad-d-flex prad-item-center prad-gap-6">
+		   <svg
+				width="20"
+				height="20"
+				viewBox="0 0 20 20"
+				fill="none"
+				xmlns="http://www.w3.org/2000/svg"
+			>
+				<path
+					d="M4.86323 8.44885C3.02865 8.8851 1.66406 10.5347 1.66406 12.5026C1.66406 14.8039 3.52948 16.6693 5.83073 16.6693C6.22531 16.6693 6.6074 16.6143 6.96948 16.5118M15.0203 8.44885C16.8549 8.8851 18.2191 10.5347 18.2191 12.5026C18.2191 14.8039 16.3536 16.6693 14.0524 16.6693C13.6578 16.6693 13.2757 16.6143 12.9141 16.5118M14.9974 8.33594C14.9974 5.57469 12.7586 3.33594 9.9974 3.33594C7.23615 3.33594 4.9974 5.57469 4.9974 8.33594M7.10781 11.6197L9.9974 8.72094L12.9691 11.6693M9.9974 15.8359C9.9974 15.8359 9.9974 11.9813 9.9974 9.77844"
+					stroke="white"
+					strokeWidth="1.04167"
+					strokeLinecap="round"
+					strokeLinejoin="round"
+				/>
+			</svg>
+			<div>' . esc_html( $upload_text ) . '</div>
+		</div>';
 	}
 
-	/**
-	 * Render upload information text
-	 *
-	 * @return string
-	 */
-	private function render_upload_info(): string {
-		$html = '';
-
-		$size_prefix    = $this->get_property( 'sizePrefix', '' );
-		$number_prefix  = $this->get_property( 'numberPrefix', '' );
-		$allowed_prefix = $this->get_property( 'allowedPrefix', '' );
-		$max_size       = $this->get_property( 'maxSize', '' );
-		$max_number     = $this->get_property( 'maxNumber', '' );
-		$allowed_types  = $this->allowed_file_types;
-
-		if ( $size_prefix && $max_size ) {
-			$html .= sprintf(
-				'<div class="prad-block-upload-content prad-font-12 prad-color-text-medium prad-mb-4">%s</div>',
-				esc_html( str_replace( '[max_size]', $max_size . 'MB', $size_prefix ) )
-			);
-		}
-
-		if ( $number_prefix && $max_number ) {
-			$html .= sprintf(
-				'<div class="prad-block-upload-content prad-font-12 prad-color-text-medium">%s</div>',
-				esc_html( str_replace( '[max_files]', $max_number, $number_prefix ) )
-			);
-		}
-
-		if ( $allowed_prefix && ! empty( $allowed_types ) ) {
-			$html .= sprintf(
-				'<div class="prad-block-upload-type prad-font-12 prad-color-text-body prad-mt-8"><span>%s</span></div>',
-				esc_html( str_replace( '[allowed_types]', implode( ', ', $allowed_types ), $allowed_prefix ) )
-			);
-		}
-
-		return $html;
-	}
 
 	/**
 	 * Get accept types string for file input

@@ -54,20 +54,12 @@ class Separator_Block extends Abstract_Block {
 				'unit' => 'px',
 			)
 		);
-		$width  = $this->get_property(
-			'width',
-			array(
-				'val'  => '100',
-				'unit' => '%',
-			)
-		);
 
 		$style = sprintf(
-			'height: %s%s; width: %s%s;',
+			'height: %s%s; width: %s;',
 			esc_attr( ! empty( $height['val'] ) ? $height['val'] : 0 ),
 			esc_attr( ! empty( $height['unit'] ) ? $height['unit'] : 'px' ),
-			esc_attr( ! empty( $width['val'] ) ? $width['val'] : 0 ),
-			esc_attr( ! empty( $width['unit'] ) ? $width['unit'] : '%' )
+			'100%'
 		);
 
 		return sprintf(

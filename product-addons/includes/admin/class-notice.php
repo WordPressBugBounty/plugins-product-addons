@@ -15,7 +15,7 @@ class Notice {
 	 * Notice Constructor
 	 */
 
-	private $notice_version        = 'v107';
+	private $notice_version        = 'v155';
 	private $notice_js_css_applied = false;
 	public function __construct() {
 		add_action( 'admin_notices', array( $this, 'admin_notices_callback' ) );
@@ -55,13 +55,37 @@ class Notice {
 		$prad_db_nonce  = wp_create_nonce( 'prad-dashboard-nonce' );
 		$banner_notices = array(
 			array(
-				'key'        => 'prad_summer_sale_25xx1',
-				'start'      => '2025-07-06 00:00 Asia/Dhaka', // format YY-MM-DD always set time 00:00 and zone Asia/Dhaka
-				'end'        => '2025-07-09 23:59 Asia/Dhaka', // format YY-MM-DD always set time 23:59 and zone Asia/Dhaka
-				'banner_src' => PRAD_URL . 'assets/img/dashboard_banner/summer_sale_25.png',
+				'key'        => 'prad_new_year_sale_26_v1',
+				'start'      => '2026-01-01 00:00 Asia/Dhaka', // format YY-MM-DD always set time 00:00 and zone Asia/Dhaka
+				'end'        => '2026-01-06 23:59 Asia/Dhaka', // format YY-MM-DD always set time 23:59 and zone Asia/Dhaka
+				'banner_src' => PRAD_URL . 'assets/img/dashboard_banner/new_year_sale_26_v1.png',
 				'url'        => Xpo::generate_utm_link(
 					array(
-						'utmKey' => 'summer_db',
+						'utmKey' => 'banner_notice',
+					)
+				),
+				'visibility' => ! Xpo::is_lc_active(),
+			),
+			array(
+				'key'        => 'prad_new_year_sale_26_v2',
+				'start'      => '2026-01-17 00:00 Asia/Dhaka', // format YY-MM-DD always set time 00:00 and zone Asia/Dhaka
+				'end'        => '2026-01-22 23:59 Asia/Dhaka', // format YY-MM-DD always set time 23:59 and zone Asia/Dhaka
+				'banner_src' => PRAD_URL . 'assets/img/dashboard_banner/new_year_sale_26_v2.png',
+				'url'        => Xpo::generate_utm_link(
+					array(
+						'utmKey' => 'banner_notice',
+					)
+				),
+				'visibility' => ! Xpo::is_lc_active(),
+			),
+			array(
+				'key'        => 'prad_new_year_sale_26_v3',
+				'start'      => '2026-02-02 00:00 Asia/Dhaka', // format YY-MM-DD always set time 00:00 and zone Asia/Dhaka
+				'end'        => '2026-02-07 23:59 Asia/Dhaka', // format YY-MM-DD always set time 23:59 and zone Asia/Dhaka
+				'banner_src' => PRAD_URL . 'assets/img/dashboard_banner/new_year_sale_26_v3.png',
+				'url'        => Xpo::generate_utm_link(
+					array(
+						'utmKey' => 'banner_notice',
 					)
 				),
 				'visibility' => ! Xpo::is_lc_active(),
@@ -71,29 +95,28 @@ class Notice {
 		foreach ( $banner_notices as $key => $notice ) {
 			$notice_key = isset( $notice['key'] ) ? $notice['key'] : $this->notice_version;
 			if ( isset( $_GET['disable_prad_notice'] ) && $notice_key === $_GET['disable_prad_notice'] ) {
-				return;
-			}
+				continue;
+			} else {
+				$current_time = gmdate( 'U' );
+				$notice_start = gmdate( 'U', strtotime( $notice['start'] ) );
+				$notice_end   = gmdate( 'U', strtotime( $notice['end'] ) );
+				if ( $current_time >= $notice_start && $current_time <= $notice_end && $notice['visibility'] ) {
 
-			$current_time = gmdate( 'U' );
-			$notice_start = gmdate( 'U', strtotime( $notice['start'] ) );
-			$notice_end   = gmdate( 'U', strtotime( $notice['end'] ) );
-			if ( $current_time >= $notice_start && $current_time <= $notice_end && $notice['visibility'] ) {
+					$notice_transient = Xpo::get_transient_without_cache( 'prad_get_pro_notice_' . $notice_key );
 
-				$notice_transient = Xpo::get_transient_without_cache( 'prad_get_pro_notice_' . $notice_key );
-
-				if ( 'off' !== $notice_transient ) {
-					if ( ! $this->notice_js_css_applied ) {
-						$this->prad_banner_notice_css();
-						$this->notice_js_css_applied = true;
-					}
-					$query_args = array(
-						'disable_prad_notice' => $notice_key,
-						'prad_db_nonce'       => $prad_db_nonce,
-					);
-					if ( isset( $notice['repeat_interval'] ) && $notice['repeat_interval'] ) {
-						$query_args['prad_interval'] = $notice['repeat_interval'];
-					}
-					?>
+					if ( 'off' !== $notice_transient ) {
+						if ( ! $this->notice_js_css_applied ) {
+							$this->prad_banner_notice_css();
+							$this->notice_js_css_applied = true;
+						}
+						$query_args = array(
+							'disable_prad_notice' => $notice_key,
+							'prad_db_nonce'       => $prad_db_nonce,
+						);
+						if ( isset( $notice['repeat_interval'] ) && $notice['repeat_interval'] ) {
+							$query_args['prad_interval'] = $notice['repeat_interval'];
+						}
+						?>
 					<div class="prad-notice-wrapper notice wc-install prad-free-notice">
 						<div class="wc-install-body prad-image-banner">
 							<a class="wc-dismiss-notice" href="
@@ -110,7 +133,8 @@ class Notice {
 							</a>
 						</div>
 					</div>
-					<?php
+						<?php
+					}
 				}
 			}
 		}
@@ -125,79 +149,60 @@ class Notice {
 
 		$content_notices = array(
 			array(
-				'key'                => 'prad_dashboard_content_notice_final_hour',
-				'start'              => '2025-08-04 00:00 Asia/Dhaka',
-				'end'                => '2025-08-14 23:59 Asia/Dhaka',
+				'key'                => 'prad_dashboard_content_notice_newyr26_v1',
+				'start'              => '2026-01-09 00:00 Asia/Dhaka',
+				'end'                => '2026-01-14 23:59 Asia/Dhaka',
 				'url'                => Xpo::generate_utm_link(
 					array(
-						'utmKey' => 'final_hour',
+						'utmKey' => 'content_notice',
 					)
 				),
 				'visibility'         => ! Xpo::is_lc_active(),
-				'content_heading'    => __( 'Final Hour Sales Alert:', 'product-addons' ),
-				'content_subheading' => __( '<strong> WowAddons </strong> on Sale – Get %s on this agile product options plugin.', 'product-addons' ),
-				'discount_content'   => 'up to 45% OFF',
-				'border_color'       => '#86a62c', // product default border color.
-				'icon'               => PRAD_URL . 'assets/img/icons/45_red.svg',
-				'button_text'        => __( 'Claim Your Discount!', 'product-addons' ),
-				'is_discount_logo'   => true,
-			),
-			array(
-				'key'                => 'prad_dashboard_content_notice_massive_sale',
-				'start'              => '2025-08-18 00:00 Asia/Dhaka',
-				'end'                => '2025-08-29 23:59 Asia/Dhaka',
-				'url'                => Xpo::generate_utm_link(
-					array(
-						'utmKey' => 'massive_sale',
-					)
-				),
-				'visibility'         => ! Xpo::is_lc_active(),
-				'content_heading'    => __( 'Massive Sales Alert:', 'product-addons' ),
-				'content_subheading' => __( 'WowAddons on Sale - Get %s on this agile product options plugin.', 'product-addons' ),
-				'discount_content'   => 'up to 50% OFF',
-				'border_color'       => '#000000',  // border color set to black for alteration.
-				'icon'               => PRAD_URL . 'assets/img/logo-sm.svg',
-				'button_text'        => __( 'Upgrade to Pro &nbsp;➤', 'product-addons' ),
-				'is_discount_logo'   => false,
-				'background_color'   => '#86a62c',
-			),
-			array(
-				'key'                => 'prad_dashboard_content_notice_flash_sale',
-				'start'              => '2025-09-01 00:00 Asia/Dhaka',
-				'end'                => '2025-09-17 23:59 Asia/Dhaka',
-				'url'                => Xpo::generate_utm_link(
-					array(
-						'utmKey' => 'flash_sale',
-					)
-				),
-				'visibility'         => ! Xpo::is_lc_active(),
-				'content_heading'    => __( 'Grab the Flash Sale Offer:', 'product-addons' ),
-				'content_subheading' => __( 'Sale on <strong> WowAddons </strong> - Enjoy %s on this all-in-one extra product options tool!', 'product-addons' ),
-				'discount_content'   => 'up to 45% OFF',
+				'content_heading'    => __( 'New Year Sales Offers:', 'product-addons' ),
+				'content_subheading' => __( 'WowAddons offers are live - Enjoy %s on this extra options plugin for WooCommerce.', 'product-addons' ),
+				'discount_content'   => ' up to 60% OFF',
 				'border_color'       => '#86a62c',
-				'icon'               => PRAD_URL . 'assets/img/icons/45_red.svg',
+				'icon'               => PRAD_URL . 'assets/img/icons/60_red.svg',
 				'button_text'        => __( 'Claim Your Discount!', 'product-addons' ),
 				'is_discount_logo'   => true,
 			),
 			array(
-				'key'                => 'prad_dashboard_content_notice_exclusive_deals',
-				'start'              => '2025-09-21 00:00 Asia/Dhaka',
-				'end'                => '2025-09-30 23:59 Asia/Dhaka',
+				'key'                => 'prad_dashboard_content_notice_newyr26_v2',
+				'start'              => '2026-01-25 00:00 Asia/Dhaka',
+				'end'                => '2026-01-30 23:59 Asia/Dhaka',
 				'url'                => Xpo::generate_utm_link(
 					array(
-						'utmKey' => 'exclusive_deals',
+						'utmKey' => 'content_notice',
 					)
 				),
 				'visibility'         => ! Xpo::is_lc_active(),
-				'content_heading'    => __( 'Exclusive Sale is Live:', 'product-addons' ),
-				'content_subheading' => __( 'Sale on WowAddons - Enjoy %s  on this all-in-one extra product options tool!', 'product-addons' ),
-				'discount_content'   => 'up to 50% OFF',
-				'border_color'       => '#000000',
-				'icon'               => PRAD_URL . 'assets/img/logo-sm.svg',
-				'button_text'        => __( 'Upgrade to Pro &nbsp;➤', 'product-addons' ),
-				'is_discount_logo'   => false,
-				'background_color'   => '#86a62c',
+				'content_heading'    => __( 'New Year Sales Alert:', 'product-addons' ),
+				'content_subheading' => __( 'WowAddons is on Sale - Enjoy %s  on this  extra options plugin for WooCommerce.', 'product-addons' ),
+				'discount_content'   => ' up to 60% OFF',
+				'border_color'       => '#86a62c', // product default border color.
+				'icon'               => PRAD_URL . 'assets/img/icons/60_red.svg',
+				'button_text'        => __( 'Claim Your Discount!', 'product-addons' ),
+				'is_discount_logo'   => true,
 			),
+			array(
+				'key'                => 'prad_dashboard_content_notice_newyr26_v3',
+				'start'              => '2026-02-10 00:00 Asia/Dhaka',
+				'end'                => '2026-02-15 23:59 Asia/Dhaka',
+				'url'                => Xpo::generate_utm_link(
+					array(
+						'utmKey' => 'content_notice',
+					)
+				),
+				'visibility'         => ! Xpo::is_lc_active(),
+				'content_heading'    => __( 'Fresh New Year Deals:', 'product-addons' ),
+				'content_subheading' => __( 'WowAddons is on Sale - Enjoy %s  on this extra options plugin for WooCommerce.', 'product-addons' ),
+				'discount_content'   => ' up to 60% OFF',
+				'border_color'       => '#86a62c', // product default border color.
+				'icon'               => PRAD_URL . 'assets/img/icons/60_red.svg',
+				'button_text'        => __( 'Claim Your Discount!', 'product-addons' ),
+				'is_discount_logo'   => true,
+			),
+
 		);
 
 		$prad_db_nonce = wp_create_nonce( 'prad-dashboard-nonce' );
@@ -205,50 +210,50 @@ class Notice {
 		foreach ( $content_notices as $key => $notice ) {
 			$notice_key = isset( $notice['key'] ) ? $notice['key'] : $this->notice_version;
 			if ( isset( $_GET['disable_prad_notice'] ) && $notice_key === $_GET['disable_prad_notice'] ) {
-				return;
-			}
-			$border_color = $notice['border_color'];
+				continue;
+			} else {
+				$border_color = $notice['border_color'];
 
-			$current_time = gmdate( 'U' );
-			$notice_start = gmdate( 'U', strtotime( $notice['start'] ) );
-			$notice_end   = gmdate( 'U', strtotime( $notice['end'] ) );
-			if ( $current_time >= $notice_start && $current_time <= $notice_end && $notice['visibility'] ) {
-				$notice_transient = Xpo::get_transient_without_cache( 'prad_get_pro_notice_' . $notice_key );
+				$current_time = gmdate( 'U' );
+				$notice_start = gmdate( 'U', strtotime( $notice['start'] ) );
+				$notice_end   = gmdate( 'U', strtotime( $notice['end'] ) );
+				if ( $current_time >= $notice_start && $current_time <= $notice_end && $notice['visibility'] ) {
+					$notice_transient = Xpo::get_transient_without_cache( 'prad_get_pro_notice_' . $notice_key );
 
-				if ( 'off' !== $notice_transient ) {
-					if ( ! $this->notice_js_css_applied ) {
-						$this->prad_banner_notice_css();
-						$this->notice_js_css_applied = true;
-					}
-					$query_args = array(
-						'disable_prad_notice' => $notice_key,
-						'prad_db_nonce'       => $prad_db_nonce,
-					);
-					if ( isset( $notice['repeat_interval'] ) && $notice['repeat_interval'] ) {
-						$query_args['prad_interval'] = $notice['repeat_interval'];
-					}
+					if ( 'off' !== $notice_transient ) {
+						if ( ! $this->notice_js_css_applied ) {
+							$this->prad_banner_notice_css();
+							$this->notice_js_css_applied = true;
+						}
+						$query_args = array(
+							'disable_prad_notice' => $notice_key,
+							'prad_db_nonce'       => $prad_db_nonce,
+						);
+						if ( isset( $notice['repeat_interval'] ) && $notice['repeat_interval'] ) {
+							$query_args['prad_interval'] = $notice['repeat_interval'];
+						}
 
-					$url = isset( $notice['url'] ) ? $notice['url'] : Xpo::generate_utm_link(
-						array(
-							'utmKey' => 'summer_db',
-						)
-					);
+						$url = isset( $notice['url'] ) ? $notice['url'] : Xpo::generate_utm_link(
+							array(
+								'utmKey' => 'content_notice',
+							)
+						);
 
-					?>
+						?>
 					<div class="prad-notice-wrapper notice data_collection_notice" 
 					style="border-left: 3px solid <?php echo esc_attr( $border_color ); ?>;"
 					> 
-					<?php
-					if ( $notice['is_discount_logo'] ) {
-						?>
+						<?php
+						if ( $notice['is_discount_logo'] ) {
+							?>
 								<div class="prad-notice-discout-icon"> <img src="<?php echo esc_url( $notice['icon'] ); ?>"/>  </div>
 							<?php
-					} else {
-						?>
+						} else {
+							?>
 								<div class="prad-notice-icon"> <img src="<?php echo esc_url( $notice['icon'] ); ?>"/>  </div>
-						<?php
-					}
-					?>
+							<?php
+						}
+						?>
 						
 						<div class="prad-notice-content-wrapper">
 							<div class="">
@@ -283,7 +288,8 @@ class Notice {
 							?>
 						class="prad-notice-close"><span class="prad-notice-close-icon dashicons dashicons-dismiss"> </span></a>
 					</div>
-							<?php
+								<?php
+					}
 				}
 			}
 		}
@@ -428,7 +434,7 @@ class Notice {
 			}   
 			.prad-free-notice.wc-install img {
 				margin-right: 0; 
-				max-width: 100%;
+				max-width: 100%;width: 100%;
 			}
 			.prad-free-notice .wc-install-body {
 				-ms-flex: 1;

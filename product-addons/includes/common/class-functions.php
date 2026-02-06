@@ -1,6 +1,7 @@
 <?php //phpcs:ignore
 namespace PRAD\Includes\Common;
 
+use PRAD\Includes\Compatibility\BaseCurrency;
 use WC_Data_Store;
 
 defined( 'ABSPATH' ) || exit;
@@ -84,7 +85,7 @@ class Functions {
 	 * @return object An object containing the assigned data, including 'aType', 'includes', and 'excludes'.
 	 */
 	public function get_assigned_product_data( $option_id ) {
-		$assigned_data = json_decode( stripslashes( get_post_meta( $option_id, 'prad_base_assigned_data', true ) ), true );
+		$assigned_data = json_decode( product_addons()->safe_stripslashes( get_post_meta( $option_id, 'prad_base_assigned_data', true ) ), true );
 		if ( empty( $assigned_data ) ) {
 			return (object) array(
 				'aType'    => 'specific_product',
@@ -242,7 +243,7 @@ class Functions {
 		} elseif ( is_object( $params ) ) {
 			return $params;
 		} elseif ( is_string( $params ) ) {
-			return sanitize_text_field( $params );
+			return $params;
 		} else {
 			return $params;
 		}
@@ -350,6 +351,7 @@ class Functions {
 						'format_price'  => 'no',
 					)
 				);
+				return $price;
 			}
 		}
 
@@ -365,6 +367,28 @@ class Functions {
 			$active_currency = get_woocommerce_currency();
 			$price           = apply_filters( 'wc_aelia_cs_convert', $price, $base_currency, $active_currency );
 			return $price;
+		}
+
+		if ( class_exists( '\WCPay\MultiCurrency\MultiCurrency' ) ) {
+			$multi_currency = null;
+
+			if ( class_exists( 'WC_Payments' ) && method_exists( '\WC_Payments', 'get_gateway' ) ) {
+				$gateway = \WC_Payments::get_gateway();
+
+				if ( class_exists( '\WCPay\WC_Payments_Currency_Manager' ) ) {
+					$currency_manager = new \WCPay\WC_Payments_Currency_Manager( $gateway );
+
+					if ( method_exists( $currency_manager, 'get_multi_currency_instance' ) ) {
+						$multi_currency = $currency_manager->get_multi_currency_instance();
+					}
+				}
+			}
+
+			// Convert price if instance exists
+			if ( $multi_currency instanceof \WCPay\MultiCurrency\MultiCurrency && method_exists( $multi_currency, 'get_price' ) ) {
+				$price = $multi_currency->get_price( $price, 'product' );
+				return $price;
+			}
 		}
 
 		return $price;
@@ -456,6 +480,38 @@ class Functions {
 			return $price;
 		}
 
+		if ( class_exists( '\WCPay\MultiCurrency\MultiCurrency' ) ) {
+			$multi_currency  = null;
+			$converted_price = $price;
+
+			if ( class_exists( 'WC_Payments' ) && method_exists( '\WC_Payments', 'get_gateway' ) ) {
+				$gateway = \WC_Payments::get_gateway();
+
+				if ( class_exists( '\WCPay\WC_Payments_Currency_Manager' ) ) {
+					$currency_manager = new \WCPay\WC_Payments_Currency_Manager( $gateway );
+
+					if ( method_exists( $currency_manager, 'get_multi_currency_instance' ) ) {
+						$multi_currency = $currency_manager->get_multi_currency_instance();
+					}
+				}
+			}
+
+			// Convert price if instance exists
+			if ( $multi_currency instanceof \WCPay\MultiCurrency\MultiCurrency && method_exists( $multi_currency, 'get_price' ) ) {
+				$currency = $multi_currency->get_selected_currency();
+				$rate     = $currency->get_rate();
+				if ( $currency->get_is_default() || $rate <= 0 ) {
+					return $converted_price;
+				}
+
+				// Reverse conversion
+				$base_price = (float) $converted_price / $rate;
+
+				return (float) $base_price;
+
+			}
+		}
+
 		return $price;
 	}
 
@@ -475,8 +531,8 @@ class Functions {
 	 */
 	public function get_currency_converted_data() {
 		$custom_array              = array();
-		$_extra                    = $this->get_currency_converted_price( 0 );
-		$_rate                     = $this->get_currency_converted_price( 1 ) - $_extra;
+		$_extra                    = BaseCurrency::convert( 0 );
+		$_rate                     = BaseCurrency::convert( 1 ) - $_extra;
 		$custom_array['cr_active'] = floatval( 1 ) !== floatval( $_rate ) ? true : false;
 		$custom_array['cr_rate']   = $_rate;
 		$custom_array['cr_extra']  = $_extra;
@@ -720,6 +776,7 @@ class Functions {
 						}
 					}
 					if ( $valid_variation ) {
+						$option_label    = rawurldecode( wp_strip_all_tags( $option_label ) );
 						$select_options .= '<div class="prad-select-option" title="' . esc_html( $option_label ) . '" value="' . $price_obj['price'] . '" data-variation-id="' . $variation_id . '"  data-pricehtml="' . esc_html( $price_obj['html'] ) . '">' . $option_label . '</div>';
 					}
 				}
@@ -746,28 +803,32 @@ class Functions {
 		$product = wc_get_product( $p_id );
 		if ( $product ) {
 			$data = array(
-				'id'        => $p_id,
-				'type'      => 'per_unit',
-				'variation' => $var_p,
-				'url'       => get_permalink( $p_id ),
-				'value'     => rawurldecode( wp_strip_all_tags( $product->get_name() ) ),
-				'img'       => wp_get_attachment_url( $product->get_image_id() ),
-				'regular'   => apply_filters(
+				'id'             => $p_id,
+				'type'           => 'per_unit',
+				'variation'      => $var_p,
+				'url'            => get_permalink( $p_id ),
+				'value'          => rawurldecode( wp_strip_all_tags( $product->get_name() ) ),
+				'img'            => wp_get_attachment_url( $product->get_image_id() ),
+				'regular'        => apply_filters(
 					'prad_raw_tax_compitable_price',
 					array(
 						'product_id' => $p_id,
+						'ppType'     => 'reg',
 						'price'      => $product->get_regular_price(),
 						'source'     => 'product_page',
 					)
 				),
-				'sale'      => apply_filters(
+				'sale'           => apply_filters(
 					'prad_raw_tax_compitable_price',
 					array(
 						'product_id' => $p_id,
+						'ppType'     => 'sale',
 						'price'      => $product->get_sale_price(),
 						'source'     => 'product_page',
 					)
 				),
+				'is_in_stock'    => $product->is_in_stock(),
+				'is_purchasable' => $product->is_purchasable(),
 			);
 			return (object) $data;
 		}
@@ -785,7 +846,7 @@ class Functions {
 			),
 			'summer_db'       => array(
 				'source'   => 'db-wowaddons-notice',
-				'medium'   => 'summer-sale',
+				'medium'   => 'black-friday-sale',
 				'campaign' => 'wowaddons-dashboard',
 			),
 			'final_hour'      => array(
@@ -884,5 +945,134 @@ class Functions {
 				'wholesale_x' => defined( 'WHOLESALEX_VER' ),
 			),
 		);
+	}
+
+	/**
+	 * Move or copy files from temp folder to on_cart folder.
+	 *
+	 * @param array $src_files Absolute file paths (from temp folder).
+	 * @param bool  $delete    Whether to delete original files (true = move, false = copy).
+	 *
+	 * @return array List of processed files with new paths & URLs.
+	 */
+	function prad_move_uploadblock_files( array $src_files, string $_from = 'temp', bool $delete = false ) {
+		$upload_dir = wp_upload_dir();
+
+		$_to = 'order_placed';
+		if ( 'order_placed' === $_from ) {
+			$_to = 'order_completed';
+		}
+
+		$from_dir = $upload_dir['basedir'] . '/prad_option_files/' . $_from;
+		$to_dir   = $upload_dir['basedir'] . '/prad_option_files/' . $_to;
+
+		// ✅ Make sure destination folder exists
+		if ( ! file_exists( $to_dir ) ) {
+			wp_mkdir_p( $to_dir );
+		}
+
+		// ✅ Make sure temp folder exists
+		if ( ! file_exists( $from_dir ) ) {
+			wp_mkdir_p( $from_dir );
+		}
+
+		$processed = array();
+
+		foreach ( $src_files as $src ) {
+			// Extract filename with extension
+			$filename = basename( $src );
+
+			$source_path      = $from_dir . '/' . $filename;
+			$destination_path = $to_dir . '/' . $filename;
+
+			// Skip if source file doesn't exist
+			if ( ! file_exists( $source_path ) ) {
+				continue;
+			}
+
+			if ( 'on_cart' !== $_to && file_exists( $destination_path ) ) {
+				$file_info = pathinfo( $filename );
+				$name      = $file_info['filename'];
+				$ext       = isset( $file_info['extension'] ) ? '.' . $file_info['extension'] : '';
+				$counter   = 1;
+
+				while ( file_exists( $destination_path ) ) {
+					$destination_path = $to_dir . '/' . $name . '-' . $counter . $ext;
+					++$counter;
+				}
+			}
+
+			if ( copy( $source_path, $destination_path ) ) {
+				if ( $delete ) {
+					unlink( $source_path );
+				}
+
+				$processed[] = array(
+					'updated_src' => array(
+						'prev_src'  => $upload_dir['baseurl'] . '/prad_option_files/' . $_from . '/' . basename( $source_path ),
+						'curr_src'  => $upload_dir['baseurl'] . '/prad_option_files/' . $_to . '/' . basename( $destination_path ),
+						'curr_name' => basename( $destination_path ),
+					),
+					'file'        => $destination_path,
+					'url'         => $upload_dir['baseurl'] . '/prad_option_files/' . $_to . '/' . basename( $destination_path ),
+				);
+			}
+		}
+
+		return $processed;
+	}
+
+	/**
+	 * Safe stripslashes that handles both strings and arrays.
+	 *
+	 * This function safely applies stripslashes to a value, whether it's a string or an array.
+	 * If the value is already an array, it returns the array as-is.
+	 * If the value is a string, it applies stripslashes and returns the result.
+	 *
+	 * @since 1.0.0
+	 * @param mixed $value The value to process (string or array).
+	 * @return mixed The processed value.
+	 */
+	public function safe_stripslashes( $value ) {
+		if ( is_array( $value ) ) {
+			return $value;
+		}
+
+		if ( is_string( $value ) ) {
+			return stripslashes( $value );
+		}
+
+		return $value;
+	}
+
+	/**
+	 * Retrieves the list of allowed file types for uploads.
+	 *
+	 * This function returns an array of file types that are permitted to be uploaded
+	 * through the product addons functionality.
+	 *
+	 * @return array List of allowed file types for uploads.
+	 */
+	public function prad_get_upload_allowed_file_types() {
+
+		$allowed_types = array(
+			'png'  => 'image/png',
+			'jpg'  => 'image/jpeg',
+			'jpeg' => 'image/jpeg',
+			'pdf'  => 'application/pdf',
+			'csv'  => 'text/csv',
+			'doc'  => 'application/msword',
+			'txt'  => 'text/plain',
+			'ppt'  => 'application/vnd.ms-powerpoint',
+			'heic' => 'image/heic',
+			'svg'  => 'image/svg+xml',
+			'ai'   => 'application/pdf',
+			'psd'  => 'image/vnd.adobe.photoshop',
+			'eps'  => 'application/postscript',
+			'cdr'  => 'application/vnd.corel-draw',
+			'gpx'  => 'text/xml',
+		);
+
+		return apply_filters( 'prad_upload_field_allowed_file_types', $allowed_types );
 	}
 }

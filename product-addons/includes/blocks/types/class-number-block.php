@@ -48,16 +48,17 @@ class Number_Block extends Abstract_Block {
 		$attributes = array_merge(
 			$this->get_common_attributes(),
 			array(
-				'class'      => $this->build_css_classes( $css_classes ),
-				'data-ptype' => $price_info['type'],
-				'data-val'   => $price_info['price'],
+				'class'       => $this->build_css_classes( $css_classes ),
+				'data-ptype'  => $price_info['type'],
+				'data-val'    => $price_info['price'],
+				'data-defval' => $this->get_property( 'value', '' ),
 			)
 		);
 
 		$html  = sprintf( '<div %s>', $this->build_attributes( $attributes ) );
-		$html .= $this->render_title_section( $price_info );
-		$html .= $this->render_description();
+		$html .= $this->render_title_description_price_with_position( $price_info );
 		$html .= $this->render_number_input( $price_info );
+		$html .= $this->render_description_below_field();
 		$html .= '</div>';
 
 		return $html;
@@ -76,11 +77,15 @@ class Number_Block extends Abstract_Block {
 			'type'        => 'number',
 			'placeholder' => $this->get_property( 'placeholder', '' ),
 			'id'          => $this->get_block_id() . '-prad-number-field',
-			'min'         => $this->get_property( 'min', 0 ),
-			'max'         => $this->get_property( 'max', 100 ),
 			'step'        => $this->get_property( 'step', 1 ),
 			'data-val'    => $price_info['price'],
 		);
+
+		$enableMinMaxRes = $this->get_property( 'enableMinMaxRes', true );
+		if ( $enableMinMaxRes ) {
+			$input_attributes['min'] = $this->get_property( 'min', 0 );
+			$input_attributes['max'] = $this->get_property( 'max', 100 );
+		}
 
 		$html  = '<div class="prad-d-flex prad-item-center prad-gap-12 prad-mb-12">';
 		$html .= sprintf( '<input %s />', $this->build_attributes( $input_attributes ) );

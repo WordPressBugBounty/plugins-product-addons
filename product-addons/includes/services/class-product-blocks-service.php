@@ -167,7 +167,7 @@ class Product_Blocks_Service {
 	 * @param int $addon_id
 	 */
 	private function maybe_render_addon_css( int $addon_id ): void {
-		$print_styles = wp_doing_ajax() ? 'print' : '';
+		$print_styles = wp_doing_ajax() || wp_is_serving_rest_request() ? 'print' : '';
 
 		if ( function_exists( 'product_addons' ) ) {
 			product_addons()->render_addon_css( $addon_id, $print_styles );
@@ -371,7 +371,7 @@ class Product_Blocks_Service {
 	 */
 	private function get_json_option( string $option_name, array $default = array() ): array {
 		$value   = get_option( $option_name, '[]' );
-		$decoded = json_decode( stripslashes( $value ), true );
+		$decoded = json_decode( product_addons()->safe_stripslashes( $value ), true );
 
 		return is_array( $decoded ) ? $decoded : $default;
 	}
@@ -391,7 +391,7 @@ class Product_Blocks_Service {
 			return $default;
 		}
 
-		$decoded = json_decode( stripslashes( $value ), true );
+		$decoded = json_decode( product_addons()->safe_stripslashes( $value ), true );
 
 		return is_array( $decoded ) ? $decoded : $default;
 	}
@@ -411,7 +411,7 @@ class Product_Blocks_Service {
 			return $default;
 		}
 
-		$decoded = json_decode( stripslashes( $value ), true );
+		$decoded = json_decode( product_addons()->safe_stripslashes( $value ), true );
 
 		return is_array( $decoded ) ? $decoded : $default;
 	}

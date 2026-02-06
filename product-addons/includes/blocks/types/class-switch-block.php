@@ -48,9 +48,9 @@ class Switch_Block extends Abstract_Block {
 		);
 
 		$html  = sprintf( '<div %s>', $this->build_attributes( $attributes ) );
-		$html .= $this->render_title_section( $price_info );
-		$html .= $this->render_description();
+		$html .= $this->render_title_description_price_with_position( $price_info );
 		$html .= $this->render_switch_content( $item, $price_info, $enable_count );
+		$html .= $this->render_description_below_field();
 		$html .= '</div>';
 
 		return $html;
@@ -70,6 +70,7 @@ class Switch_Block extends Abstract_Block {
 			'_switchCount',
 			'prad-block-' . $this->get_block_id(),
 			$this->get_css_class(),
+			'prad-block-item-img-parent prad-block-img-' . $this->get_property( 'imgStyle', 'normal' ),
 		);
 
 		$attributes['class'] = $this->build_css_classes( $css_classes );

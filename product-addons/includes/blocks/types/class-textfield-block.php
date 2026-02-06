@@ -44,15 +44,16 @@ class Textfield_Block extends Abstract_Block {
 		$attributes = array_merge(
 			$this->get_common_attributes(),
 			array(
-				'data-ptype' => $price_info['type'] ?? 'no_cost',
-				'data-val'   => $price_info['price'],
+				'data-ptype'     => $price_info['type'] ?? 'no_cost',
+				'data-val'       => $price_info['price'],
+				'data-transform' => $this->get_property( 'textTransform', '' ),
 			)
 		);
 
 		$html  = sprintf( '<div %s>', $this->build_attributes( $attributes ) );
-		$html .= $this->render_title_section( $price_info );
-		$html .= $this->render_description();
+		$html .= $this->render_title_description_price_with_position( $price_info );
 		$html .= $this->render_input_section( $item, $price_info );
+		$html .= $this->render_description_below_field();
 		$html .= '</div>';
 
 		return $html;
@@ -91,18 +92,48 @@ class Textfield_Block extends Abstract_Block {
 		$input_type   = $this->get_type();
 		$base_classes = array( 'prad-w-full', 'prad-block-input', 'prad-input' );
 
+		// Build dynamic inline styles
+		$styles = $this->build_input_styles();
+
 		$base_attributes = array(
 			'class'       => $this->build_css_classes( $base_classes ),
 			'placeholder' => $this->get_property( 'placeholder', '' ),
 			'id'          => $this->get_block_id() . '-prad-' . $input_type . '-field',
 			'name'        => 'prad_field_' . $this->get_block_id(),
 			'data-val'    => $price_info['price'],
+			'minlength'   => $this->get_property( 'minChar', '' ),
+			'maxlength'   => $this->get_property( 'maxChar', '' ),
 		);
+
+		// Add style attribute if styles exist
+		if ( ! empty( $styles ) ) {
+			$base_attributes['style'] = $styles;
+		}
 
 		// Add default value if set
 		$default_value = $this->get_property( 'value', '' );
 
 		return $this->render_textfield( $base_attributes, $default_value, $input_type );
+	}
+
+	/**
+	 * Build dynamic input styles
+	 *
+	 * @return string
+	 */
+	private function build_input_styles(): string {
+		$style_properties = array();
+
+		// Text transform
+		$text_transform = $this->get_property( 'textTransform', 'none' );
+		if ( $text_transform && $text_transform !== 'none' ) {
+			$style_properties[] = sprintf( 'text-transform: %s', esc_attr( $text_transform ) );
+		}
+
+		// Add other style properties as needed
+		// Example: font-weight, font-size, color, etc.
+
+		return implode( '; ', $style_properties );
 	}
 
 	/**

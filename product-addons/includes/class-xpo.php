@@ -1,4 +1,9 @@
-<?php
+<?php //phpcs:ignore
+/**
+ * Xpo class for Product Addons plugin.
+ *
+ * @package PRAD
+ */
 
 namespace PRAD\Includes;
 
@@ -20,6 +25,11 @@ class Xpo {
 		return get_option( 'edd_prad_license_key', '' );
 	}
 
+	/**
+	 * Checks if the license key is active.
+	 *
+	 * @return bool True if the license is active, false otherwise.
+	 */
 	public static function is_lc_active() {
 		if ( defined( 'PRAD_PRO_VER' ) ) {
 			$license_data = get_option( 'edd_prad_license_data', array() );
@@ -200,6 +210,20 @@ class Xpo {
 		return $result;
 	}
 
+	/**
+	 * Generates a URL with UTM parameters for tracking.
+	 *
+	 * @param array $params {
+	 *     Optional. Parameters for generating the UTM link.
+	 *
+	 *     @type string $url       The base URL to which UTM parameters will be added.
+	 *     @type string $utmKey    The key to select a default UTM configuration.
+	 *     @type string $affiliate Affiliate ID to append as a 'ref' parameter.
+	 *     @type string $hash      Hash fragment to append to the URL.
+	 *     @type array  $config    Custom UTM configuration array.
+	 * }
+	 * @return string The generated URL with UTM parameters.
+	 */
 	public static function generate_utm_link( $params ) {
 		$default_config = array(
 			'example'         => array(
@@ -207,9 +231,14 @@ class Xpo {
 				'medium'   => 'block-feature',
 				'campaign' => 'wowaddons-dashboard',
 			),
-			'summer_db'       => array(
+			'content_notice'  => array(
 				'source'   => 'db-wowaddons-notice',
-				'medium'   => 'summer-sale',
+				'medium'   => 'new-year-sale',
+				'campaign' => 'wowaddons-dashboard',
+			),
+			'banner_notice'   => array(
+				'source'   => 'db-wowaddons-banner',
+				'medium'   => 'new-year-sale',
 				'campaign' => 'wowaddons-dashboard',
 			),
 			'sub_menu'        => array(
@@ -220,11 +249,6 @@ class Xpo {
 			'plugin_meta'     => array(
 				'source'   => 'db-wowaddons-plugin',
 				'medium'   => 'plugin-meta',
-				'campaign' => 'wowaddons-dashboard',
-			),
-			'final_hour'      => array(
-				'source'   => 'db-wowaddons-text',
-				'medium'   => 'final-hour-sale',
 				'campaign' => 'wowaddons-dashboard',
 			),
 			'massive_sale'    => array(
@@ -244,7 +268,7 @@ class Xpo {
 			),
 		);
 
-		// Step 1: Get parameters
+		// Step 1: Get parameters.
 		$base_url      = $params['url'] ?? 'https://www.wpxpo.com/product-addons-for-woocommerce/';
 		$utm_key       = $params['utmKey'] ?? null;
 		$affiliate     = $params['affiliate'] ?? apply_filters( 'prad_affiliate_id', '' );
@@ -257,15 +281,15 @@ class Xpo {
 		$path       = $parsed_url['path'] ?? '';
 		$query      = array();
 
-		// Step 3: Extract existing query params if present
+		// Step 3: Extract existing query params if present.
 		if ( isset( $parsed_url['query'] ) ) {
 			parse_str( $parsed_url['query'], $query );
 		}
 
-		// Step 4: Determine config
+		// Step 4: Determine config.
 		$utm_config = $custom_config ?? ( $utm_key && isset( $default_config[ $utm_key ] ) ? $default_config[ $utm_key ] : array() );
 
-		// Step 5: Add UTM parameters
+		// Step 5: Add UTM parameters.
 		if ( ! empty( $utm_config ) ) {
 			$query = array_merge(
 				$query,
@@ -277,12 +301,12 @@ class Xpo {
 			);
 		}
 
-		// Step 6: Add affiliate if present
+		// Step 6: Add affiliate if present.
 		if ( $affiliate ) {
 			$query['ref'] = $affiliate;
 		}
 
-		// Step 7: Reconstruct URL
+		// Step 7: Reconstruct URL.
 		$final_url = $scheme . '://' . $host . $path;
 
 		if ( ! empty( $query ) ) {
@@ -416,5 +440,44 @@ class Xpo {
 		}
 
 		return array( 'done' => true );
+	}
+
+	/**
+	 * Retrieve a specific item from the 'prad_settings' option.
+	 *
+	 * Handles both array and object formats for backward compatibility.
+	 *
+	 * @param string $key The key of the setting to retrieve.
+	 * @return mixed|null The value of the setting if found, otherwise null.
+	 */
+	public static function get_prad_settings_item( $key, $default = '' ) {
+		if ( empty( $key ) ) {
+			return $default;
+		}
+
+		$prad_settings = get_option( 'prad_settings', array() );
+
+		// Handle both array and object (from REST API) formats.
+		if ( is_array( $prad_settings ) && array_key_exists( $key, $prad_settings ) ) {
+			return $prad_settings[ $key ];
+		} elseif ( is_object( $prad_settings ) && isset( $prad_settings->$key ) ) {
+			return $prad_settings->$key;
+		}
+
+		return $default;
+	}
+
+	public static function prad_old_view_permisson_handler( $default = 'manage_options' ) {
+		$view_capability = apply_filters( 'prad_handle_capability_admin_only', $default );  // check for admin hook first.
+		$view_capability = apply_filters( 'prad_handle_capability_view_only', $view_capability );   // then check for view only hook.
+		$view_capability = apply_filters( 'prad_demo_capability_check', $view_capability ); // finally check for old demo hook for backward compatibility.
+
+		return $view_capability;
+	}
+
+	public static function prad_manage_admin_permisson_handler( $default = 'manage_options' ) {
+		$admin_capability = apply_filters( 'prad_handle_capability_admin_only', $default );  // check for admin hook.
+
+		return $admin_capability;
 	}
 }

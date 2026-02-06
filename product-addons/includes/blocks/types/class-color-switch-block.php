@@ -43,9 +43,9 @@ class Color_Switch_Block extends Abstract_Block {
 		);
 
 		$html  = sprintf( '<div %s>', $this->build_attributes( $attributes ) );
-		$html .= $this->render_title_section();
-		$html .= $this->render_description();
+		$html .= $this->render_title_description_noprice();
 		$html .= $this->render_swatch_wrapper( $options );
+		$html .= $this->render_description_below_field();
 		$html .= '</div>';
 
 		return $html;
@@ -72,8 +72,9 @@ class Color_Switch_Block extends Abstract_Block {
 		);
 
 		$attributes['class'] = $this->build_css_classes( $css_classes );
+		$enableMinMaxRes     = $this->get_property( 'enableMinMaxRes', true );
 
-		if ( $multiple ) {
+		if ( $multiple && $enableMinMaxRes ) {
 			$attributes['data-minselect'] = $this->get_property( 'minSelect', '' );
 			$attributes['data-maxselect'] = $this->get_property( 'maxSelect', '' );
 		}
@@ -187,6 +188,7 @@ class Color_Switch_Block extends Abstract_Block {
 			'class'        => 'prad-input-hidden',
 			'type'         => $multiple ? 'checkbox' : 'radio',
 			'data-index'   => $index,
+			'data-uid'     => $item['uid'] ?? '',
 			'id'           => $blockid . $index,
 			'name'         => $blockid,
 			'value'        => $price_info['price'],
@@ -208,8 +210,9 @@ class Color_Switch_Block extends Abstract_Block {
 	 */
 	private function render_swatch_label( $item, int $index ): string {
 		$blockid = $this->get_block_id();
+		$layout  = $this->get_property( 'layout', '_default' );
 
-		$html  = sprintf( '<label class="prad-lh-0 prad-mb-4" for="%s">', esc_attr( $blockid . $index ) );
+		$html  = sprintf( '<label class="prad-lh-0 prad-mb-4" for="%s" title="%s">', esc_attr( $blockid . $index ), esc_attr( '_img' === $layout ? $item['value'] : '' ) );
 		$html .= sprintf(
 			'<div class="prad-swatch-item" aria-label="Color swatch for %s" style="background-color: %s;"></div>',
 			esc_attr( $item['value'] ),

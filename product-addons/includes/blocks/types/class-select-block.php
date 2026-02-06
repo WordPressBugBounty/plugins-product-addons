@@ -19,11 +19,13 @@ class Select_Block extends Abstract_Block {
 
 	/**
 	 * Get block type
+	 * Backend still gets type select for major works.
+	 * Changes select to dropdown for some compatibilty issue with server that restricts some keywords.
 	 *
 	 * @return string
 	 */
 	public function get_type(): string {
-		return 'select';
+		return 'dropdown';  // Previously it was select.
 	}
 
 	/**
@@ -44,9 +46,9 @@ class Select_Block extends Abstract_Block {
 		);
 
 		$html  = sprintf( '<div %s>', $this->build_attributes( $attributes ) );
-		$html .= $this->render_title_section();
-		$html .= $this->render_description();
+		$html .= $this->render_title_description_noprice();
 		$html .= $this->render_select_container( $options );
+		$html .= $this->render_description_below_field();
 		$html .= '</div>';
 
 		return $html;
@@ -64,6 +66,7 @@ class Select_Block extends Abstract_Block {
 			'prad-block-select',
 			'prad-block-' . $this->get_block_id(),
 			$this->get_css_class(),
+			'prad-block-item-img-parent prad-block-img-' . $this->get_property( 'imgStyle', 'normal' ),
 		);
 		$attributes['class'] = $this->build_css_classes( $css_classes );
 
@@ -93,7 +96,7 @@ class Select_Block extends Abstract_Block {
 	 */
 	private function render_select_box(): string {
 		$html  = '<div class="prad-select-box prad-block-input prad-block-content" readonly="readonly">';
-		$html .= '<div class="prad-select-box-item">' . esc_html__( 'Select an option', 'product-addons' ) . '</div>';
+		$html .= '<div class="prad-select-box-item">' . esc_html__( 'Choose an option', 'product-addons' ) . '</div>';
 		$html .= '<div class="prad-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="8" fill="none">';
 		$html .= '<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m1 1 6 6 6-6"></path>';
 		$html .= '</svg></div>';
@@ -119,6 +122,7 @@ class Select_Block extends Abstract_Block {
 				'data-value' => $price_info['price'],
 				'data-label' => $item['value'],
 				'data-index' => $index,
+				'data-uid'   => $item['uid'] ?? '',
 				'data-ptype' => $item['type'] ?? 'no_cost',
 			);
 

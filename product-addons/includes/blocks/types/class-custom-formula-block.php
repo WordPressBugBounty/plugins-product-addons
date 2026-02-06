@@ -44,8 +44,10 @@ class Custom_Formula_Block extends Abstract_Block {
 		);
 
 		$html  = sprintf( '<div %s>', $this->build_attributes( $attributes ) );
+		$html .= '<div class="prad-d-flex prad-item-center prad-gap-16 prad-mb-12">';
 		$html .= $this->render_title_section_with_price();
-		$html .= $this->render_description();
+		$html .= '</div>';
+		$html .= $this->render_description_below_field();
 		$html .= '</div>';
 
 		return $html;
@@ -100,6 +102,7 @@ class Custom_Formula_Block extends Abstract_Block {
 			'<div class="prad-block-title">%s</div>',
 			wp_kses( $label, $allowed_tags )
 		);
+		$html .= $this->render_description_tooltip();
 		$html .= $this->render_price_container();
 		$html .= '</div>';
 

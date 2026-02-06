@@ -48,16 +48,17 @@ class Textarea_Block extends Abstract_Block {
 		$attributes = array_merge(
 			$this->get_common_attributes(),
 			array(
-				'class'      => $this->build_css_classes( $css_classes ),
-				'data-ptype' => $price_info['type'],
-				'data-val'   => $price_info['price'],
+				'class'          => $this->build_css_classes( $css_classes ),
+				'data-ptype'     => $price_info['type'],
+				'data-val'       => $price_info['price'],
+				'data-transform' => $this->get_property( 'textTransform', '' ),
 			)
 		);
 
 		$html  = sprintf( '<div %s>', $this->build_attributes( $attributes ) );
-		$html .= $this->render_header( $price_info );
-		$html .= $this->render_description();
+		$html .= $this->render_title_description_price_with_position( $price_info );
 		$html .= $this->render_textarea( $price_info );
+		$html .= $this->render_description_below_field();
 		$html .= '</div>';
 
 		return $html;
@@ -104,6 +105,9 @@ class Textarea_Block extends Abstract_Block {
 		$rows        = $this->get_property( 'step', 1 );
 		$value       = $this->get_property( 'value', '' );
 
+		// Build dynamic inline styles
+		$styles = $this->build_textarea_styles();
+
 		$textarea_attributes = array(
 			'class'       => 'prad-block-input prad-w-full',
 			'id'          => $block_id . '-prad-textarea-field',
@@ -111,14 +115,38 @@ class Textarea_Block extends Abstract_Block {
 			'minlength'   => $min,
 			'maxlength'   => $max,
 			'rows'        => $rows,
-			'rows'        => $rows,
 			'data-val'    => $price_info['price'],
 		);
+
+		// Add style attribute if styles exist
+		if ( ! empty( $styles ) ) {
+			$textarea_attributes['style'] = $styles;
+		}
 
 		return sprintf(
 			'<textarea %s>%s</textarea>',
 			$this->build_attributes( $textarea_attributes ),
 			esc_textarea( $value )
 		);
+	}
+
+	/**
+	 * Build dynamic textarea styles
+	 *
+	 * @return string
+	 */
+	private function build_textarea_styles(): string {
+		$style_properties = array();
+
+		// Text transform
+		$text_transform = $this->get_property( 'textTransform', 'none' );
+		if ( $text_transform && $text_transform !== 'none' ) {
+			$style_properties[] = sprintf( 'text-transform: %s', esc_attr( $text_transform ) );
+		}
+
+		// Add other style properties as needed
+		// Example: font-family, line-height, letter-spacing, etc.
+
+		return implode( '; ', $style_properties );
 	}
 }

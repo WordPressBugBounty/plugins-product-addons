@@ -108,6 +108,15 @@ abstract class Abstract_Block implements Block_Interface {
 	}
 
 	/**
+	 * Get Description Position
+	 *
+	 * @return string
+	 */
+	protected function get_description_position(): string {
+		return $this->get_property( 'descpPosition', 'belowTitle' );
+	}
+
+	/**
 	 * Check if block is required
 	 *
 	 * @return bool
@@ -140,7 +149,15 @@ abstract class Abstract_Block implements Block_Interface {
 	 * @return string
 	 */
 	protected function get_css_class(): string {
-		return $this->get_property( 'class', '' );
+		$container_width = $this->get_property( 'blockWidth', '_100' );
+		$classes         = $this->get_property( 'class', '' );
+
+		$field_conditions = $this->get_field_conditions();
+		if ( $this->is_logic_enabled() && ! empty( $field_conditions['rules'] ) ) {
+			$classes .= ' prad-field-none';
+		}
+
+		return $classes . ' prad-cw' . $container_width;
 	}
 
 	/**
@@ -201,6 +218,137 @@ abstract class Abstract_Block implements Block_Interface {
 			),
 			$this->build_data_attributes( $data_attributes )
 		);
+	}
+
+	/**
+	 * Render block Tooltip Description
+	 *
+	 * @return string
+	 */
+	protected function render_description_tooltip() {
+		if ( ! $this->get_description() || 'tooltip' !== $this->get_description_position() ) {
+			return '';
+		}
+
+		$html  = '<div class="prad-tooltip-container">';
+		$html .= '<div class="prad-tooltip-icon">?</div>';
+		$html .= sprintf(
+			'<div class="prad-tooltip-box">%s',
+			wp_kses( $this->get_description(), $this->allowed_html_tags )
+		);
+		$html .= '</div>';
+		$html .= '</div>';
+
+		return $html;
+	}
+
+	/**
+	 * Render Description Below Title
+	 *
+	 * @return string
+	 */
+	protected function render_description_below_title() {
+		if ( ! $this->get_description() || 'belowTitle' !== $this->get_description_position() ) {
+			return '';
+		}
+
+		$html = sprintf(
+			'<div class="prad-block-description">%s</div>',
+			wp_kses( $this->get_description(), $this->allowed_html_tags )
+		);
+
+		return $html;
+	}
+
+	/**
+	 * Render Description Below Field
+	 *
+	 * @return string
+	 */
+	protected function render_description_below_field() {
+		if ( ! $this->get_description() || 'belowField' !== $this->get_description_position() ) {
+			return '';
+		}
+
+		$html = sprintf(
+			'<div class="prad-block-description prad-mt-12">%s</div>',
+			wp_kses( $this->get_description(), $this->allowed_html_tags )
+		);
+
+		return $html;
+	}
+
+	/**
+	 * Render Title , Description
+	 *
+	 * @return string
+	 */
+	protected function render_title_description_noprice() {
+		$title_hidden    = $this->is_title_hidden();
+		$desc_position   = $this->get_description_position();
+		$has_description = $this->get_description();
+
+		// Early exit conditions
+		if (
+			( $title_hidden && $desc_position === 'tooltip' ) ||
+			( $title_hidden && $desc_position === 'belowField' ) ||
+			( $title_hidden && $desc_position === 'belowTitle' && ! $has_description )
+		) {
+			return '';
+		}
+
+		$html  = '<div class="prad-d-flex prad-flex-column prad-mb-12 prad-gap-2">';
+		$html .= '<div class="prad-d-flex prad-item-center prad-gap-12 ">';
+
+		if ( ! $this->is_title_hidden() ) {
+			$html .= $this->render_title_with_required();
+			$html .= $this->render_description_tooltip();
+		}
+
+		$html .= '</div>';
+		$html .= $this->render_description_below_title();
+		$html .= '</div>';
+
+		return $html;
+	}
+
+	/**
+	 * Render Title , Description
+	 *
+	 * @return string
+	 */
+	protected function render_title_description_price_with_position( $price_info ) {
+		$title_hidden     = $this->is_title_hidden();
+		$desc_position    = $this->get_description_position();
+		$has_description  = $this->get_description();
+		$price_with_title = $this->should_show_price_with_title( $price_info );
+
+		// Early exit conditions
+		if (
+			( $title_hidden && $desc_position === 'tooltip' && ! $price_with_title ) ||
+			( $title_hidden && $desc_position === 'belowTitle' && ! $has_description )
+		) {
+			return '';
+		}
+
+		$html  = '<div class="prad-d-flex prad-flex-column prad-mb-12 prad-gap-2">';
+		$html .= '<div class="prad-d-flex prad-item-center prad-gap-12 ">';
+
+		if ( ! $this->is_title_hidden() ) {
+			$html .= $this->render_title_with_required();
+			$html .= $this->render_description_tooltip();
+		}
+
+		if ( $price_with_title ) {
+
+			$html .= $this->render_price_html( $price_info, 'with_title' );
+		}
+
+		$html .= '</div>';
+		$html .= $this->render_description_below_title();
+		$html .= '</div>';
+
+		return $html;
 	}
 
 	/**
@@ -353,11 +501,13 @@ abstract class Abstract_Block implements Block_Interface {
 		$max          = $this->get_property( 'max', 100 );
 		$allowed_tags = $this->allowed_html_tags;
 
+		$p_url = isset( $item->url ) ? $item->url : '';
+
 		ob_start();
 		?>
 		<div class="prad-d-flex prad-flex-column prad-item-center prad-gap-2 prad-text-center prad-mt-8 prad-block-content-wrapper prad-effect-container">
 			<div>
-				<div title="<?php echo wp_kses( $item->value, $allowed_tags ); ?>" class="prad-block-content prad-ellipsis-2">
+				<div title="<?php echo wp_kses( $item->value, $allowed_tags ); ?>" class="prad-block-content prad-ellipsis-2<?php echo $p_url ? ' prad-cursor-pointer prad-product-link' : ''; ?>" data-phref="<?php echo esc_url( $p_url ); ?>">
 					<?php echo wp_kses( $item->value, $allowed_tags ); ?>
 				</div>
 				<?php if ( $item->type != 'no_cost' ) : ?>

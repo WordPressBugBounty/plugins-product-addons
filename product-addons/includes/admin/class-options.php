@@ -43,16 +43,30 @@ class Options {
 		$setting_link['prad_options'] = '<a href="' . esc_url( admin_url( 'admin.php?page=prad-dashboard#lists' ) ) . '">' . esc_html__( 'Options', 'product-addons' ) . '</a>';
 		$upgrade_link                 = array();
 		if ( ! defined( 'PRAD_PRO_VER' ) || Xpo::is_lc_expired() ) {
-			$url = defined( 'PRAD_PRO_VER' ) ?
-			'https://account.wpxpo.com/checkout/?edd_license_key=' . Xpo::get_lc_key() . '&renew=1'
-			:
-			Xpo::generate_utm_link(
-				array(
-					'utmKey' => 'plugin_meta',
-				)
-			);
 
-			$text                     = ! defined( 'PRAD_PRO_VER' ) ? esc_html__( 'Switch to Pro', 'product-addons' ) : esc_html__( 'Renew License', 'product-addons' );
+			if ( Xpo::is_lc_expired() ) {
+				$url  = 'https://account.wpxpo.com/checkout/?edd_license_key=' . Xpo::get_lc_key() . '&renew=1';
+				$text = esc_html__( 'Renew License', 'product-addons' );
+			} else {
+				$url  = Xpo::generate_utm_link(
+					array(
+						'utmKey' => 'plugin_meta',
+					)
+				);
+				$text = esc_html__( 'Switch to Pro', 'product-addons' );
+
+				$is_offer_running = true;
+				if ( $is_offer_running ) {
+					$current_time = gmdate( 'U' );
+					$start        = '2026-01-01 00:00 Asia/Dhaka';
+					$end          = '2026-02-15 23:59 Asia/Dhaka';
+					$notice_start = gmdate( 'U', strtotime( $start ) );
+					$notice_end   = gmdate( 'U', strtotime( $end ) );
+					if ( $current_time >= $notice_start && $current_time <= $notice_end ) {
+						$text = esc_html__( 'New Year Sale!', 'product-options' );
+					}
+				}
+			}
 			$upgrade_link['prad_pro'] = '<a style="color: #e83838; font-weight: bold;" target="_blank" href="' . esc_url( $url ) . '">' . $text . '</a>';
 		}
 		return array_merge( $setting_link, $links, $upgrade_link );
@@ -84,7 +98,7 @@ class Options {
 	 * @return void
 	 */
 	public static function menu_page_callback() {
-		$menupage_cap = apply_filters( 'prad_demo_capability_check', 'manage_options' );
+		$menupage_cap = Xpo::prad_old_view_permisson_handler();
 
 		add_menu_page(
 			__( 'WowAddons', 'product-addons' ),
@@ -107,6 +121,7 @@ class Options {
 		$menu_lists              = array();
 		$menu_lists['lists']     = esc_html__( 'Option Lists', 'product-addons' );
 		$menu_lists['analytics'] = esc_html__( 'Analytics', 'product-addons' );
+		$menu_lists['settings']  = esc_html__( 'Settings', 'product-addons' );
 
 		add_submenu_page(
 			'edit.php?post_type=product',
@@ -125,7 +140,7 @@ class Options {
 				'prad-dashboard',
 				$val,
 				$val,
-				'manage_options',
+				$menupage_cap,
 				'prad-dashboard#' . $key,
 				array( __CLASS__, 'render_main' )
 			);
@@ -139,7 +154,19 @@ class Options {
 					'utmKey' => 'sub_menu',
 				)
 			);
-			$pro_link_text = __( 'Upgrade to Pro', 'product-addons' );
+			$pro_link_text = __( 'Upgrade to Pro!', 'product-addons' );
+
+			$is_offer_running = true;
+			if ( $is_offer_running ) {
+				$current_time = gmdate( 'U' );
+				$start        = '2026-01-01 00:00 Asia/Dhaka';
+				$end          = '2026-02-15 23:59 Asia/Dhaka';
+				$notice_start = gmdate( 'U', strtotime( $start ) );
+				$notice_end   = gmdate( 'U', strtotime( $end ) );
+				if ( $current_time >= $notice_start && $current_time <= $notice_end ) {
+					$pro_link_text = esc_html__( 'New Year Offer!', 'product-options' );
+				}
+			}
 		} elseif ( Xpo::is_lc_expired() ) {
 			$license_key   = Xpo::get_lc_key();
 			$pro_link      = 'https://account.wpxpo.com/checkout/?edd_license_key=' . $license_key;
@@ -162,7 +189,7 @@ class Options {
 				'prad-dashboard',
 				'',
 				$submenu_content,
-				'manage_options',
+				$menupage_cap,
 				'prad-pro',
 				array( self::class, 'handle_external_redirects' )
 			);
@@ -193,7 +220,6 @@ class Options {
 	 * @return void
 	 */
 	public static function tab_page_content() {
-		// echo '<div id="prad-dashboard-wrap"></div>';
 		echo wp_kses( '<div id="prad-dashboard-wrap"></div>', apply_filters( 'get_prad_allowed_html_tags', array() ) );
 	}
 

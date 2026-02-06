@@ -51,9 +51,9 @@ class Image_Switch_Block extends Abstract_Block {
 		);
 
 		$html  = sprintf( '<div %s>', $this->build_attributes( $attributes ) );
-		$html .= $this->render_title_section();
-		$html .= $this->render_description();
+		$html .= $this->render_title_description_noprice();
 		$html .= $this->render_swatch_wrapper( $options );
+		$html .= $this->render_description_below_field();
 		$html .= '</div>';
 
 		return $html;
@@ -81,8 +81,9 @@ class Image_Switch_Block extends Abstract_Block {
 		);
 
 		$attributes['class'] = $this->build_css_classes( $css_classes );
+		$enableMinMaxRes     = $this->get_property( 'enableMinMaxRes', true );
 
-		if ( $multiple ) {
+		if ( $multiple && $enableMinMaxRes ) {
 			$attributes['data-minselect'] = $this->get_property( 'minSelect', '' );
 			$attributes['data-maxselect'] = $this->get_property( 'maxSelect', '' );
 		}
@@ -136,8 +137,10 @@ class Image_Switch_Block extends Abstract_Block {
 		$thumbnail_prop       = '';
 
 		if ( $update_product_image && isset( $item['imgid'] ) ) {
-			$thumbnail      = wp_get_attachment_image_src( $item['imgid'], 'thumbnail' ) ? wp_get_attachment_image_src( $item['imgid'], 'thumbnail' )[0] : '';
-			$thumbnail_prop = wc_get_product_attachment_props( $item['imgid'] );
+			$thumbnail                              = wp_get_attachment_image_src( $item['imgid'], 'thumbnail' ) ? wp_get_attachment_image_src( $item['imgid'], 'thumbnail' )[0] : '';
+			$woocommerce_gallery_thumbnail          = wp_get_attachment_image_src( $item['imgid'], 'woocommerce_gallery_thumbnail' ) ? wp_get_attachment_image_src( $item['imgid'], 'woocommerce_gallery_thumbnail' )[0] : '';
+			$thumbnail_prop                         = wc_get_product_attachment_props( $item['imgid'] );
+			$thumbnail_prop['pradGalleryThumbnail'] = $woocommerce_gallery_thumbnail;
 		}
 
 		return array(
@@ -220,6 +223,7 @@ class Image_Switch_Block extends Abstract_Block {
 			'class'        => 'prad-input-hidden',
 			'type'         => $multiple ? 'checkbox' : 'radio',
 			'data-index'   => $index,
+			'data-uid'     => $item['uid'] ?? '',
 			'id'           => $blockid . $index,
 			'name'         => $blockid,
 			'value'        => $price_info['price'],

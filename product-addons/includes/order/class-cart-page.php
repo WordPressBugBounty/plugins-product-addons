@@ -8,6 +8,8 @@
 namespace PRAD\Includes\Order;
 
 use PRAD\Includes\Common\SafeMathEvaluator;
+use PRAD\Includes\Compatibility\BaseCurrency;
+use PRAD\Includes\Xpo;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -80,7 +82,7 @@ class CartPage {
 	 */
 	public function woocommerce_before_calculate_totals( $cart ) {
 
-		if ( is_admin() ) {
+		if ( is_admin() && ! wp_doing_ajax() ) {
 			return;
 		}
 
@@ -97,13 +99,21 @@ class CartPage {
 					'prad_cart_checkout_page_price',
 					! empty( $cart_item['variation_id'] ) ? $cart_item['variation_id'] : $cart_item['product_id']
 				);
-				$option_price  = $option_price + floatval( $product_price );
 
-				// As Aelia does not modify price in cart item. And prad_cart_checkout_page_price reverts currency price before return
-				if ( class_exists( 'WC_Aelia_CurrencySwitcher' ) ) {
-					$base_currency   = apply_filters( 'wc_aelia_cs_base_currency', '' );
-					$active_currency = get_woocommerce_currency();
-					$option_price    = apply_filters( 'wc_aelia_cs_convert', $option_price, $base_currency, $active_currency );
+				// Support for Bookings and Appointments For WooCommerce Premium by PluginHive.
+				if ( ! empty( $cart_item['phive_booked_price'] ) ) {
+					$product_price = $cart_item['phive_booked_price'];
+				}
+
+				// Support for Fancy Product Designer plugin.
+				if ( class_exists( 'Fancy_Product_Designer' ) && isset( $cart_item['fpd_data']['fpd_product_price'] ) ) {
+					$product_price = $cart_item['fpd_data']['fpd_product_price'];
+				}
+
+				$option_price = $option_price + floatval( $product_price );
+
+				if ( ( function_exists( 'wcml_is_multi_currency_on' ) && wcml_is_multi_currency_on() ) || class_exists( 'WC_Product_Price_Based_Country' ) || class_exists( 'WC_Aelia_CurrencySwitcher' ) ) {
+					$option_price = BaseCurrency::convert( $option_price );
 				}
 
 				$product->set_price( $option_price );
@@ -124,7 +134,7 @@ class CartPage {
 		$prad_selection = isset( $_POST['prad_selection'] ) ? product_addons()->sanitize_rest_params( $_POST['prad_selection'] ) : ''; //phpcs:ignore
 		$option_ids     = isset( $_POST['prad_option_published_ids'] ) ? product_addons()->sanitize_rest_params( json_decode( wp_unslash( $_POST['prad_option_published_ids'] ), true ) ) : array();//phpcs:ignore
 		$prad_products_selection = isset( $_POST['prad_products_selection'] ) ? product_addons()->sanitize_rest_params( $_POST['prad_products_selection'] ) : ''; // phpcs:ignore
-		$prad_products_selection = json_decode( stripslashes( $prad_products_selection ), true );
+		$prad_products_selection = json_decode( product_addons()->safe_stripslashes( $prad_products_selection ), true );
 
 		$_POST['prad_selection']            = '';
 		$_POST['prad_option_published_ids'] = '';
@@ -138,7 +148,7 @@ class CartPage {
 		if ( ! empty( $prad_selection ) ) {
 			$data = $this->calculate_option_price( $prad_selection, $product_id, $option_ids, ! empty( $variation_id ) ? $variation_id : '' );
 
-			$cart_item_data['prad_selection']            = $data;
+			$cart_item_data['prad_selection']            = $data; // This will be used in checkout order create and others order area
 			$cart_item_data['prad_products_selection']   = $prad_products_selection;
 			$cart_item_data['prad_selection_base_price'] = apply_filters(
 				'prad_cart_checkout_page_price',
@@ -153,19 +163,34 @@ class CartPage {
 	/**
 	 * Display Option Meta in cart Data
 	 *
-	 *  @param object $item_data Item Object.
+	 *  @param array  $item_data Item Object.
 	 *  @param object $cart_item Cart Object .
 	 *
 	 * @return object
 	 */
 	public function display_custom_meta_in_cart( $item_data, $cart_item ) {
+		if ( ( is_cart() && Xpo::get_prad_settings_item( 'hideFieldsInCart', false ) ) ||
+			( is_checkout() && Xpo::get_prad_settings_item( 'hideFieldsInCheckout', false ) ) ) {
+			return $item_data;
+		}
+
 		// approach 1.
 		if ( isset( $cart_item['prad_selection_raw'] ) ) {
 			$data = $this->calculate_option_price( $cart_item['prad_selection_raw'], $cart_item['product_id'], $cart_item['prad_option_published_ids'], $cart_item['variation_id'] );
 			if ( isset( $data['extra_data'] ) ) {
 				wp_enqueue_style( 'prad-cart-style', PRAD_URL . 'assets/css/wowcart.css', array(), PRAD_VER );
 				wp_enqueue_script( 'prad-cart-script', PRAD_URL . 'assets/js/wowcart.js', array( 'jquery' ), PRAD_VER, true );
-				$item_data = array_merge( $item_data, $data['extra_data'] );
+				wp_set_script_translations( 'prad-cart-script', 'product-addons', PRAD_PATH . 'languages/' );
+
+				$addon_data = $data['extra_data'] ?? array();
+
+				foreach ( $addon_data as $key => $item ) {
+					if ( is_array( $item ) && isset( $item['prad_additional'] ) ) {
+						unset( $addon_data[ $key ]['prad_additional'] );
+					}
+				}
+
+				$item_data = array_merge( $item_data, $addon_data );
 			}
 		}
 
@@ -209,13 +234,13 @@ class CartPage {
 		try {
 			/* Fallback for option_ids if it is not set from cart  object   */
 			if ( ! ( is_array( $option_ids ) && ! empty( $option_ids ) ) ) {
-				$option_all = json_decode( stripslashes( get_option( 'prad_option_assign_all', '[]' ) ), true );        // do for all cat , product.
+				$option_all = json_decode( product_addons()->safe_stripslashes( get_option( 'prad_option_assign_all', '[]' ) ), true );        // do for all cat , product.
 				$option_all = is_array( $option_all ) ? $option_all : array();
 
-				$option_product = json_decode( stripslashes( get_post_meta( $product_id, 'prad_product_assigned_meta_inc', true ) ), true );
+				$option_product = json_decode( product_addons()->safe_stripslashes( get_post_meta( $product_id, 'prad_product_assigned_meta_inc', true ) ), true );
 				$option_product = is_array( $option_product ) ? $option_product : array();
 
-				$option_exclude = json_decode( stripslashes( get_post_meta( $product_id, 'prad_product_assigned_meta_exc', true ) ), true );
+				$option_exclude = json_decode( product_addons()->safe_stripslashes( get_post_meta( $product_id, 'prad_product_assigned_meta_exc', true ) ), true );
 				$option_exclude = is_array( $option_exclude ) ? $option_exclude : array();
 
 				$option_term = array();
@@ -226,7 +251,7 @@ class CartPage {
 					$terms = get_the_terms( $product_id, $taxonomy );
 					if ( $terms && ! is_wp_error( $terms ) ) {
 						foreach ( $terms as $term ) {
-							$meta_inc = json_decode( stripslashes( get_term_meta( $term->term_id, 'prad_term_assigned_meta_inc', true ) ), true );
+							$meta_inc = json_decode( product_addons()->safe_stripslashes( get_term_meta( $term->term_id, 'prad_term_assigned_meta_inc', true ) ), true );
 							if ( is_array( $meta_inc ) ) {
 								$option_term = array_unique( array_merge( $option_term, $meta_inc ) );
 							}
@@ -252,7 +277,7 @@ class CartPage {
 				}
 			}
 
-			$prad_cart_item_selection = json_decode( stripslashes( $prad_selection ), true );
+			$prad_cart_item_selection = json_decode( product_addons()->safe_stripslashes( $prad_selection ), true );
 			if ( is_array( $prad_cart_item_selection ) && ! empty( $prad_cart_item_selection ) ) {
 				$prad_allowed_html_tags = apply_filters( 'get_prad_allowed_html_tags', array() );
 				foreach ( $prad_cart_item_selection as $key => $field ) {
@@ -266,11 +291,7 @@ class CartPage {
 							if ( ! empty( $field['value'] ) ) {
 								$res = '<span>';
 								foreach ( $field['value'] as $item ) {
-									if ( $this->is_image_url( $item['path'] ) ) {
-										$res .= wp_kses( '<a href="' . esc_url( $item['path'] ) . '"><img style="height: 86px; width: 86px;" src="' . esc_url( $item['path'] ) . '" alt="' . esc_attr( $item['name'] ) . '" /></a>', $prad_allowed_html_tags );
-									} else {
-										$res .= wp_kses( '<a href="' . esc_url( $item['path'] ) . '">' . esc_html( $item['name'] ) . '</a>', $prad_allowed_html_tags );
-									}
+									$res .= wp_kses( '<a href="' . esc_url( $item['path'] ) . '">' . esc_html( $item['name'] ) . '</a>&nbsp;&nbsp;', $prad_allowed_html_tags );
 								}
 								$res .= '</span>';
 							}
@@ -294,6 +315,10 @@ class CartPage {
 									}
 								}
 								$res = $labels;
+							} elseif ( isset( $field['value']['date'] ) || isset( $field['value']['time'] ) ) {
+								$date = isset( $field['value']['date'] ) ? $field['value']['date'] : '';
+								$time = isset( $field['value']['time'] ) ? $field['value']['time'] : '';
+								$res  = $date . ' ' . $time;
 							} else {
 								$res = implode( ' | ', $field['value'] );
 							}
@@ -360,8 +385,26 @@ class CartPage {
 									'product_price' => $price_product,
 								);
 								foreach ( $prad_cart_item_selection as $f_key => $f_value ) {
-									if ( isset( $f_value['type'] ) && ( 'number' === $f_value['type'] || 'range' === $f_value['type'] ) ) {
-										$dynamic_variables[ $f_key ] = isset( $f_value['value'] ) ? floatval( $f_value['value'] ) : 0;
+									if ( isset( $f_value['type'] ) ) {
+										if ( 'number' === $f_value['type'] || 'range' === $f_value['type'] ) {
+											$dynamic_variables[ $f_key ] = isset( $f_value['value'] ) ? floatval( $f_value['value'] ) : 0;
+										} elseif ( ( 'select' === $f_value['type'] || 'dropdown' === $f_value['type'] ) && isset( $f_value['_vDatas'][0] ) ) {
+											// $dynamic_variables[ $f_key ] = isset( $f_value['cost'][0] ) ? floatval( $f_value['cost'][0] ) : 0;
+											$selected_option_index = $f_value['_vDatas'][0];
+											if ( $selected_option_index !== '' ) {
+												$select_block_data   = $this->get_options_by_blockid( $merged_content, $f_key );
+												$select_block_cost   = ( isset( $select_block_data[ $selected_option_index ]->sale ) && $select_block_data[ $selected_option_index ]->sale && $pro_active ) ? $select_block_data[ $selected_option_index ]->sale : $select_block_data[ $selected_option_index ]->regular;
+												$select_block_p_type = $select_block_data[ $selected_option_index ]->type;
+
+												$calculated_cost = floatval( $select_block_cost );
+												if ( 'percentage' === $select_block_p_type ) {
+													$calculated_cost = ( floatval( $price_product ) * floatval( $select_block_cost ) ) / 100;
+												} elseif ( 'no_cost' === $select_block_p_type ) {
+													$calculated_cost = 0;
+												}
+												$dynamic_variables[ $f_key ] = $calculated_cost;
+											}
+										}
 									}
 								}
 								$formula_price = $this->evaluate_expression( $expression, $dynamic_variables );
@@ -407,9 +450,25 @@ class CartPage {
 							}
 							$price_data[ $field['optionid'] ] += $opt_price;
 						}
+
 						$extra_data[] = array(
-							'name'  => $field['label'] ? $field['label'] : 'Addons Field',
-							'value' => $opt_price ? $res . '<strong>  +<span class="prad-price">' . wc_price(
+							'prad_additional' => array(
+								'type'                => $field['type'] ? $field['type'] : '',
+								'field_raw'           => $field,
+								'opt_price'           => $opt_price,
+								'opt_price_with_html' => '<strong>  +<span class="prad-price">' . wc_price(
+									apply_filters(
+										'prad_raw_tax_currency_compitable_price',
+										array(
+											'product_id' => $product_id,
+											'price'      => $opt_price,
+											'source'     => 'cart',
+										)
+									)
+								) . '</span></strong>',
+							),
+							'name'            => ! empty( $field['label'] ) ? $field['label'] : 'Addons Field',
+							'value'           => $opt_price ? $res . '<strong>  +<span class="prad-price">' . wc_price(
 								apply_filters(
 									'prad_raw_tax_currency_compitable_price',
 									array(

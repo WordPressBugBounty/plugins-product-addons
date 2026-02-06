@@ -103,12 +103,6 @@ class Analytics {
 						),
 						'class'         => '',
 						'id'            => '',
-						'_styles'       => array(
-							'height' => array( 'val' => 32 ),
-							'width'  => array( 'val' => 32 ),
-							'radius' => array( 'val' => 4 ),
-							'mrR'    => array( 'val' => 8 ),
-						),
 						'defval'        => array( 3, 2 ),
 					),
 					array(
@@ -147,12 +141,6 @@ class Analytics {
 						),
 						'class'         => '',
 						'id'            => '',
-						'_styles'       => array(
-							'height' => array( 'val' => 32 ),
-							'width'  => array( 'val' => 32 ),
-							'radius' => array( 'val' => 4 ),
-							'mrR'    => array( 'val' => 8 ),
-						),
 						'defval'        => array( 1, 2 ),
 					),
 					array(
@@ -290,12 +278,6 @@ class Analytics {
 						),
 						'en_logic'        => false,
 						'fieldConditions' => array(),
-						'_styles'         => array(
-							'height' => array( 'val' => 32 ),
-							'width'  => array( 'val' => 32 ),
-							'radius' => array( 'val' => 4 ),
-							'mrR'    => array( 'val' => 8 ),
-						),
 					),
 					array(
 						'type'     => 'button',

@@ -1,10 +1,10 @@
 === Product Addons and Product Options With Custom Fields – WowAddons ===
 Contributors: wpxpo, anik4e, jakirhasan
 Tags: product addons, woocommerce product addons, extra product options, product fields, WooCommerce product fields
-Requires at least: 5.0
-Tested up to: 6.8
-Requires PHP: 5.6
-Stable tag: 1.0.17
+Requires at least: 6.8
+Tested up to: 6.9
+Requires PHP: 7.4
+Stable tag: 1.5.9
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -12,7 +12,7 @@ Product addons for WooCommerce is the ultimate plugin that lets you add extra pr
 
 == Description ==
 
-🥇 The Ultimate **Product Addons** Plugin - With **UX That Wows**.
+🥇 The Ultimate **Product Addons** Plugin - With **UX That Wows**. 
 💲  Other Plugins Add Options. We Add **Revenue**.
 💞 A WPXPO Plugin **Trusted by 60K+** Businesses.
 🤝 Backed by a Dedicated Support Team with **4.9/5** [Trustpilot Rating](https://uk.trustpilot.com/review/wpxpo.com).
@@ -133,8 +133,8 @@ Developed by [WPXPO](https://www.wpxpo.com). [Contribute to Product Addons on Bi
 
 = Minimum Requirements =
 
-* WordPress 5.0.0 or greater
-* PHP version 7.3 or greater
+* WordPress 6.8 or greater
+* PHP version 7.4 or greater
 * MySQL version 5.6 or greater
 
 = Automatic installation =
@@ -194,9 +194,62 @@ No, for some product fields like Headings, Texts, advanced custom logic options 
 4. Editable Custom Fields (Addon blocks)
 5. Image and Color Swatches
 6. Smart Upselling
-7. Strategic Cross-selling
+7. Strategic Cross-selling 
 
 == Changelog ==
+= 1.5.9 – 29th January 2026 =
+* Fix: Dropdown field default value issue.
+
+= 1.5.8 – 26th January 2026 =
+* Fix: Field condition is not working properly for Select Field.
+
+= 1.5.7 – 21th January 2026 =
+* Fix: Addons fields is broken in QODE Quick View for WooCommerce plugin.
+* Fix: Prevent add to cart conflict with FunnelKit plugin.
+* Update: Compatibility with WC Multi Currency Switcher for WooCommerce plugin by palscode.
+* Update: Compatibility with Mudra (Woo Exchange Rate) Currency Switcher for WooCommerce plugin by Codeixer.
+* Update: Compatibility with WooCommerce Multilingual and Multicurrency for WooCommerce plugin by OnTheGoSystems.
+* Update: Compatibility with WooCommerce Product Price Based on Countries ( WCPBC ) for WooCommerce plugin by Oscar Gare.
+* Update: Compatibility with X-Currency for WooCommerce plugin by DoatKolom.
+
+= 1.5.6 – 4th January 2026 =
+* New: New file types support in Upload field.
+* Fix: Compatibility with LiteSpeed Cache plugin.
+* Update: Settings added to hide option fields in cart or checkout page.
+
+= 1.5.5 – 24th December 2025 = 
+* Fix: Compatibility issue with woocommerce cart block.
+
+= 1.5.4 – 14th December 2025 =
+* Fix: Image gallery issue in Elessi theme.
+* Fix: Prevent add to cart conflict with Astra Addons plugin.
+* Fix: Cart item price conflict with Bookings and Appointments For WooCommerce Premium plugin.
+
+= 1.5.3 – 30th November 2025 =
+* Fix: Color Popup issue in Conditional fields.
+* Fix: Minimum maximum warning issue in Checkbox field.
+* Update: Compatibility with Currency Switcher feature of WooPayments plugin.
+
+= 1.5.2 – 16th November 2025 =
+* Fix: File upload field issue when condition applied.
+
+= 1.5.1 – 12th November 2025 =
+* Fix: Mini cart compatibility issue with WoodMart child theme.
+* Fix: Added CSS class option for Shortcode and Formula fields.
+
+= 1.5.0 – 4th November 2025 =
+* New: Font Picker field.
+* New: Content field.
+* New: Popup field.
+* Update: Upload files cleanup cron job added.
+
+= 1.0.19 – 30th October 2025 =
+* Fix: Issue in plugin links meta.
+* Fix: Sale price issue in Products field.
+
+= 1.0.18 – 29th October 2025 =
+* Fix: Conditional logic issue in Image Swatches field.
+
 = 1.0.17 – 18th September 2025 =
 * Fix: Resolved an error in the Products field that was causing unexpected behavior.
 

@@ -43,9 +43,9 @@ class Radio_Block extends Abstract_Block {
 		);
 
 		$html  = sprintf( '<div %s>', $this->build_attributes( $attributes ) );
-		$html .= $this->render_title_section();
-		$html .= $this->render_description();
+		$html .= $this->render_title_description_noprice();
 		$html .= $this->render_radio_group();
+		$html .= $this->render_description_below_field();
 		$html .= '</div>';
 
 		return $html;
@@ -64,6 +64,7 @@ class Radio_Block extends Abstract_Block {
 			'prad-switcher-count',
 			'prad-block-' . $this->get_block_id(),
 			$this->get_css_class(),
+			'prad-block-item-img-parent prad-block-img-' . $this->get_property( 'imgStyle', 'normal' ),
 		);
 		return array(
 			'class' => $this->build_css_classes( $css_classes ),
@@ -80,16 +81,40 @@ class Radio_Block extends Abstract_Block {
 	}
 
 	/**
+	 * Get Fixed Height class
+	 *
+	 * @return string
+	 */
+	private function get_fixed_height_attributes(): array {
+		$fixed_height = $this->get_property( 'fixedHeight', '' );
+
+		if ( empty( $fixed_height ) ) {
+			return array(
+				'class' => '',
+				'style' => '',
+			);
+		}
+
+		return array(
+			'class' => ' prad-overflow-x-hidden prad-overflow-y-auto prad-scrollbar prad-pb-8 prad-pt-8',
+			'style' => sprintf( 'style="max-height: %spx;"', esc_attr( $fixed_height ) ),
+		);
+	}
+
+	/**
 	 * Render radio group
 	 *
 	 * @return string
 	 */
 	private function render_radio_group(): string {
 		$column_class = $this->get_column_class();
+		$fixed_height = $this->get_fixed_height_attributes();
 
 		$html = sprintf(
-			'<div class="prad-input-container prad-column-%s">%s</div>',
+			'<div class="prad-input-container prad-column-%s%s" %s >%s</div>',
 			esc_attr( $column_class ),
+			esc_attr( $fixed_height['class'] ),
+			$fixed_height['style'],
 			$this->render_radio_options()
 		);
 
@@ -147,6 +172,7 @@ class Radio_Block extends Abstract_Block {
 			'value'        => $price_info['price'],
 			'data-ptype'   => $item['type'],
 			'data-index'   => $index,
+			'data-uid'     => $item['uid'] ?? '',
 			'data-label'   => $item['value'],
 			'data-count'   => $enable_count ? 'yes' : 'no',
 			'data-counter' => $blockid . $index . '-switcher-count',

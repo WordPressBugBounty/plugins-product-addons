@@ -73,18 +73,6 @@ class Block_Renderer {
 			return '';
 		}
 
-		// // Check if block should be displayed
-		// if ( ! $block->should_display() ) {
-		// do_action( 'prad_block_hidden', $block, $block_data, $product_id );
-		// return '';
-		// }
-
-		// // Validate block before rendering
-		// if ( ! $block->validate() ) {
-		// do_action( 'prad_block_validation_failed', $block, $block_data, $product_id );
-		// return '';
-		// }
-
 		try {
 			// Render the block
 			$html = $block->render();
@@ -110,79 +98,5 @@ class Block_Renderer {
 
 			return '';
 		}
-	}
-
-	/**
-	 * Render blocks with caching
-	 *
-	 * @param array  $blocks_data
-	 * @param int    $product_id
-	 * @param string $cache_key Optional cache key
-	 * @return string
-	 */
-	public function render_blocks_cached( array $blocks_data, int $product_id, string $cache_key = '' ): string {
-		if ( empty( $cache_key ) ) {
-			$cache_key = 'prad_blocks_' . $product_id . '_' . md5( serialize( $blocks_data ) );
-		}
-
-		// Try to get from cache first
-		$cached_output = wp_cache_get( $cache_key, 'prad_rendered_blocks' );
-
-		if ( $cached_output !== false ) {
-			do_action( 'prad_blocks_cache_hit', $cache_key, $product_id );
-			return $cached_output;
-		}
-
-		// Render blocks
-		$output = $this->render_blocks( $blocks_data, $product_id );
-
-		// Cache the output for 1 hour
-		wp_cache_set( $cache_key, $output, 'prad_rendered_blocks', HOUR_IN_SECONDS );
-
-		do_action( 'prad_blocks_cached', $cache_key, $output, $product_id );
-
-		return $output;
-	}
-
-	/**
-	 * Get rendering statistics
-	 *
-	 * @param array $blocks_data
-	 * @param int   $product_id
-	 * @return array
-	 */
-	public function get_render_stats( array $blocks_data, int $product_id ): array {
-		$stats = array(
-			'total_blocks'    => count( $blocks_data ),
-			'rendered_blocks' => 0,
-			'hidden_blocks'   => 0,
-			'failed_blocks'   => 0,
-			'block_types'     => array(),
-		);
-
-		foreach ( $blocks_data as $block_data ) {
-			$type = $block_data['type'] ?? 'unknown';
-
-			if ( ! isset( $stats['block_types'][ $type ] ) ) {
-				$stats['block_types'][ $type ] = 0;
-			}
-			++$stats['block_types'][ $type ];
-
-			$block = Block_Factory::create_block( $type, $block_data, $product_id );
-
-			if ( ! $block ) {
-				++$stats['failed_blocks'];
-				continue;
-			}
-
-			if ( ! $block->should_display() ) {
-				++$stats['hidden_blocks'];
-				continue;
-			}
-
-			++$stats['rendered_blocks'];
-		}
-
-		return $stats;
 	}
 }

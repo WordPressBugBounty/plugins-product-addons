@@ -51,9 +51,9 @@ class Products_Block extends Abstract_Block {
 		);
 
 		$html  = sprintf( '<div %s>', $this->build_attributes( $attributes ) );
-		$html .= $this->render_title_section();
-		$html .= $this->render_description();
+		$html .= $this->render_title_description_noprice();
 		$html .= $this->render_products_wrapper( $options );
+		$html .= $this->render_description_below_field();
 		$html .= '</div>';
 
 		return $html;
@@ -65,6 +65,9 @@ class Products_Block extends Abstract_Block {
 	 * @return array
 	 */
 	private function process_product_options(): array {
+		global $product;
+		$product_id = $product ? $product->get_id() : 0;
+
 		$manual_products = $this->get_property( 'manualProducts', array() );
 		$merge_variation = $this->get_property( 'mergeVariation', false );
 		$options         = array();
@@ -74,20 +77,20 @@ class Products_Block extends Abstract_Block {
 			if ( isset( $item['variation'] ) ) {
 				if ( $merge_variation ) {
 					$product_data = $this->get_product_data( $item['id'], true );
-					if ( $product_data ) {
+					if ( $product_data && $product_data->is_in_stock && $product_data->is_purchasable ) {
 						$options[] = $product_data;
 					}
 				} elseif ( is_array( $item['variation'] ) ) {
 					foreach ( $item['variation'] as $v_id ) {
 						$product_data = $this->get_product_data( $v_id, false );
-						if ( $product_data ) {
+						if ( $product_data && $product_data->is_in_stock && $product_data->is_purchasable ) {
 							$options[] = $product_data;
 						}
 					}
 				}
 			} else {
-				$product_data = $this->get_product_data( $item['id'], false );
-				if ( $product_data ) {
+				$product_data = $product_id == $item['id'] ? '' : $this->get_product_data( $item['id'], false );
+				if ( $product_data && $product_data->is_in_stock && $product_data->is_purchasable ) {
 					$options[] = $product_data;
 				}
 			}
@@ -121,8 +124,8 @@ class Products_Block extends Abstract_Block {
 		$input_type = $this->get_input_type();
 		$layout     = $this->get_property( 'layout', '_default' );
 
-		$attributes                    = array();
-		$css_classes                   = array(
+		$attributes  = array();
+		$css_classes = array(
 			'prad-parent',
 			'prad-block-products',
 			'prad-type' . ( '_swatches' === $block_type ? $block_type : '-' . $input_type ) . '-input',
@@ -131,10 +134,14 @@ class Products_Block extends Abstract_Block {
 			'prad-block-' . $this->get_block_id(),
 			$this->get_css_class(),
 		);
+		if ( '_swatches' !== $block_type ) {
+			$css_classes[] = 'prad-block-item-img-parent prad-block-img-' . $this->get_property( 'imgStyle', 'normal' );
+		}
 		$attributes['data-input-type'] = $input_type;
 		$attributes['class']           = $this->build_css_classes( $css_classes );
 
-		if ( 'checkbox' === $input_type ) {
+		$enableMinMaxRes = $this->get_property( 'enableMinMaxRes', true );
+		if ( 'checkbox' === $input_type && $enableMinMaxRes ) {
 			$attributes['data-minselect'] = $this->get_property( 'minSelect', '' );
 			$attributes['data-maxselect'] = $this->get_property( 'maxSelect', '' );
 		}
@@ -474,25 +481,37 @@ class Products_Block extends Abstract_Block {
 	 * @return string
 	 */
 	private function render_input_content( $item, string $variation_html, array $allowed_tags ): string {
-		$html = '<div class="prad-block-content prad-d-flex prad-item-center">';
+		$p_url = isset( $item->url ) ? $item->url : '';
+		$html  = '<div class="prad-block-content prad-d-flex prad-item-center">';
 
 		if ( isset( $item->img ) && $item->img && product_addons()->is_pro_feature_available() ) {
 			$html .= sprintf( '<img class="prad-block-item-img" src="%s" alt="Item" />', esc_url( $item->img ) );
 		}
 
+		$class      = 'prad-ellipsis-2';
+		$attributes = array(
+			'title' => $item->value,
+			'class' => $class,
+		);
+
+		if ( $p_url ) {
+			$attributes['class']     .= ' prad-cursor-pointer prad-product-link';
+			$attributes['data-phref'] = $p_url;
+		}
+
 		if ( $variation_html ) {
 			$html .= '<div>';
 			$html .= sprintf(
-				'<div title="%1$s" class="prad-ellipsis-2">%1$s</div>',
+				'<div %1$s>%2$s</div>',
+				$this->build_attributes( $attributes ),
 				wp_kses( $item->value, $allowed_tags )
 			);
 			$html .= $variation_html;
 			$html .= '</div>';
 		} else {
-			$html .= sprintf(
-				'<div title="%1$s" class="prad-ellipsis-2">%1$s</div>',
-				wp_kses( $item->value, $allowed_tags )
-			);
+			$html .= '<div ' . $this->build_attributes( $attributes ) . '>';
+			$html .= wp_kses( $item->value, $allowed_tags );
+			$html .= '</div>';
 		}
 
 		$html .= '</div>';

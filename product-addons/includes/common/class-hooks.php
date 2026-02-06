@@ -7,6 +7,8 @@
 
 namespace PRAD\Includes\Common;
 
+use PRAD\Includes\Compatibility\BaseCurrency;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
@@ -47,10 +49,10 @@ class Hooks {
 			echo 'var prad_option_front = ' . wp_json_encode( $prad_option_front ) . ';';
 		echo '</script>';
 
-		$front_script = PRAD_URL . 'assets/js/wowactions-min.js';
+		$front_script = PRAD_URL . 'assets/js/frontend-script.js';
 		echo '<script src="' . esc_url( $front_script ) . '" id="prad-front-script-js-2"></script>';
 
-		$data_script = PRAD_URL . 'assets/js/wowdate.js';
+		$data_script = PRAD_URL . 'assets/js/wowdate-min.js';
 		echo '<script src="' . esc_url( $data_script ) . '" id="prad-front-date-js-2"></script>';
 
 		$flag_script = PRAD_URL . 'assets/js/wowflag.js';
@@ -75,8 +77,8 @@ class Hooks {
 	 * @return void
 	 */
 	public function enqueue_block_js_callback() {
-		wp_enqueue_script( 'prad-front-script', PRAD_URL . 'assets/js/wowactions-min.js', array( 'wp-api-fetch', 'jquery', 'wp-i18n' ), PRAD_VER, true );
-		wp_enqueue_script( 'prad-date-script', PRAD_URL . 'assets/js/wowdate.js', array( 'jquery' ), PRAD_VER, true );
+		wp_enqueue_script( 'prad-front-script', PRAD_URL . 'assets/js/frontend-script.js', array( 'wp-api-fetch', 'jquery', 'wp-i18n' ), PRAD_VER, true );
+		wp_enqueue_script( 'prad-date-script', PRAD_URL . 'assets/js/wowdate-min.js', array( 'jquery' ), PRAD_VER, true );
 		wp_enqueue_script( 'prad-flag-script', PRAD_URL . 'assets/js/wowflag.js', array( 'jquery' ), PRAD_VER, true );
 		wp_localize_script(
 			'prad-front-script',
@@ -374,10 +376,10 @@ class Hooks {
 		if ( ! $option_id ) {
 			return;
 		}
-		$assigned_data = json_decode( stripslashes( get_post_meta( $option_id, 'prad_base_assigned_data', true ) ), true );
+		$assigned_data = json_decode( product_addons()->safe_stripslashes( get_post_meta( $option_id, 'prad_base_assigned_data', true ) ), true );
 		if ( $assigned_data ) {
 			if ( 'all_product' === $assigned_data['aType'] ) {       /* Remove options for All Products */
-				$option_settings = json_decode( stripslashes( get_option( 'prad_option_assign_all', '[]' ) ), true );
+				$option_settings = json_decode( product_addons()->safe_stripslashes( get_option( 'prad_option_assign_all', '[]' ) ), true );
 
 				if ( is_array( $option_settings ) ) {
 					if ( in_array( $option_id, $option_settings, false ) ) { //phpcs:ignore
@@ -392,9 +394,9 @@ class Hooks {
 					foreach ( $assigned_data['includes'] as $key => $include ) {
 						$meta_inc = array();
 						if ( 'specific_product' === $assigned_data['aType'] ) {
-							$meta_inc = json_decode( stripslashes( get_post_meta( $include, 'prad_product_assigned_meta_inc', true ) ), true );
+							$meta_inc = json_decode( product_addons()->safe_stripslashes( get_post_meta( $include, 'prad_product_assigned_meta_inc', true ) ), true );
 						} elseif ( 'specific_category' === $assigned_data['aType'] || 'specific_tag' === $assigned_data['aType'] || 'specific_brand' === $assigned_data['aType'] ) {
-							$meta_inc = json_decode( stripslashes( get_term_meta( $include, 'prad_term_assigned_meta_inc', true ) ), true );
+							$meta_inc = json_decode( product_addons()->safe_stripslashes( get_term_meta( $include, 'prad_term_assigned_meta_inc', true ) ), true );
 						}
 						if ( is_array( $meta_inc ) ) {
 							if ( in_array( $option_id, $meta_inc, false ) ) { //phpcs:ignore
@@ -413,7 +415,7 @@ class Hooks {
 				/* Handle excludes */
 				if ( is_array( $assigned_data['excludes'] ) && count( $assigned_data['excludes'] ) > 0 ) {
 					foreach ( $assigned_data['excludes'] as $key => $exclude ) {
-						$meta_exc = json_decode( stripslashes( get_post_meta( $exclude, 'prad_product_assigned_meta_exc', true ) ), true );
+						$meta_exc = json_decode( product_addons()->safe_stripslashes( get_post_meta( $exclude, 'prad_product_assigned_meta_exc', true ) ), true );
 						if ( is_array( $meta_exc ) ) {
 							if ( in_array( $option_id, $meta_exc, false ) ) { //phpcs:ignore
 								$meta_exc = array_values( array_diff( $meta_exc, array( $option_id ) ) );
@@ -439,7 +441,7 @@ class Hooks {
 	 */
 	public function handle_prad_raw_tax_currency_compitable_price( $args ) {
 		$price = $this->prad_get_price_including_tax( $args );
-		return $price ? product_addons()->get_currency_converted_price( $price ) : 0;
+		return $price ? BaseCurrency::convert( floatval( $price ) ) : 0;
 	}
 
 	/**
@@ -456,6 +458,10 @@ class Hooks {
 		$product_id = isset( $args['product_id'] ) ? $args['product_id'] : 0;
 		$source     = isset( $args['source'] ) ? $args['source'] : '';
 
+		if ( ! $price ) {
+			return $price;
+		}
+
 		if ( ! $product_id ) {
 			return $price ? $price : 0;
 		}
@@ -469,25 +475,14 @@ class Hooks {
 			return $price ? $price : 0;
 		}
 
-		if ( 'product_page' === $source ) {
-			if ( ! $this->tax_display_shop ) {
-				$this->tax_display_shop = get_option( 'woocommerce_tax_display_shop' );
-			}
-			if ( 'excl' === $this->tax_display_shop ) {
-				return $price ? $price : 0;
-			}
-		} elseif ( 'cart' === $source ) {
-			return $price ? $price : 0;
-		}
-
-		$tax_applied_price = wc_get_price_including_tax(
+		return wc_get_price_to_display(
 			$this->prad_product,
 			array(
-				'qty'   => 1,
-				'price' => $price,
+				'qty'             => 1,
+				'price'           => $price,
+				'display_context' => $source,
 			)
 		);
-		return $tax_applied_price ? $tax_applied_price : 0;
 	}
 
 	public function get_prad_option_front_data() {

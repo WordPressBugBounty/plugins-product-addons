@@ -36,7 +36,7 @@ class Compatibility {
 		add_filter( 'prad_get_currency_reverted_price', array( $this, 'handle_prad_get_currency_reverted_price' ), 99, 1 );
 
 		// WP Rocket Cache
-		add_action( 'prad_wp_rocket_clear_cache', array( $this, 'handle_wp_rocket_cache_clear' ) );
+		add_action( 'prad_handle_cache_on_save', array( $this, 'handle_cache_on_save' ) );
 
 		// add body class in front end
 		add_filter( 'body_class', array( $this, 'add_body_class' ) );
@@ -123,7 +123,7 @@ class Compatibility {
 	 * @return float The original price before conversion. Returns 0 if conversion rate is invalid.
 	 */
 	public function handle_prad_get_currency_reverted_price( $price ) {
-		return product_addons()->get_currency_reverted_price( $price );
+		return BaseCurrency::revert( floatval( $price ) );
 	}
 
 	/**
@@ -213,7 +213,7 @@ class Compatibility {
 	}
 
 	/**
-	 * Clears the entire WP Rocket cache for the current domain.
+	 * Clears the LSCache and WP Rocket cache for the current domain.
 	 *
 	 * This method checks if the WP Rocket `rocket_clean_domain()` function exists,
 	 * and if so, calls it to purge all cached content.
@@ -223,9 +223,13 @@ class Compatibility {
 	 *
 	 * @return void
 	 */
-	public function handle_wp_rocket_cache_clear() {
+	public function handle_cache_on_save() {
 		if ( function_exists( 'rocket_clean_domain' ) ) {
 			rocket_clean_domain();
+		} elseif ( class_exists( '\LiteSpeed\Purge' ) &&
+			method_exists( '\LiteSpeed\Purge', 'purge_all_lscache' )
+		) {
+			\LiteSpeed\Purge::purge_all_lscache();
 		}
 	}
 }

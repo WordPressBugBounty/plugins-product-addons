@@ -49,11 +49,13 @@ class Section_Block extends Abstract_Block {
 	public function render(): string {
 		$show_accordion  = $this->get_property( 'showAccordion', true );
 		$is_title_hidden = $this->is_title_hidden();
+		$init_class = $show_accordion ? 'prad-section-init-'.$this->get_property('initState', 'open') : '';
 
 		$css_classes = array(
 			'prad-parent',
 			'prad-section-block',
 			'prad-section-wrapper',
+			$init_class,
 			$this->get_css_class(),
 		);
 
@@ -126,9 +128,15 @@ class Section_Block extends Abstract_Block {
 		if ( ! $is_title_hidden ) {
 			return sprintf(
 				'<div class="prad-relative prad-w-fit prad-section-title">
-                    <div class="prad-block-title">%s</div>
+					<div class="prad-d-flex prad-gap-10 prad-item-center">
+                    	<div class="prad-block-title">%s</div>
+						%s
+					</div>
+					%s
                 </div>',
-				wp_kses( $this->get_label(), $this->allowed_html_tags )
+				wp_kses( $this->get_label(), $this->allowed_html_tags ),
+				$this->render_description_tooltip(),
+				$this->render_description_below_title()
 			);
 		} elseif ( $is_title_hidden && $show_accordion ) {
 			return '<div></div>';
@@ -170,8 +178,12 @@ class Section_Block extends Abstract_Block {
 		if ( $show_accordion || ! $is_title_hidden ) {
 			$body_classes[] = 'prad-block-border-top';
 		}
-
-		$body_classes[] = 'prad-active';
+		
+		if ('close' === $this->get_property('initState', 'open') && $show_accordion ) {
+			$body_classes[] =  'prad-inactive';
+		} else {
+			$body_classes[] = 'prad-active' ;
+		}
 
 		$html = sprintf(
 			'<div class="%s" style="max-height: 100%%">',

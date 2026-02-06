@@ -43,9 +43,9 @@ class Button_Block extends Abstract_Block {
 		);
 
 		$html  = sprintf( '<div %s>', $this->build_attributes( $attributes ) );
-		$html .= $this->render_title_section();
-		$html .= $this->render_description();
-		$html .= $this->render_buttons_group($options);
+		$html .= $this->render_title_description_noprice();
+		$html .= $this->render_buttons_group( $options );
+		$html .= $this->render_description_below_field();
 		$html .= '</div>';
 
 		return $html;
@@ -67,8 +67,9 @@ class Button_Block extends Abstract_Block {
 
 		$attributes['class'] = $this->build_css_classes( $css_classes );
 
-		$multiple = $this->get_property( 'multiple', false );
-		if ( $multiple ) {
+		$multiple        = $this->get_property( 'multiple', false );
+		$enableMinMaxRes = $this->get_property( 'enableMinMaxRes', true );
+		if ( $multiple && $enableMinMaxRes ) {
 			$attributes['data-minselect'] = $this->get_property( 'minSelect', '' );
 			$attributes['data-maxselect'] = $this->get_property( 'maxSelect', '' );
 		}
@@ -81,7 +82,7 @@ class Button_Block extends Abstract_Block {
 	 *
 	 * @return string
 	 */
-	private function render_buttons_group($options): string {
+	private function render_buttons_group( $options ): string {
 		$vertical = $this->get_property( 'vertical', false );
 		$html     = sprintf(
 			'<div class="prad-d-flex prad-flex-wrap prad-gap-%s prad-flex-%s">',
@@ -89,7 +90,7 @@ class Button_Block extends Abstract_Block {
 			esc_attr( $vertical ? 'column' : 'row' )
 		);
 
-		$html .= $this->render_button_options($options);
+		$html .= $this->render_button_options( $options );
 		$html .= '</div>';
 
 		return $html;
@@ -100,8 +101,8 @@ class Button_Block extends Abstract_Block {
 	 *
 	 * @return string
 	 */
-	private function render_button_options($options): string {
-		$html    = '';
+	private function render_button_options( $options ): string {
+		$html = '';
 
 		foreach ( $options as $index => $item ) {
 			$html .= $this->render_single_button( $item, $index );
@@ -152,6 +153,7 @@ class Button_Block extends Abstract_Block {
 			'class'      => 'prad-input-hidden',
 			'type'       => $input_type,
 			'data-index' => $index,
+			'data-uid'   => $item['uid'] ?? '',
 			'id'         => $blockid . $index,
 			'name'       => $blockid,
 			'value'      => $price_obj['price'],

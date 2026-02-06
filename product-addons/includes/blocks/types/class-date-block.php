@@ -55,9 +55,9 @@ class Date_Block extends Abstract_Block {
 		);
 
 		$html  = sprintf( '<div %s>', $this->build_attributes( $attributes ) );
-		$html .= $this->render_title_section( $price_info );
-		$html .= $this->render_description();
+		$html .= $this->render_title_description_price_with_position( $price_info );
 		$html .= $this->render_date_picker( $price_info );
+		$html .= $this->render_description_below_field();
 		$html .= '</div>';
 
 		return $html;

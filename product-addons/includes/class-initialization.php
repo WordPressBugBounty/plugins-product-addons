@@ -19,6 +19,8 @@ use PRAD\Includes\Order\CartPage;
 use PRAD\Includes\Order\CheckoutPage;
 use PRAD\Includes\Restapi\RequestApi;
 
+use PRAD\Includes\Cron\Cleanup;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -47,7 +49,6 @@ class Initialization {
 
 		new Deactive();
 		new PostType();
-		new RenderBlocks();
 		new Analytics();
 		new Xpo();
 
@@ -65,6 +66,8 @@ class Initialization {
 		new Compatibility();
 		new ShopCompatibilty();
 		new SafeMathEvaluator();
+
+		new Cleanup();
 	}
 
 
@@ -93,29 +96,30 @@ class Initialization {
 				wp_enqueue_style( 'prad-editor-css', PRAD_URL . 'assets/css/wowaddons-backend.css', array(), PRAD_VER );
 				wp_enqueue_style( 'prad-blocks-css', PRAD_URL . 'assets/css/wowaddons-blocks.css', array(), PRAD_VER );
 				wp_enqueue_script( 'prad-editor-script', PRAD_URL . 'assets/js/wowaddons.js', array( 'wp-api-fetch' ), PRAD_VER, true );
-				wp_enqueue_script( 'prad-date-script', PRAD_URL . 'assets/js/wowdate.js', array( 'jquery' ), PRAD_VER, true );
+				wp_enqueue_script( 'prad-date-script', PRAD_URL . 'assets/js/wowdate-min.js', array( 'jquery' ), PRAD_VER, true );
 				wp_enqueue_media();
 				wp_localize_script(
 					'prad-editor-script',
 					'pradBackendData',
 					array_merge(
 						array(
-							'url'            => PRAD_URL,
-							'db_url'         => admin_url( 'admin.php?page=prad-dashboard#' ),
-							'ajax'           => admin_url( 'admin-ajax.php' ),
-							'version'        => PRAD_VER,
-							'isActive'       => product_addons()->is_lc_active(),
-							'license'        => get_option( 'edd_prad_license_key' ),
-							'nonce'          => wp_create_nonce( 'prad-nonce' ),
-							'decimal_sep'    => get_option( 'woocommerce_price_decimal_sep', '.' ),
-							'num_decimals'   => get_option( 'woocommerce_price_num_decimals', '2' ),
-							'currency_pos'   => get_option( 'woocommerce_currency_pos', 'left' ),
-							'currencySymbol' => function_exists( 'get_woocommerce_currency_symbol' ) ? get_woocommerce_currency_symbol() : '$',
-							'userInfo'       => array(
+							'url'             => PRAD_URL,
+							'db_url'          => admin_url( 'admin.php?page=prad-dashboard#' ),
+							'ajax'            => admin_url( 'admin-ajax.php' ),
+							'version'         => PRAD_VER,
+							'isActive'        => product_addons()->is_lc_active(),
+							'license'         => get_option( 'edd_prad_license_key' ),
+							'nonce'           => wp_create_nonce( 'prad-nonce' ),
+							'decimal_sep'     => get_option( 'woocommerce_price_decimal_sep', '.' ),
+							'num_decimals'    => get_option( 'woocommerce_price_num_decimals', '2' ),
+							'currency_pos'    => get_option( 'woocommerce_currency_pos', 'left' ),
+							'currencySymbol'  => function_exists( 'get_woocommerce_currency_symbol' ) ? get_woocommerce_currency_symbol() : '$',
+							'userInfo'        => array(
 								'name'  => $user_info->first_name ? $user_info->first_name . ( $user_info->last_name ? ' ' . $user_info->last_name : '' ) : $user_info->user_login,
 								'email' => $user_info->user_email,
 							),
-							'helloBar'       => product_addons()->get_transient_without_cache( 'prad_helloBar' ),
+							'helloBar'        => product_addons()->get_transient_without_cache( 'prad_helloBar_newyr26' ),
+							'uploadFileTypes' => product_addons()->prad_get_upload_allowed_file_types(),
 						),
 						product_addons()->get_wow_products_details()
 					)

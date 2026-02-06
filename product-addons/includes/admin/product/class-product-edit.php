@@ -42,13 +42,13 @@ class ProductEdit {
 		global $post;
 		$product_id = $post->ID;
 
-		$option_all = json_decode( stripslashes( get_option( 'prad_option_assign_all', '[]' ) ), true );
+		$option_all = json_decode( product_addons()->safe_stripslashes( get_option( 'prad_option_assign_all', '[]' ) ), true );
 		$option_all = is_array( $option_all ) ? $option_all : array();
 
-		$option_product = json_decode( stripslashes( get_post_meta( $product_id, 'prad_product_assigned_meta_inc', true ) ), true );
+		$option_product = json_decode( product_addons()->safe_stripslashes( get_post_meta( $product_id, 'prad_product_assigned_meta_inc', true ) ), true );
 		$option_product = is_array( $option_product ) ? $option_product : array();
 
-		$option_exclude = json_decode( stripslashes( get_post_meta( $product_id, 'prad_product_assigned_meta_exc', true ) ), true );
+		$option_exclude = json_decode( product_addons()->safe_stripslashes( get_post_meta( $product_id, 'prad_product_assigned_meta_exc', true ) ), true );
 		$option_exclude = is_array( $option_exclude ) ? $option_exclude : array();
 
 		$option_term = array();
@@ -58,7 +58,7 @@ class ProductEdit {
 			$terms = get_the_terms( $product_id, $taxonomy );
 			if ( $terms && ! is_wp_error( $terms ) ) {
 				foreach ( $terms as $term ) {
-					$meta_inc = json_decode( stripslashes( get_term_meta( $term->term_id, 'prad_term_assigned_meta_inc', true ) ), true );
+					$meta_inc = json_decode( product_addons()->safe_stripslashes( get_term_meta( $term->term_id, 'prad_term_assigned_meta_inc', true ) ), true );
 					if ( is_array( $meta_inc ) ) {
 						$option_term = array_unique( array_merge( $option_term, $meta_inc ) );
 					}
