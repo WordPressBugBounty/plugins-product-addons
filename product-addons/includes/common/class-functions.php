@@ -1075,4 +1075,42 @@ class Functions {
 
 		return apply_filters( 'prad_upload_field_allowed_file_types', $allowed_types );
 	}
+
+	/**
+	 * Retrieves global WooCommerce product attributes and their terms.
+	 *
+	 * This function fetches all global attributes defined in WooCommerce
+	 * and their associated terms, returning them in a structured array.
+	 *
+	 * @return array An associative array of attributes and their terms.
+	 */
+	public function prad_get_attributes() {
+		$global_attrs = wc_get_attribute_taxonomies();
+
+		$attrs = array();
+		foreach ( $global_attrs as $attribute ) {
+			$attr_name = $attribute->attribute_name;
+			$terms     = get_terms(
+				array(
+					'taxonomy'   => wc_attribute_taxonomy_name( $attr_name ),
+					'hide_empty' => false,
+				)
+			);
+
+			foreach ( $terms as $term ) {
+				$attrs_ops[ $attr_name ][] = array(
+					'value' => (int) $term->term_id,
+					'slug'  => $term->slug,
+					'label' => $term->name,
+				);
+			}
+
+			$attrs[ 'pa_' . $attr_name ] = array(
+				'label'   => $attribute->attribute_label,
+				'options' => isset( $attrs_ops[ $attr_name ] ) ? $attrs_ops[ $attr_name ] : array(),
+			);
+		}
+
+		return $attrs;
+	}
 }

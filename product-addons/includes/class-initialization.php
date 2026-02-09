@@ -120,6 +120,7 @@ class Initialization {
 							),
 							'helloBar'        => product_addons()->get_transient_without_cache( 'prad_helloBar_newyr26' ),
 							'uploadFileTypes' => product_addons()->prad_get_upload_allowed_file_types(),
+							'pradAttributes'  => product_addons()->prad_get_attributes(),
 						),
 						product_addons()->get_wow_products_details()
 					)

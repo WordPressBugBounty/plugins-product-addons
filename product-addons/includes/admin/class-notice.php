@@ -829,11 +829,11 @@ class Notice {
 	 * @return STRING | Redirect URL
 	 */
 	public function install_activate_plugin() {
-		if ( ! isset( $_POST['install_plugin'] ) || ! current_user_can( 'manage_options' ) ) {
+		$plugin_slug = sanitize_text_field( wp_unslash( $_POST['install_plugin'] ) );
+		if ( empty( $plugin_slug ) || ! current_user_can( 'manage_options' ) ) {
 			return wp_send_json_error( esc_html__( 'Invalid request.', 'product-addons' ) );
 		}
 
-		$plugin_slug = sanitize_text_field( wp_unslash( $_POST['install_plugin'] ) );
 		Xpo::install_and_active_plugin( $plugin_slug );
 
 		if ( wp_doing_ajax() || is_network_admin() || isset( $_GET['activate-multi'] ) || isset( $_POST['action'] ) && 'activate-selected' == sanitize_text_field( $_POST['action'] ) ) { //phpcs:ignore

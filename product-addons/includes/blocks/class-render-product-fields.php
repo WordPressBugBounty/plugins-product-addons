@@ -68,6 +68,8 @@ class Render_Product_Fields {
 			return;
 		}
 
+		// Enqueue necessary assets.
+		// $this->assets->enqueue_frontend_assets().;
 		do_action( 'prad_enqueue_block_css' );
 		do_action( 'prad_enqueue_block_js' );
 		if ( wp_doing_ajax() || wp_is_serving_rest_request() ) {
@@ -139,6 +141,34 @@ class Render_Product_Fields {
 		$price_data = $this->blocks_service->get_product_price_data( $product );
 
 		$html = '';
+
+		if ( $product->has_attributes() ) {
+			$attributes   = $product->get_attributes();
+			$product_type = $product->get_type();
+
+			if ( ! empty( $attributes ) ) {
+				$data_attributes = array();
+
+				foreach ( $attributes as $attribute ) {
+					$attribute_name = $attribute->get_name();
+					if ( $attribute->is_taxonomy() ) {
+						$terms = wc_get_product_terms(
+							$product->get_id(),
+							$attribute_name,
+							array( 'fields' => 'all' )
+						);
+						foreach ( $terms as $term ) {
+							$data_attributes[ $attribute_name ][ $term->slug ] = (int) $term->term_id;
+						}
+					}
+				}
+				$html .= sprintf(
+					'<span class="prad-field-none" id="prad-product-attributes" data-product-type="%s" data-attributes="%s"></span>',
+					esc_attr( $product_type ),
+					esc_attr( wp_json_encode( $data_attributes ) )
+				);
+			}
+		}
 
 		// Variations data for variable products.
 		if ( ! empty( $price_data['variations'] ) ) {
