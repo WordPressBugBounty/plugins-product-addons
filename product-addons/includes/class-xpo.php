@@ -257,8 +257,13 @@ class Xpo {
 				'campaign' => 'wowaddons-dashboard',
 			),
 			'flash_sale'      => array(
-				'source'   => 'db-wowaddons-notice-text',
+				'source'   => 'db-wowaddons-notice',
 				'medium'   => 'flash-sale',
+				'campaign' => 'wowaddons-dashboard',
+			),
+			'final_hour_sale' => array(
+				'source'   => 'db-wowaddons-notice',
+				'medium'   => 'final-hour-sale',
 				'campaign' => 'wowaddons-dashboard',
 			),
 			'exclusive_deals' => array(

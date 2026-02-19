@@ -185,13 +185,7 @@ class RequestApi {
 				'callback'            => array( $this, 'product_image_callback' ),
 				'permission_callback' => array( $this, 'prad_get_admin_permissions' ),
 			),
-			// Hello Bar.
-			array(
-				'endpoint'            => 'hello_bar',
-				'methods'             => 'POST',
-				'callback'            => array( $this, 'hello_bar_callback' ),
-				'permission_callback' => array( $this, 'prad_get_admin_permissions' ),
-			),
+			
 			// Font Upload.
 			array(
 				'endpoint'            => 'upload_font',
@@ -1577,33 +1571,6 @@ class RequestApi {
 		}
 
 		return $data;
-	}
-
-	/**
-	 * Hello Bar CallBack
-	 *
-	 * @since 1.0.7
-	 *
-	 * @param \WP_REST_Request $request The request object containing the data.
-	 *
-	 * @return \WP_REST_Response The REST response with success or error message.
-	 */
-	public function hello_bar_callback( \WP_REST_Request $request ) {
-		$request_params = $request->get_params();
-		$type           = isset( $request_params['type'] ) ? $request_params['type'] : '';
-		$duration       = isset( $request_params['duration'] ) ? $request_params['duration'] : 1296000;
-
-		if ( 'hello_bar' === $type ) {
-			product_addons()->set_transient_without_cache( 'prad_helloBar_newyr26', 'hide', $duration );
-		}
-
-		return new WP_REST_Response(
-			array(
-				'success' => true,
-				'message' => __( 'Hello Bar Action performed', 'product-addons' ),
-			),
-			200
-		);
 	}
 
 	/**

@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv3.
 msgid ""
 msgstr ""
-"Project-Id-Version: WowAddons - Product Addons for WooCommerce 1.5.10\n"
+"Project-Id-Version: WowAddons - Product Addons for WooCommerce 1.5.11\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/build\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-02-09T05:07:02+00:00\n"
+"POT-Creation-Date: 2026-02-19T09:49:52+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: product-addons\n"
@@ -30,137 +30,95 @@ msgstr ""
 msgid "https://www.wpxpo.com/about"
 msgstr ""
 
-#: includes/admin/class-notice.php:130
-msgid "Dismiss"
+#: includes/admin/class-notice.php:91
+msgid "Hello Bar Action performed"
 msgstr ""
 
-#: includes/admin/class-notice.php:161
-msgid "New Year Sales Offers:"
+#: includes/admin/class-notice.php:285
+msgid "Close Banner"
 msgstr ""
 
-#: includes/admin/class-notice.php:162
-msgid "WowAddons offers are live - Enjoy %s on this extra options plugin for WooCommerce."
+#: includes/admin/class-notice.php:533
+msgid "Want to help make WowShipping even more awesome?"
 msgstr ""
 
-#: includes/admin/class-notice.php:166
-#: includes/admin/class-notice.php:184
-#: includes/admin/class-notice.php:202
-msgid "Claim Your Discount!"
-msgstr ""
-
-#: includes/admin/class-notice.php:179
-msgid "New Year Sales Alert:"
-msgstr ""
-
-#: includes/admin/class-notice.php:180
-msgid "WowAddons is on Sale - Enjoy %s  on this  extra options plugin for WooCommerce."
-msgstr ""
-
-#: includes/admin/class-notice.php:197
-msgid "Fresh New Year Deals:"
-msgstr ""
-
-#: includes/admin/class-notice.php:198
-msgid "WowAddons is on Sale - Enjoy %s  on this extra options plugin for WooCommerce."
-msgstr ""
-
-#: includes/admin/class-notice.php:745
-msgid "Want to help make WowAddons even more awesome?"
-msgstr ""
-
-#: includes/admin/class-notice.php:747
+#: includes/admin/class-notice.php:535
 msgid "Allow us to collect diagnostic data and usage information. see "
 msgstr ""
 
-#: includes/admin/class-notice.php:748
+#: includes/admin/class-notice.php:536
 msgid "what we collect."
 msgstr ""
 
-#: includes/admin/class-notice.php:765
+#: includes/admin/class-notice.php:554
 msgid "Accept & Close"
 msgstr ""
 
-#: includes/admin/class-notice.php:809
-msgid "Welcome to WowAddons."
+#: includes/admin/class-options.php:46
+msgid "Flash Sale - Up to 50% OFF"
 msgstr ""
 
-#: includes/admin/class-notice.php:810
-msgid "WowAddons is a WooCommerce-based plugin. So you need to installed & activate WooCommerce to start using WowAddons."
+#: includes/admin/class-options.php:55
+msgid "Final Hour Sale - Up to 55% OFF"
 msgstr ""
 
-#: includes/admin/class-notice.php:812
-msgid " Activate WooCommerce"
-msgstr ""
-
-#: includes/admin/class-notice.php:812
-msgid " Install WooCommerce"
-msgstr ""
-
-#: includes/admin/class-notice.php:815
-#: assets/js/wowaddons.js:2
-msgid "Discard"
-msgstr ""
-
-#: includes/admin/class-notice.php:834
-msgid "Invalid request."
-msgstr ""
-
-#: includes/admin/class-options.php:43
+#: includes/admin/class-options.php:64
 msgid "Options"
 msgstr ""
 
-#: includes/admin/class-options.php:49
-#: includes/admin/class-options.php:173
+#: includes/admin/class-options.php:73
+#: includes/admin/class-options.php:204
 #: assets/js/wowaddons.js:2
 msgid "Renew License"
 msgstr ""
 
-#: includes/admin/class-options.php:56
-msgid "Switch to Pro"
+#: includes/admin/class-options.php:77
+msgid "Upgrade to Pro"
 msgstr ""
 
-#: includes/admin/class-options.php:86
+#: includes/admin/class-options.php:117
 msgid "Docs"
 msgstr ""
 
-#: includes/admin/class-options.php:87
+#: includes/admin/class-options.php:118
 msgid "Support"
 msgstr ""
 
-#: includes/admin/class-options.php:104
-#: includes/admin/class-options.php:105
-#: includes/admin/class-options.php:128
-#: includes/admin/class-options.php:129
+#: includes/admin/class-options.php:135
+#: includes/admin/class-options.php:136
+#: includes/admin/class-options.php:159
+#: includes/admin/class-options.php:160
+#: assets/js/wowaddons.js:2
 msgid "WowAddons"
 msgstr ""
 
-#: includes/admin/class-options.php:115
+#: includes/admin/class-options.php:146
 msgid "WowAddons Dashboard"
 msgstr ""
 
-#: includes/admin/class-options.php:116
+#: includes/admin/class-options.php:147
 msgid "Dashboard"
 msgstr ""
 
-#: includes/admin/class-options.php:122
+#: includes/admin/class-options.php:153
 msgid "Option Lists"
 msgstr ""
 
-#: includes/admin/class-options.php:123
+#: includes/admin/class-options.php:154
 #: assets/js/wowaddons.js:2
 msgid "Analytics"
 msgstr ""
 
-#: includes/admin/class-options.php:124
+#: includes/admin/class-options.php:155
 #: assets/js/wowaddons.js:2
 msgid "Settings"
 msgstr ""
 
-#: includes/admin/class-options.php:136
+#: includes/admin/class-options.php:167
 msgid "License"
 msgstr ""
 
-#: includes/admin/class-options.php:157
+#: includes/admin/class-options.php:188
 msgid "Upgrade to Pro!"
 msgstr ""
 
@@ -286,142 +244,138 @@ msgstr ""
 msgid "Count"
 msgstr ""
 
-#: includes/restapi/class-request-api.php:281
-#: includes/restapi/class-request-api.php:536
+#: includes/restapi/class-request-api.php:275
+#: includes/restapi/class-request-api.php:530
 msgid "Post not found."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:337
+#: includes/restapi/class-request-api.php:331
 msgid "Failed to create a new option."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:352
+#: includes/restapi/class-request-api.php:346
 msgid "New option added."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:365
+#: includes/restapi/class-request-api.php:359
 msgid "Failed to update the option."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:383
+#: includes/restapi/class-request-api.php:377
 msgid "Option updated."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:407
-#: includes/restapi/class-request-api.php:468
+#: includes/restapi/class-request-api.php:401
+#: includes/restapi/class-request-api.php:462
 msgid "No IDs provided."
 msgstr ""
 
 #. translators: %1s - Post Id, %2s - Error Message
-#: includes/restapi/class-request-api.php:429
+#: includes/restapi/class-request-api.php:423
 msgid "Failed to update post ID: %1$s. Error: %2$s"
 msgstr ""
 
-#: includes/restapi/class-request-api.php:445
+#: includes/restapi/class-request-api.php:439
 msgid "Items updated successfully."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:499
+#: includes/restapi/class-request-api.php:493
 msgid "Items deleted successfully."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:524
+#: includes/restapi/class-request-api.php:518
 msgid "No ID provided."
 msgstr ""
 
 #. translators: %1s - Post Id
-#: includes/restapi/class-request-api.php:561
+#: includes/restapi/class-request-api.php:555
 msgid "Failed to duplicate post ID: %s."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:577
+#: includes/restapi/class-request-api.php:571
 msgid "Item duplicated successfully."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:608
+#: includes/restapi/class-request-api.php:602
 msgid "Imported successfully."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:802
+#: includes/restapi/class-request-api.php:796
 msgid "Invalid assigned data."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1074
+#: includes/restapi/class-request-api.php:1068
 msgid "No ID found"
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1147
+#: includes/restapi/class-request-api.php:1141
 msgid "Option Assigned Updated successfully"
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1251
+#: includes/restapi/class-request-api.php:1245
 msgid "Style saved successfully."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1293
+#: includes/restapi/class-request-api.php:1287
 msgid "Settings saved successfully."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1351
+#: includes/restapi/class-request-api.php:1345
 msgid "No file found."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1361
+#: includes/restapi/class-request-api.php:1355
 msgid "File size exceeds the maximum allowed limit (25MB)."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1377
+#: includes/restapi/class-request-api.php:1371
 msgid "Invalid file type."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1466
+#: includes/restapi/class-request-api.php:1460
 msgid "Analytics data updated."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1474
+#: includes/restapi/class-request-api.php:1468
 msgid "Invalid Analytics data."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1603
-msgid "Hello Bar Action performed"
-msgstr ""
-
-#: includes/restapi/class-request-api.php:1641
+#: includes/restapi/class-request-api.php:1608
 msgid "No file found or invalid nonce."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1655
-#: includes/restapi/class-request-api.php:1905
+#: includes/restapi/class-request-api.php:1622
+#: includes/restapi/class-request-api.php:1872
 msgid "Font title is required."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1684
+#: includes/restapi/class-request-api.php:1651
 msgid "File size exceeds the maximum allowed limit (10MB)."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1690
+#: includes/restapi/class-request-api.php:1657
 msgid "Invalid file extension. Allowed types are: woff, woff2, ttf."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1780
+#: includes/restapi/class-request-api.php:1747
 msgid "Font uploaded successfully."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1826
-#: includes/restapi/class-request-api.php:1895
+#: includes/restapi/class-request-api.php:1793
+#: includes/restapi/class-request-api.php:1862
 msgid "Font ID is required."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1862
-#: includes/restapi/class-request-api.php:1931
+#: includes/restapi/class-request-api.php:1829
+#: includes/restapi/class-request-api.php:1898
 msgid "Font not found."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1871
+#: includes/restapi/class-request-api.php:1838
 msgid "Font deleted successfully."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1940
+#: includes/restapi/class-request-api.php:1907
 msgid "Font updated successfully."
 msgstr ""
 
@@ -1295,27 +1249,11 @@ msgid "Performance Insights"
 msgstr ""
 
 #: assets/js/wowaddons.js:2
-msgid "Fresh New Year Savings:"
+msgid "Flash Sale - Enjoy Up to 50% on"
 msgstr ""
 
 #: assets/js/wowaddons.js:2
-msgid "Enjoy"
-msgstr ""
-
-#: assets/js/wowaddons.js:2
-msgid "up to 60% OFF"
-msgstr ""
-
-#: assets/js/wowaddons.js:2
-msgid "on WowAddons Pro -"
-msgstr ""
-
-#: assets/js/wowaddons.js:2
-msgid "Get it Now!"
-msgstr ""
-
-#: assets/js/wowaddons.js:2
-msgid "Close notification"
+msgid "Final Hour Sale - Enjoy Up to 55% on"
 msgstr ""
 
 #: assets/js/wowaddons.js:2
@@ -1440,6 +1378,10 @@ msgstr ""
 
 #: assets/js/wowaddons.js:2
 msgid "Save & Exit"
+msgstr ""
+
+#: assets/js/wowaddons.js:2
+msgid "Discard"
 msgstr ""
 
 #: assets/js/wowaddons.js:2

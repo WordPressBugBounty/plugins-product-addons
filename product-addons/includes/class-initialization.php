@@ -118,7 +118,7 @@ class Initialization {
 								'name'  => $user_info->first_name ? $user_info->first_name . ( $user_info->last_name ? ' ' . $user_info->last_name : '' ) : $user_info->user_login,
 								'email' => $user_info->user_email,
 							),
-							'helloBar'        => product_addons()->get_transient_without_cache( 'prad_helloBar_newyr26' ),
+							'helloBar'        => Notice::get_hellobar_config(),
 							'uploadFileTypes' => product_addons()->prad_get_upload_allowed_file_types(),
 							'pradAttributes'  => product_addons()->prad_get_attributes(),
 						),

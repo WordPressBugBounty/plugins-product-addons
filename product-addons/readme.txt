@@ -4,7 +4,7 @@ Tags: product addons, woocommerce product addons, extra product options, product
 Requires at least: 6.8
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.5.10
+Stable tag: 1.5.11
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -197,6 +197,9 @@ No, for some product fields like Headings, Texts, advanced custom logic options 
 7. Strategic Cross-selling 
 
 == Changelog ==
+= 1.5.11 – 19th February 2026 =
+* Fix: Prevent add to cart conflict with Rife Free theme.
+
 = 1.5.10 – 9th February 2026 =
 * Fix: Improved translation support for various text strings.
 * New: Product Attribute support in field conditions.

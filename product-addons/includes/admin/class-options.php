@@ -39,36 +39,67 @@ class Options {
 	 * @return array Modified plugin action links.
 	 */
 	public function plugin_action_links_callback( $links ) {
-		$setting_link                 = array();
-		$setting_link['prad_options'] = '<a href="' . esc_url( admin_url( 'admin.php?page=prad-dashboard#lists' ) ) . '">' . esc_html__( 'Options', 'product-addons' ) . '</a>';
-		$upgrade_link                 = array();
+		$offer_config = array(
+			array(
+				'start'  => '2026-02-19 00:00 Asia/Dhaka',
+				'end'    => '2026-02-23 23:59 Asia/Dhaka',
+				'text'   => __(
+					'Flash Sale - Up to 50% OFF',
+					'product-addons'
+				),
+				'utmKey' => 'plugin_meta',
+			),
+			array(
+				'start'  => '2026-02-25 00:00 Asia/Dhaka',
+				'end'    => '2026-03-01 23:59 Asia/Dhaka',
+				'text'   => __(
+					'Final Hour Sale - Up to 55% OFF',
+					'product-addons'
+				),
+				'utmKey' => 'plugin_meta',
+			),
+		);
+
+		$setting_link = array(
+			'prad_options' => '<a href="' . esc_url( admin_url( 'admin.php?page=prad-dashboard#lists' ) ) . '">' . esc_html__( 'Options', 'product-addons' ) . '</a>',
+		);
+
+		$upgrade_link = array();
+
+		// Free user or expired license user.
 		if ( ! defined( 'PRAD_PRO_VER' ) || Xpo::is_lc_expired() ) {
 
 			if ( Xpo::is_lc_expired() ) {
-				$url  = 'https://account.wpxpo.com/checkout/?edd_license_key=' . Xpo::get_lc_key() . '&renew=1';
 				$text = esc_html__( 'Renew License', 'product-addons' );
+				$url  = 'https://account.wpxpo.com/checkout/?edd_license_key=' . Xpo::get_lc_key() . '&renew=1';
 			} else {
+
+				$text = esc_html__( 'Upgrade to Pro', 'product-addons' );
 				$url  = Xpo::generate_utm_link(
 					array(
 						'utmKey' => 'plugin_meta',
 					)
 				);
-				$text = esc_html__( 'Switch to Pro', 'product-addons' );
 
-				$is_offer_running = true;
-				if ( $is_offer_running ) {
+				foreach ( $offer_config as $offer ) {
 					$current_time = gmdate( 'U' );
-					$start        = '2026-01-01 00:00 Asia/Dhaka';
-					$end          = '2026-02-15 23:59 Asia/Dhaka';
-					$notice_start = gmdate( 'U', strtotime( $start ) );
-					$notice_end   = gmdate( 'U', strtotime( $end ) );
+					$notice_start = gmdate( 'U', strtotime( $offer['start'] ) );
+					$notice_end   = gmdate( 'U', strtotime( $offer['end'] ) );
 					if ( $current_time >= $notice_start && $current_time <= $notice_end ) {
-						$text = esc_html__( 'New Year Sale!', 'product-options' );
+						$url  = Xpo::generate_utm_link(
+							array(
+								'utmKey' => $offer['utmKey'],
+							)
+						);
+						$text = $offer['text'];
+						break;
 					}
 				}
 			}
+
 			$upgrade_link['prad_pro'] = '<a style="color: #e83838; font-weight: bold;" target="_blank" href="' . esc_url( $url ) . '">' . $text . '</a>';
 		}
+
 		return array_merge( $setting_link, $links, $upgrade_link );
 	}
 
