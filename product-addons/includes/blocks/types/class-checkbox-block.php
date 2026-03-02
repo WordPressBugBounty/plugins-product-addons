@@ -169,21 +169,23 @@ class Checkbox_Block extends Abstract_Block {
 	 * @return array
 	 */
 	private function get_checkbox_input_attributes( $item, int $index, array $price_info ): array {
-		$enable_count = $this->get_property( 'enableCount', false );
-		$blockid      = $this->get_block_id();
+		$enable_count       = $this->get_property( 'enableCount', false );
+		$blockid            = $this->get_block_id();
+		$item_formula_value = $this->is_formula_value_enabled() && ! empty( $item['formulaValue'] ) ? $item['formulaValue'] : '';
 
 		return array(
-			'class'        => 'prad-input-hidden',
-			'type'         => 'checkbox',
-			'id'           => $blockid . $index,
-			'name'         => 'prad-checkbox-' . $blockid,
-			'value'        => $price_info['price'],
-			'data-ptype'   => $item['type'],
-			'data-index'   => $index,
-			'data-uid'     => $item['uid'] ?? '',
-			'data-label'   => $item['value'],
-			'data-count'   => $enable_count ? 'yes' : 'no',
-			'data-counter' => $blockid . $index . '-switcher-count',
+			'class'              => 'prad-input-hidden',
+			'type'               => 'checkbox',
+			'id'                 => $blockid . $index,
+			'name'               => 'prad-checkbox-' . $blockid,
+			'value'              => $price_info['price'],
+			'data-ptype'         => $item['type'],
+			'data-index'         => $index,
+			'data-uid'           => $item['uid'] ?? '',
+			'data-formula-value' => $item_formula_value,
+			'data-label'         => $item['value'],
+			'data-count'         => $enable_count ? 'yes' : 'no',
+			'data-counter'       => $blockid . $index . '-switcher-count',
 		);
 	}
 
@@ -297,7 +299,7 @@ class Checkbox_Block extends Abstract_Block {
 			);
 		}
 
-		if ( $enable_count && $columns == 1 ) {
+		if ( $enable_count && $columns == 1 && product_addons()->is_pro_feature_available() ) {
 			$html .= $this->render_quantity_input( $index );
 		}
 

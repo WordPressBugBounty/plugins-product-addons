@@ -109,7 +109,7 @@ class Switch_Block extends Abstract_Block {
 				);
 			}
 
-			if ( $enable_count ) {
+			if ( $enable_count && product_addons()->is_pro_feature_available() ) {
 				$html .= $this->render_counter_input();
 			}
 
@@ -129,20 +129,22 @@ class Switch_Block extends Abstract_Block {
 	 * @return string
 	 */
 	private function render_switch_item( $item, array $price_info ): string {
-		$block_id     = $this->get_block_id();
-		$enable_count = $this->get_property( 'enableCount', false );
+		$block_id           = $this->get_block_id();
+		$enable_count       = $this->get_property( 'enableCount', false );
+		$item_formula_value = $this->is_formula_value_enabled() && ! empty( $item['formulaValue'] ) ? $item['formulaValue'] : '';
 
 		$input_attributes = array(
-			'class'        => 'prad-input-hidden',
-			'type'         => 'checkbox',
-			'id'           => $block_id,
-			'name'         => 'prad-checkbox-' . $block_id,
-			'value'        => $price_info['price'],
-			'data-ptype'   => $item['type'],
-			'data-index'   => '0',
-			'data-label'   => $item['value'],
-			'data-count'   => $enable_count ? 'yes' : 'no',
-			'data-counter' => $block_id . '-switcher-count',
+			'class'              => 'prad-input-hidden',
+			'type'               => 'checkbox',
+			'id'                 => $block_id,
+			'name'               => 'prad-checkbox-' . $block_id,
+			'value'              => $price_info['price'],
+			'data-ptype'         => $item['type'],
+			'data-index'         => '0',
+			'data-formula-value' => $item_formula_value,
+			'data-label'         => $item['value'],
+			'data-count'         => $enable_count ? 'yes' : 'no',
+			'data-counter'       => $block_id . '-switcher-count',
 		);
 
 		$html  = '<div class="prad-switch-item prad-d-flex prad-item-center prad-gap-10">';

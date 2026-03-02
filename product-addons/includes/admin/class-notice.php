@@ -530,7 +530,7 @@ class Notice {
 			<div class="prad-consent-box prad-notice-wrapper notice data_collection_notice">
 			<div class="prad-consent-content">
 			<div class="prad-consent-text">
-			<div class="prad-consent-text-first"><?php esc_html_e( 'Want to help make WowShipping even more awesome?', 'product-addons' ); ?></div>
+			<div class="prad-consent-text-first"><?php esc_html_e( 'Want to help make WowAddons even more awesome?', 'product-addons' ); ?></div>
 			<div class="prad-consent-text-last">
 					<?php esc_html_e( 'Allow us to collect diagnostic data and usage information. see ', 'product-addons' ); ?>
 			<a href="https://www.wpxpo.com/data-collection-policy/" target="_blank" ><?php esc_html_e( 'what we collect.', 'product-addons' ); ?></a>

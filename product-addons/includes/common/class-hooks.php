@@ -42,31 +42,34 @@ class Hooks {
 
 	public function handle_prad_load_script_on_ajax() {
 
-		// Load Needed JS
+		// Load Needed JS.
 		$prad_option_front = $this->get_prad_option_front_data();
 
 		echo '<script id="prad-option-front-data" type="text/javascript">';
 			echo 'var prad_option_front = ' . wp_json_encode( $prad_option_front ) . ';';
 		echo '</script>';
 
-		$front_script = PRAD_URL . 'assets/js/frontend-script.js';
-		echo '<script src="' . esc_url( $front_script ) . '" id="prad-front-script-js-2"></script>';
+		$front_asset  = product_addons()->get_script_asset( 'assets/js/frontend-script.js' );
+		$front_script = add_query_arg( 'ver', $front_asset['version'], PRAD_URL . 'assets/js/frontend-script.js' );
+		echo '<script src="' . esc_url( $front_script ) . '" id="prad-front-script-js-2"></script>'; // phpcs:ignore
 
-		$data_script = PRAD_URL . 'assets/js/wowdate-min.js';
-		echo '<script src="' . esc_url( $data_script ) . '" id="prad-front-date-js-2"></script>';
+		$date_asset  = product_addons()->get_script_asset( 'assets/js/wowdate-min.js' );
+		$data_script = add_query_arg( 'ver', $date_asset['version'], PRAD_URL . 'assets/js/wowdate-min.js' );
+		echo '<script src="' . esc_url( $data_script ) . '" id="prad-front-date-js-2"></script>'; // phpcs:ignore
 
-		$flag_script = PRAD_URL . 'assets/js/wowflag.js';
-		echo '<script src="' . esc_url( $flag_script ) . '" id="prad-flag-script-js-2"></script>';
+		$flag_asset  = product_addons()->get_script_asset( 'assets/js/wowflag.js' );
+		$flag_script = add_query_arg( 'ver', $flag_asset['version'], PRAD_URL . 'assets/js/wowflag.js' );
+		echo '<script src="' . esc_url( $flag_script ) . '" id="prad-flag-script-js-2"></script>'; // phpcs:ignore
 
 		// Load Needed CSS.
-		$frontend_css = file_get_contents( PRAD_URL . 'assets/css/wowaddons-frontend.css' );
-		echo '<style id="prad-frontend-css-inline">' . wp_strip_all_tags( $frontend_css ) . '</style>';
+		$frontend_css = file_get_contents( product_addons()->get_style_path( 'wowaddons-frontend' ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+		echo '<style id="prad-frontend-css-inline">' . wp_strip_all_tags( $frontend_css ) . '</style>'; // phpcs:ignore
 
-		$block_css = file_get_contents( PRAD_URL . 'assets/css/wowaddons-blocks.css' );
-		echo '<style id="prad-blocks-css-inline">' . wp_strip_all_tags( $block_css ) . '</style>';
+		$block_css = file_get_contents( product_addons()->get_style_path( 'wowaddons-blocks' ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+		echo '<style id="prad-blocks-css-inline">' . wp_strip_all_tags( $block_css ) . '</style>'; // phpcs:ignore
 
 		$global_css = get_option( 'prad_global_style_css', '' );
-		echo '<style id="prad-global-css-inline">' . wp_strip_all_tags( $global_css ) . '</style>';
+		echo '<style id="prad-global-css-inline">' . wp_strip_all_tags( $global_css ) . '</style>'; // phpcs:ignore
 	}
 
 	/**
@@ -77,9 +80,14 @@ class Hooks {
 	 * @return void
 	 */
 	public function enqueue_block_js_callback() {
-		wp_enqueue_script( 'prad-front-script', PRAD_URL . 'assets/js/frontend-script.js', array( 'wp-api-fetch', 'jquery', 'wp-i18n' ), PRAD_VER, true );
-		wp_enqueue_script( 'prad-date-script', PRAD_URL . 'assets/js/wowdate-min.js', array( 'jquery' ), PRAD_VER, true );
-		wp_enqueue_script( 'prad-flag-script', PRAD_URL . 'assets/js/wowflag.js', array( 'jquery' ), PRAD_VER, true );
+		$front_asset = product_addons()->get_script_asset( 'assets/js/frontend-script.js', array( 'wp-api-fetch', 'jquery', 'wp-i18n' ) );
+		wp_enqueue_script( 'prad-front-script', PRAD_URL . 'assets/js/frontend-script.js', $front_asset['dependencies'], $front_asset['version'], true );
+
+		$date_asset = product_addons()->get_script_asset( 'assets/js/wowdate-min.js', array( 'jquery' ) );
+		wp_enqueue_script( 'prad-date-script', PRAD_URL . 'assets/js/wowdate-min.js', $date_asset['dependencies'], $date_asset['version'], true );
+
+		$flag_asset = product_addons()->get_script_asset( 'assets/js/wowflag.js', array( 'jquery' ) );
+		wp_enqueue_script( 'prad-flag-script', PRAD_URL . 'assets/js/wowflag.js', $flag_asset['dependencies'], $flag_asset['version'], true );
 		wp_localize_script(
 			'prad-front-script',
 			'prad_option_front',
@@ -95,8 +103,9 @@ class Hooks {
 	 * @return void
 	 */
 	public function enqueue_block_css_callback() {
-		wp_enqueue_style( 'prad-frontend-css', PRAD_URL . 'assets/css/wowaddons-frontend.css', array(), PRAD_VER );
-		wp_enqueue_style( 'prad-blocks-css', PRAD_URL . 'assets/css/wowaddons-blocks.css', array(), PRAD_VER );
+
+		product_addons()->enqueue_style( 'prad-frontend-css', 'wowaddons-frontend' );
+		product_addons()->enqueue_style( 'prad-blocks-css', 'wowaddons-blocks' );
 
 		$css = get_option( 'prad_global_style_css', '' );
 		if ( $css ) {

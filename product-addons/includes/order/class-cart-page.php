@@ -7,6 +7,7 @@
  */
 namespace PRAD\Includes\Order;
 
+use PRAD\Includes\Common\Formula\Array_Expression_Engine;
 use PRAD\Includes\Common\SafeMathEvaluator;
 use PRAD\Includes\Compatibility\BaseCurrency;
 use PRAD\Includes\Xpo;
@@ -100,6 +101,11 @@ class CartPage {
 					! empty( $cart_item['variation_id'] ) ? $cart_item['variation_id'] : $cart_item['product_id']
 				);
 
+				$data = $this->calculate_option_price( $cart_item['prad_selection_raw'], $cart_item['product_id'], $cart_item['prad_option_published_ids'], $cart_item['variation_id'], $cart_item['quantity'] );
+				if ( isset( $data['price'] ) ) {
+					$option_price = floatval( $data['price'] );
+				}
+
 				// Support for Bookings and Appointments For WooCommerce Premium by PluginHive.
 				if ( ! empty( $cart_item['phive_booked_price'] ) ) {
 					$product_price = $cart_item['phive_booked_price'];
@@ -146,7 +152,7 @@ class CartPage {
 			}
 		}
 		if ( ! empty( $prad_selection ) ) {
-			$data = $this->calculate_option_price( $prad_selection, $product_id, $option_ids, ! empty( $variation_id ) ? $variation_id : '' );
+			$data = $this->calculate_option_price( $prad_selection, $product_id, $option_ids, ! empty( $variation_id ) ? $variation_id : '', $_POST['quantity'] ?? 1 );
 
 			$cart_item_data['prad_selection']            = $data; // This will be used in checkout order create and others order area
 			$cart_item_data['prad_products_selection']   = $prad_products_selection;
@@ -176,10 +182,12 @@ class CartPage {
 
 		// approach 1.
 		if ( isset( $cart_item['prad_selection_raw'] ) ) {
-			$data = $this->calculate_option_price( $cart_item['prad_selection_raw'], $cart_item['product_id'], $cart_item['prad_option_published_ids'], $cart_item['variation_id'] );
+			$data = $this->calculate_option_price( $cart_item['prad_selection_raw'], $cart_item['product_id'], $cart_item['prad_option_published_ids'], $cart_item['variation_id'], $cart_item['quantity'] );
 			if ( isset( $data['extra_data'] ) ) {
-				wp_enqueue_style( 'prad-cart-style', PRAD_URL . 'assets/css/wowcart.css', array(), PRAD_VER );
-				wp_enqueue_script( 'prad-cart-script', PRAD_URL . 'assets/js/wowcart.js', array( 'jquery' ), PRAD_VER, true );
+				product_addons()->enqueue_style( 'prad-cart-style', 'wowcart' );
+
+				$cart_asset = product_addons()->get_script_asset( 'assets/js/wowcart.js' );
+				wp_enqueue_script( 'prad-cart-script', PRAD_URL . 'assets/js/wowcart.js', $cart_asset['dependencies'], $cart_asset['version'], true );
 				wp_set_script_translations( 'prad-cart-script', 'product-addons', PRAD_PATH . 'languages/' );
 
 				$addon_data = $data['extra_data'] ?? array();
@@ -222,14 +230,30 @@ class CartPage {
 	 *  @param string $product_id ID of product.
 	 *  @param array  $option_ids option ids of product.
 	 *  @param array  $variation_id variation ID of product.
+	 *  @param int    $quantity Quantity of product.
 	 *
 	 * @return array
 	 */
-	public function calculate_option_price( $prad_selection, $product_id, $option_ids, $variation_id = '' ) {
-		$pro_active = product_addons()->is_pro_feature_available();
-		$extra_data = array();
-		$price      = 0;
-		$price_data = array();
+	public function calculate_option_price( $prad_selection, $product_id, $option_ids, $variation_id = '', $quantity = 1 ) {
+		$pro_active    = product_addons()->is_pro_feature_available();
+		$extra_data    = array();
+		$price         = 0;
+		$price_data    = array();
+		$price_product = apply_filters(
+			'prad_cart_checkout_page_percentage_price',
+			! empty( $variation_id ) ? $variation_id : $product_id
+		);
+
+		$the_id               = ! empty( $variation_id ) ? $variation_id : $product_id;
+		$the_product          = wc_get_product( $the_id );
+		$product_dynamic_data = array(
+			'product_price'    => $price_product,
+			'product_quantity' => $quantity,
+			'product_weight'   => $the_product->get_weight() ? $the_product->get_weight() : 0,
+			'product_length'   => $the_product->get_length() ? $the_product->get_length() : 0,
+			'product_width'    => $the_product->get_width() ? $the_product->get_width() : 0,
+			'product_height'   => $the_product->get_height() ? $the_product->get_height() : 0,
+		);
 
 		try {
 			/* Fallback for option_ids if it is not set from cart  object   */
@@ -283,7 +307,8 @@ class CartPage {
 				foreach ( $prad_cart_item_selection as $key => $field ) {
 					$option_data    = $this->get_options_by_blockid( $merged_content, $key );
 					$custom_formula = ( isset( $field['type'] ) && 'custom_formula' === $field['type'] );
-					if ( $option_data || $custom_formula ) {
+					$adv_formula    = ( isset( $field['type'] ) && 'advanced_formula' === $field['type'] );
+					if ( $option_data || $custom_formula || $adv_formula ) {
 						if ( isset( $field['type'] ) && 'products' === $field['type'] ) {
 							continue;
 						}
@@ -377,10 +402,6 @@ class CartPage {
 							$expression  = ! empty( $addon_field->formulaData->expression ) ? $addon_field->formulaData->expression : '';
 							$valid       = ! empty( $addon_field->formulaData->valid ) ? $addon_field->formulaData->valid : false;
 							if ( $valid && $expression ) {
-								$price_product     = apply_filters(
-									'prad_cart_checkout_page_percentage_price',
-									! empty( $variation_id ) ? $variation_id : $product_id
-								);
 								$dynamic_variables = array(
 									'product_price' => $price_product,
 								);
@@ -410,6 +431,23 @@ class CartPage {
 								$formula_price = $this->evaluate_expression( $expression, $dynamic_variables );
 								$opt_price     = $formula_price;
 								$res           = '';
+							}
+						} elseif ( $adv_formula ) {
+							$addon_field = $this->get_addon_field_by_blockid( $merged_content, $key );
+							$expression  = ! empty( $addon_field->advancedFormulaData->expression ) ? $addon_field->advancedFormulaData->expression : '';
+							$valid       = ! empty( $addon_field->advancedFormulaData->valid ) ? $addon_field->advancedFormulaData->valid : false;
+
+							if ( $expression && $valid ) {
+								$dynamic_variables = ! empty( $field['dynamics'] ) ? $field['dynamics'] : array();
+								$dynamic_variables = array_merge( $dynamic_variables, $product_dynamic_data );
+
+								// Have to Update Dynamic for Products options later.
+								$result    = Array_Expression_Engine::evaluate_expression_safe(
+									$expression,
+									$dynamic_variables
+								);
+								$opt_price = is_numeric( $result ) ? floatval( $result ) : 0;
+								$res       = '';
 							}
 						} else {
 							$cost   = ( isset( $option_data[0]->sale ) && $option_data[0]->sale && $pro_active ) ? $option_data[0]->sale : $option_data[0]->regular;

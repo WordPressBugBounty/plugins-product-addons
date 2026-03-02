@@ -20,6 +20,83 @@ class Functions {
 	}
 
 	/**
+	 * Load style path
+	 *
+	 * @param string $style_name style name.
+	 * @return string
+	 */
+	public function get_style_path( $style_name ) {
+		return PRAD_URL . 'assets/css/' . $style_name . ( is_rtl() ? '-rtl' : '' ) . '.css';
+	}
+
+	/**
+	 * Enqueue style
+	 *
+	 * @param string $handle handle.
+	 * @param string $style_name style name.
+	 * @param array  $deps dependencies.
+	 * @return void
+	 */
+	public function enqueue_style( $handle, $style_name, $deps = array() ) {
+		wp_enqueue_style(
+			$handle,
+			$this->get_style_path( $style_name ),
+			$deps,
+			PRAD_VER
+		);
+	}
+
+	/**
+	 * Enqueue style
+	 *
+	 * @param string $handle handle.
+	 * @param string $script_name script name.
+	 * @param array  $args args.
+	 * @return void
+	 */
+	public function enqueue_script( $handle, $script_name, $args = true ) {
+		$script_path = PRAD_URL . 'assets/js/' . $script_name . '.js';
+		$assets      = $this->get_script_asset( $script_path );
+		wp_enqueue_script( $handle, $script_path, $assets['dependencies'], $assets['version'], $args );
+	}
+
+	/**
+	 * Read a wp-scripts generated asset file for a built script.
+	 *
+	 * WP Scripts (DependencyExtractionWebpackPlugin) generates a sibling
+	 * `{entry}.asset.php` file containing `dependencies` and `version`.
+	 *
+	 * @since 1.5.8
+	 *
+	 * @param string $relative_js_path Relative JS path inside the plugin, e.g. 'assets/js/frontend-script.js'.
+	 * @param array  $fallback_deps    Dependencies to use if the asset file does not exist.
+	 *
+	 * @return array { dependencies: string[], version: string }
+	 */
+	public function get_script_asset( $relative_js_path, $fallback_deps = array() ) {
+		$relative_js_path = ltrim( (string) $relative_js_path, '/\\' );
+		$asset_path       = preg_replace( '/\\.js$/', '.asset.php', $relative_js_path );
+		$asset_file       = trailingslashit( PRAD_PATH ) . str_replace( array( '\\', '//' ), '/', $asset_path );
+
+		$asset = null;
+		if ( $asset_file && file_exists( $asset_file ) ) {
+			$asset = include $asset_file;
+		}
+
+		if ( is_array( $asset ) && isset( $asset['dependencies'], $asset['version'] ) ) {
+			return array(
+				'dependencies' => is_array( $asset['dependencies'] ) ? $asset['dependencies'] : array(),
+				'version'      => (string) $asset['version'],
+			);
+		}
+
+		return array(
+			'dependencies' => is_array( $fallback_deps ) ? $fallback_deps : array(),
+			'version'      => defined( 'PRAD_VER' ) ? PRAD_VER : false,
+		);
+	}
+
+	/**
 	 * Checks if the Product Addons Pro plugin is active and its license is valid.
 	 *
 	 * Verifies whether the plugin located at 'product-addons-pro/product-addons-pro.php'

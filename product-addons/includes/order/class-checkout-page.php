@@ -114,8 +114,10 @@ class CheckoutPage {
 		$custom_note = $order->get_meta( '_prad_option_ids' );
 
 		if ( ! empty( $custom_note ) ) {
-			wp_enqueue_style( 'prad-cart-style', PRAD_URL . 'assets/css/wowcart.css', array(), PRAD_VER );
-			wp_enqueue_script( 'prad-cart-script', PRAD_URL . 'assets/js/wowcart.js', array( 'jquery' ), PRAD_VER, true );
+			product_addons()->enqueue_style( 'prad-cart-style', 'wowcart' );
+
+			$cart_asset = product_addons()->get_script_asset( 'assets/js/wowcart.js', array( 'jquery' ) );
+			wp_enqueue_script( 'prad-cart-script', PRAD_URL . 'assets/js/wowcart.js', $cart_asset['dependencies'], $cart_asset['version'], true );
 			wp_set_script_translations( 'prad-cart-script', 'product-addons', PRAD_PATH . 'languages/' );
 		}
 	}

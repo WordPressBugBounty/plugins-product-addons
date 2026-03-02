@@ -95,12 +95,14 @@ class Select_Block extends Abstract_Block {
 	 * @return string
 	 */
 	private function render_select_box(): string {
-		$html  = '<div class="prad-select-box prad-block-input prad-block-content" readonly="readonly">';
-		$html .= '<div class="prad-select-box-item">' . esc_html__( 'Choose an option', 'product-addons' ) . '</div>';
-		$html .= '<div class="prad-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="8" fill="none">';
-		$html .= '<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m1 1 6 6 6-6"></path>';
-		$html .= '</svg></div>';
-		$html .= '</div>';
+		$placeholder = $this->get_property( 'placeholder', '' );
+		$placeholder = $placeholder ? $placeholder : esc_html__( 'Select an option', 'product-addons' );
+		$html        = '<div class="prad-select-box prad-block-input prad-block-content" readonly="readonly">';
+		$html       .= '<div class="prad-select-box-item">' . $placeholder . '</div>';
+		$html       .= '<div class="prad-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="8" fill="none">';
+		$html       .= '<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m1 1 6 6 6-6"></path>';
+		$html       .= '</svg></div>';
+		$html       .= '</div>';
 
 		return $html;
 	}
@@ -115,15 +117,17 @@ class Select_Block extends Abstract_Block {
 		$html = '<div class="prad-select-options">';
 
 		foreach ( $options as $index => $item ) {
-			$price_info = $this->get_price_info( $item );
+			$price_info         = $this->get_price_info( $item );
+			$item_formula_value = $this->is_formula_value_enabled() && ! empty( $item['formulaValue'] ) ? $item['formulaValue'] : '';
 
 			$option_attributes = array(
-				'class'      => 'prad-select-option',
-				'data-value' => $price_info['price'],
-				'data-label' => $item['value'],
-				'data-index' => $index,
-				'data-uid'   => $item['uid'] ?? '',
-				'data-ptype' => $item['type'] ?? 'no_cost',
+				'class'              => 'prad-select-option',
+				'data-value'         => $price_info['price'],
+				'data-label'         => $item['value'],
+				'data-index'         => $index,
+				'data-uid'           => $item['uid'] ?? '',
+				'data-formula-value' => $item_formula_value,
+				'data-ptype'         => $item['type'] ?? 'no_cost',
 			);
 
 			$html .= sprintf( '<div %s>', $this->build_attributes( $option_attributes ) );

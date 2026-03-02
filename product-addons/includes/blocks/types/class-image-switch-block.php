@@ -170,7 +170,7 @@ class Image_Switch_Block extends Abstract_Block {
 			$html .= $this->render_block_content( (object) $item, $index, $price_info );
 		}
 
-		if ( $this->should_render_quantity_input( $layout ) ) {
+		if ( $this->should_render_quantity_input( $layout ) && product_addons()->is_pro_feature_available() ) {
 			$html .= $this->render_quantity_input( $index );
 		}
 
@@ -215,22 +215,24 @@ class Image_Switch_Block extends Abstract_Block {
 	 * @return string
 	 */
 	private function render_swatch_input( $item, int $index, array $price_info ): string {
-		$multiple     = $this->get_property( 'multiple', false );
-		$enable_count = $this->get_property( 'enableCount', false );
-		$blockid      = $this->get_block_id();
+		$multiple           = $this->get_property( 'multiple', false );
+		$enable_count       = $this->get_property( 'enableCount', false );
+		$blockid            = $this->get_block_id();
+		$item_formula_value = $this->is_formula_value_enabled() && ! empty( $item['formulaValue'] ) ? $item['formulaValue'] : '';
 
 		$attributes = array(
-			'class'        => 'prad-input-hidden',
-			'type'         => $multiple ? 'checkbox' : 'radio',
-			'data-index'   => $index,
-			'data-uid'     => $item['uid'] ?? '',
-			'id'           => $blockid . $index,
-			'name'         => $blockid,
-			'value'        => $price_info['price'],
-			'data-ptype'   => $price_info['type'],
-			'data-label'   => $item['value'],
-			'data-count'   => $enable_count ? 'yes' : 'no',
-			'data-counter' => $blockid . $index . '-switcher-count',
+			'class'              => 'prad-input-hidden',
+			'type'               => $multiple ? 'checkbox' : 'radio',
+			'data-index'         => $index,
+			'data-uid'           => $item['uid'] ?? '',
+			'data-formula-value' => $item_formula_value,
+			'id'                 => $blockid . $index,
+			'name'               => $blockid,
+			'value'              => $price_info['price'],
+			'data-ptype'         => $price_info['type'],
+			'data-label'         => $item['value'],
+			'data-count'         => $enable_count ? 'yes' : 'no',
+			'data-counter'       => $blockid . $index . '-switcher-count',
 		);
 
 		return sprintf( '<input %s />', $this->build_attributes( $attributes ) );

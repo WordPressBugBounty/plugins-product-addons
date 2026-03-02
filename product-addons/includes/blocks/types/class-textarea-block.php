@@ -123,11 +123,22 @@ class Textarea_Block extends Abstract_Block {
 			$textarea_attributes['style'] = $styles;
 		}
 
-		return sprintf(
+		$html = '<div class="prad-d-flex prad-item-start prad-gap-12 prad-mb-12">';
+
+		$html .= sprintf(
 			'<textarea %s>%s</textarea>',
 			$this->build_attributes( $textarea_attributes ),
 			esc_textarea( $value )
 		);
+
+		// Price beside textarea
+		if ( $this->should_show_price_beside_field( $price_info ) ) {
+			$html .= $this->render_price_html( $price_info, 'beside' );
+		}
+
+		$html .= '</div>';
+
+		return $html;
 	}
 
 	/**

@@ -99,6 +99,15 @@ abstract class Abstract_Block implements Block_Interface {
 	}
 
 	/**
+	 * is formula value enabled
+	 *
+	 * @return bool
+	 */
+	protected function is_formula_value_enabled(): string {
+		return $this->get_property( 'enableFormulaVal', false );
+	}
+
+	/**
 	 * Get block label
 	 *
 	 * @return string
@@ -107,6 +116,14 @@ abstract class Abstract_Block implements Block_Interface {
 		return $this->get_property( 'label', '' );
 	}
 
+	/**
+	 * Get block placeholder
+	 *
+	 * @return string
+	 */
+	protected function get_placeholder(): string {
+		return $this->get_property( 'placeholder', '' );
+	}
 	/**
 	 * Get Description Position
 	 *
@@ -204,6 +221,7 @@ abstract class Abstract_Block implements Block_Interface {
 			'bid'             => $this->get_block_id(),
 			'sectionid'       => $this->get_section_id(),
 			'label'           => $this->get_label(),
+			'placeholder'     => $this->get_placeholder(),
 			'btype'           => $this->get_type(),
 			'enlogic'         => $this->is_logic_enabled() ? 'yes' : 'no',
 			'required'        => $this->is_required() ? 'yes' : 'no',

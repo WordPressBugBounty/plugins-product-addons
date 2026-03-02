@@ -147,18 +147,20 @@ class Button_Block extends Abstract_Block {
 	 * @return string
 	 */
 	private function render_button_input( $item, int $index, array $price_obj, string $input_type ): string {
-		$blockid = $this->get_block_id();
+		$blockid            = $this->get_block_id();
+		$item_formula_value = $this->is_formula_value_enabled() && ! empty( $item['formulaValue'] ) ? $item['formulaValue'] : '';
 
 		$input_attributes = array(
-			'class'      => 'prad-input-hidden',
-			'type'       => $input_type,
-			'data-index' => $index,
-			'data-uid'   => $item['uid'] ?? '',
-			'id'         => $blockid . $index,
-			'name'       => $blockid,
-			'value'      => $price_obj['price'],
-			'data-ptype' => $price_obj['type'],
-			'data-label' => $item['value'],
+			'class'              => 'prad-input-hidden',
+			'type'               => $input_type,
+			'data-index'         => $index,
+			'data-uid'           => $item['uid'] ?? '',
+			'data-formula-value' => $item_formula_value,
+			'id'                 => $blockid . $index,
+			'name'               => $blockid,
+			'value'              => $price_obj['price'],
+			'data-ptype'         => $price_obj['type'],
+			'data-label'         => $item['value'],
 		);
 
 		return sprintf( '<input %s />', $this->build_attributes( $input_attributes ) );

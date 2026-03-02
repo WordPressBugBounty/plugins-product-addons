@@ -4,7 +4,7 @@ Tags: product addons, woocommerce product addons, extra product options, product
 Requires at least: 6.8
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.5.11
+Stable tag: 1.6.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -42,7 +42,7 @@ And if it’s too advanced, don’t worry. The custom product options logic sett
 ## Learn how easy it is to add custom product add-ons to your WooCommerce store! ##
 
 [youtube https://www.youtube.com/watch?v=CKehwKhcXtI]
-
+ 
 
 ## Features of WowAddons - The Ultimate WooCommerce Product Addons Plugin! ##
 
@@ -197,6 +197,9 @@ No, for some product fields like Headings, Texts, advanced custom logic options 
 7. Strategic Cross-selling 
 
 == Changelog ==
+= 1.6.0 – 2nd March 2026 =
+* Update: Refactored the Addons Builder to use native WordPress components for improved UI consistency and maintainability.
+
 = 1.5.11 – 19th February 2026 =
 * Fix: Prevent add to cart conflict with Rife Free theme.
 

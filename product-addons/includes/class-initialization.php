@@ -80,8 +80,9 @@ class Initialization {
 	public function admin_scripts_callback() {
 		global $pagenow;
 		$page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : ''; //phpcs:ignore
-		wp_enqueue_style( 'prad-admin-style', PRAD_URL . 'assets/css/prad-admin.css', array(), PRAD_VER );
-		wp_enqueue_script( 'prad-admin-script', PRAD_URL . 'assets/js/prad-admin.js', array( 'jquery' ), PRAD_VER, true );
+
+		product_addons()->enqueue_style( 'prad-admin-style', 'prad-admin' );
+		product_addons()->enqueue_script( 'prad-admin-script', 'prad-admin' );
 
 		if ( 'admin.php' === $pagenow ) {
 			wp_localize_script(
@@ -93,10 +94,16 @@ class Initialization {
 			);
 			if ( 'prad-dashboard' === $page ) {
 				$user_info = get_userdata( get_current_user_id() );
-				wp_enqueue_style( 'prad-editor-css', PRAD_URL . 'assets/css/wowaddons-backend.css', array(), PRAD_VER );
-				wp_enqueue_style( 'prad-blocks-css', PRAD_URL . 'assets/css/wowaddons-blocks.css', array(), PRAD_VER );
-				wp_enqueue_script( 'prad-editor-script', PRAD_URL . 'assets/js/wowaddons.js', array( 'wp-api-fetch' ), PRAD_VER, true );
-				wp_enqueue_script( 'prad-date-script', PRAD_URL . 'assets/js/wowdate-min.js', array( 'jquery' ), PRAD_VER, true );
+
+				// Styles.
+				product_addons()->enqueue_style( 'prad-editor-css', 'wowaddons' );
+				product_addons()->enqueue_style( 'prad-editor-css2', 'style-wowaddons' );
+				product_addons()->enqueue_style( 'prad-block-css', 'wowaddons-blocks' );
+
+				// Scripts.
+				product_addons()->enqueue_script( 'prad-editor-script', 'wowaddons' );
+				product_addons()->enqueue_script( 'prad-date-script', 'wowdate-min' );
+
 				wp_enqueue_media();
 				wp_localize_script(
 					'prad-editor-script',

@@ -278,7 +278,7 @@ class Products_Block extends Abstract_Block {
 			$html .= $this->render_block_content( $item, $index, $price_info, $variation_html );
 		}
 
-		if ( $this->should_render_quantity_input( $layout ) ) {
+		if ( $this->should_render_quantity_input( $layout ) && product_addons()->is_pro_feature_available() ) {
 			$html .= $this->render_quantity_input( $index );
 		}
 
@@ -540,7 +540,7 @@ class Products_Block extends Abstract_Block {
 			);
 		}
 
-		if ( $enable_count ) {
+		if ( $enable_count && product_addons()->is_pro_feature_available() ) {
 			$html .= $this->render_quantity_input( $index );
 		}
 
