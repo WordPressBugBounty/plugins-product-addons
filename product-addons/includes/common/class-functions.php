@@ -949,7 +949,7 @@ class Functions {
 		);
 
 		// Step 1: Get parameters
-		$base_url      = $params['url'] ?? 'https://www.wpxpo.com/product-addons-for-woocommerce/';
+		$base_url      = $params['url'] ?? 'https://www.wpxpo.com/product/wowaddons/';
 		$utm_key       = $params['utmKey'] ?? null;
 		$affiliate     = $params['affiliate'] ?? apply_filters( 'prad_affiliate_id', '' );
 		$hash          = $params['hash'] ?? '';

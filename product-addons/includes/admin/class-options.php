@@ -239,7 +239,7 @@ class Options {
 			return;
 		}
         if ( 'go_prad_pro' === sanitize_text_field( $_GET['page'] ) ) {   // @codingStandardsIgnoreLine
-			wp_safe_redirect( 'https://www.wpxpo.com/product-addons-for-woocommerce/' );
+			wp_safe_redirect( 'https://www.wpxpo.com/product/wowaddons/' );
 			die();
 		}
 	}

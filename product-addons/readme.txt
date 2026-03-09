@@ -4,20 +4,20 @@ Tags: product addons, woocommerce product addons, extra product options, product
 Requires at least: 6.8
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.6.0
+Stable tag: 1.6.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 Product addons for WooCommerce is the ultimate plugin that lets you add extra product options, product fields, and WooCommerce product fields.
 
-== Description ==
+== Description == 
 
 🥇 The Ultimate **Product Addons** Plugin - With **UX That Wows**. 
 💲  Other Plugins Add Options. We Add **Revenue**.
 💞 A WPXPO Plugin **Trusted by 60K+** Businesses.
 🤝 Backed by a Dedicated Support Team with **4.9/5** [Trustpilot Rating](https://uk.trustpilot.com/review/wpxpo.com).
 
-😲[Free Demo](https://trywowaddons.wpxpo.com/) | 🔥[WowAddons Pro](https://www.wpxpo.com/product-addons-for-woocommerce/) | 📃[Documentation](https://wpxpo.com/docs/wowaddons/)
+😲[Free Demo](https://trywowaddons.wpxpo.com/) | 🔥[WowAddons Pro](https://www.wpxpo.com/product/wowaddons/) | 📃[Documentation](https://wpxpo.com/docs/wowaddons/)
 
 Simplify product customization with our WooCommerce Custom Fields plugin! Build extra product options, including swatches, radio buttons, file uploads, sliders, date, time, and more with our state-of-the-art product addons customizer.
 
@@ -31,7 +31,7 @@ Allow customers to purchase items tailored to their needs while upselling throug
 
 Buyers want freedom of choice - they want product options that work for them. WowAddons helps you achieve this goal. 
 
-With the 23+ custom WooCommerce product fields and a state-of-the-art product customizer, you can offer any type of product to your customers. Using the powerful image and color swatches, range slider, radio buttons, date, time, and text fields, you can share your offerings with your customers. 
+With the 25+ custom WooCommerce product fields and a state-of-the-art product customizer, you can offer any type of product to your customers. Using the powerful image and color swatches, range slider, radio buttons, date, time, and text fields, you can share your offerings with your customers. 
 
 And if it’s too advanced, don’t worry. The custom product options logic settings will help you make personal adjustments, helping you to offer products to buyers without hassle! Whether it’s designing based on uploaded images, getting item numbers, or delivery dates, custom selections, etc. WowAddons is the ultimate product fields solution for WooCommerce! 
 
@@ -197,6 +197,9 @@ No, for some product fields like Headings, Texts, advanced custom logic options 
 7. Strategic Cross-selling 
 
 == Changelog ==
+= 1.6.1 – 9th March 2026 =
+* New: Advanced Formula Field.
+
 = 1.6.0 – 2nd March 2026 =
 * Update: Refactored the Addons Builder to use native WordPress components for improved UI consistency and maintainability.
 

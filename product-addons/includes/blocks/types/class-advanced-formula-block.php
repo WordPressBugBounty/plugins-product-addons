@@ -55,11 +55,9 @@ class Advanced_Formula_Block extends Abstract_Block {
 		);
 
 		$html  = sprintf( '<div %s>', $this->build_attributes( $attributes ) );
-		$html .= '<div class="prad-d-flex prad-item-center prad-gap-16 prad-mb-12">';
 		$html .= $this->render_title_section_with_price();
-		$html .= '</div>';
 		// $html .= '<span> Evaluated without dynamic: ' . $evaluated_expression . '</span>';
-		$html .= $this->render_description_below_field();
+		$html .= $this->render_description_below_title();
 		$html .= '</div>';
 
 		return $html;
@@ -104,7 +102,7 @@ class Advanced_Formula_Block extends Abstract_Block {
 		$label        = $this->get_property( 'label' );
 		$allowed_tags = $this->allowed_html_tags;
 
-		$html  = '<div class="prad-d-flex prad-item-center prad-gap-16 prad-mb-12">';
+		$html  = '<div class="prad-d-flex prad-item-center prad-gap-12">';
 		$html .= sprintf(
 			'<div class="prad-block-title">%s</div>',
 			wp_kses( $label, $allowed_tags )

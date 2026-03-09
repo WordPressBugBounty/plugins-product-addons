@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv3.
 msgid ""
 msgstr ""
-"Project-Id-Version: WowAddons - Product Addons for WooCommerce 1.6.0\n"
+"Project-Id-Version: WowAddons - Product Addons for WooCommerce 1.6.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/build\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-03-02T08:37:58+00:00\n"
+"POT-Creation-Date: 2026-03-09T04:48:07+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: product-addons\n"
@@ -762,10 +762,6 @@ msgid "Enable Conditional Logic for this Element"
 msgstr ""
 
 #: assets/js/wowaddons.js:151
-msgid "Select visibility"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
 msgid "Show"
 msgstr ""
 
@@ -775,10 +771,6 @@ msgstr ""
 
 #: assets/js/wowaddons.js:151
 msgid "this field if"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Select match"
 msgstr ""
 
 #: assets/js/wowaddons.js:151
