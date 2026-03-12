@@ -226,47 +226,52 @@ class Xpo {
 	 */
 	public static function generate_utm_link( $params ) {
 		$default_config = array(
-			'example'         => array(
+			'example'           => array(
 				'source'   => 'db-wowaddons-featurename',
 				'medium'   => 'block-feature',
 				'campaign' => 'wowaddons-dashboard',
 			),
-			'content_notice'  => array(
+			'content_notice'    => array(
 				'source'   => 'db-wowaddons-notice',
-				'medium'   => 'new-year-sale',
+				'medium'   => 'spring-sale',
 				'campaign' => 'wowaddons-dashboard',
 			),
-			'banner_notice'   => array(
+			'img_banner_notice' => array(
 				'source'   => 'db-wowaddons-banner',
-				'medium'   => 'new-year-sale',
+				'medium'   => 'spring-sale',
 				'campaign' => 'wowaddons-dashboard',
 			),
-			'sub_menu'        => array(
+			'sub_menu'          => array(
 				'source'   => 'db-wowaddons-plugin',
 				'medium'   => 'sub-menu',
 				'campaign' => 'wowaddons-dashboard',
 			),
-			'plugin_meta'     => array(
+			'plugin_meta'       => array(
 				'source'   => 'db-wowaddons-plugin',
 				'medium'   => 'plugin-meta',
 				'campaign' => 'wowaddons-dashboard',
 			),
-			'massive_sale'    => array(
+			'massive_sale'      => array(
 				'source'   => 'db-wowaddons-notice-logo',
 				'medium'   => 'massive-sale',
 				'campaign' => 'wowaddons-dashboard',
 			),
-			'flash_sale'      => array(
+			'flash_sale'        => array(
 				'source'   => 'db-wowaddons-notice',
 				'medium'   => 'flash-sale',
 				'campaign' => 'wowaddons-dashboard',
 			),
-			'final_hour_sale' => array(
+			'spring_sale'       => array(
+				'source'   => 'db-wowaddons-notice',
+				'medium'   => 'spring-sale',
+				'campaign' => 'wowaddons-dashboard',
+			),
+			'final_hour_sale'   => array(
 				'source'   => 'db-wowaddons-notice',
 				'medium'   => 'final-hour-sale',
 				'campaign' => 'wowaddons-dashboard',
 			),
-			'exclusive_deals' => array(
+			'exclusive_deals'   => array(
 				'source'   => 'db-wowaddons-notice-logo',
 				'medium'   => 'exclusive-deals',
 				'campaign' => 'wowaddons-dashboard',

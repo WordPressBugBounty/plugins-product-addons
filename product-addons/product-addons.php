@@ -2,7 +2,7 @@
 /**
  * Plugin Name: WowAddons - Product Addons for WooCommerce
  * Description: The ultimate WooCommerce product addons plugin to add extra product options, including, swatches, image uploads, text area, and more!
- * Version:     1.6.1
+ * Version:     1.6.2
  * Author:      WPXPO
  * Author URI:  https://www.wpxpo.com/about
  * Text Domain: product-addons
@@ -20,7 +20,7 @@ use PRAD\Includes\Initialization;
 defined( 'ABSPATH' ) || exit;
 
 // Define Vars.
-define( 'PRAD_VER', '1.6.1' );
+define( 'PRAD_VER', '1.6.2' );
 define( 'PRAD_URL', plugin_dir_url( __FILE__ ) );
 define( 'PRAD_BASE', plugin_basename( __FILE__ ) );
 define( 'PRAD_PATH', plugin_dir_path( __FILE__ ) );

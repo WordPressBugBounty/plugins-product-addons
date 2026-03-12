@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv3.
 msgid ""
 msgstr ""
-"Project-Id-Version: WowAddons - Product Addons for WooCommerce 1.6.1\n"
+"Project-Id-Version: WowAddons - Product Addons for WooCommerce 1.6.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/build\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-03-09T04:48:07+00:00\n"
+"POT-Creation-Date: 2026-03-12T07:51:10+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: product-addons\n"
@@ -30,32 +30,47 @@ msgstr ""
 msgid "https://www.wpxpo.com/about"
 msgstr ""
 
-#: includes/admin/class-notice.php:91
+#: includes/admin/class-notice.php:92
 msgid "Hello Bar Action performed"
 msgstr ""
 
-#: includes/admin/class-notice.php:285
+#: includes/admin/class-notice.php:287
 msgid "Close Banner"
 msgstr ""
 
-#: includes/admin/class-notice.php:533
+#: includes/admin/class-notice.php:336
+#: includes/admin/class-notice.php:354
+msgid "Spring Sale:"
+msgstr ""
+
+#: includes/admin/class-notice.php:337
+#: includes/admin/class-notice.php:355
+msgid "WowAddons offers are live - Enjoy %s off on WowAddons Pro."
+msgstr ""
+
+#: includes/admin/class-notice.php:341
+#: includes/admin/class-notice.php:359
+msgid "Claim Your Discount!"
+msgstr ""
+
+#: includes/admin/class-notice.php:760
 msgid "Want to help make WowAddons even more awesome?"
 msgstr ""
 
-#: includes/admin/class-notice.php:535
+#: includes/admin/class-notice.php:762
 msgid "Allow us to collect diagnostic data and usage information. see "
 msgstr ""
 
-#: includes/admin/class-notice.php:536
+#: includes/admin/class-notice.php:763
 msgid "what we collect."
 msgstr ""
 
-#: includes/admin/class-notice.php:554
+#: includes/admin/class-notice.php:781
 msgid "Accept & Close"
 msgstr ""
 
 #: includes/admin/class-options.php:46
-msgid "Flash Sale - Up to 50% OFF"
+msgid "Spring Sale - Up to 55% OFF"
 msgstr ""
 
 #: includes/admin/class-options.php:55

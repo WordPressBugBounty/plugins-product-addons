@@ -65,8 +65,9 @@ class Notice {
 	 */
 	public static function get_hellobar_config() {
 		return array(
-			'prad_helloBar_flash_sale_2026_1'      => Xpo::get_transient_without_cache( 'prad_helloBar_flash_sale_2026_1' ),
-			'prad_helloBar_final_hour_sale_2026_1' => Xpo::get_transient_without_cache( 'prad_helloBar_final_hour_sale_2026_1' ),
+			'prad_helloBar_spring_sale_2026_1' => Xpo::get_transient_without_cache( 'prad_helloBar_spring_sale_2026_1' ),
+			'prad_helloBar_spring_sale_2026_2' => Xpo::get_transient_without_cache( 'prad_helloBar_spring_sale_2026_2' ),
+			'prad_helloBar_spring_sale_2026_3' => Xpo::get_transient_without_cache( 'prad_helloBar_spring_sale_2026_3' ),
 		);
 	}
 
@@ -111,6 +112,7 @@ class Notice {
 	 */
 	public function prad_dashboard_notice_callback() {
 		$this->prad_dashboard_banner_notice();
+		$this->prad_dashboard_content_notice();
 	}
 
 	/**
@@ -122,21 +124,21 @@ class Notice {
 		$prad_db_nonce  = wp_create_nonce( 'prad-nonce' );
 		$banner_notices = array(
 			array(
-				'key'                => 'prad_flash_sale_2026_1x',
-				'start'              => '2026-02-19 00:00 Asia/Dhaka',
-				'end'                => '2026-02-23 23:59 Asia/Dhaka', // format YY-MM-DD always set time 23:59 and zone Asia/Dhaka.
+				'key'                => 'prad_banner_spring_sale_2026_1',
+				'start'              => '2026-04-05 00:00 Asia/Dhaka',
+				'end'                => '2026-04-14 23:59 Asia/Dhaka', // format YY-MM-DD always set time 23:59 and zone Asia/Dhaka.
 
 				'brand_color'        => '#86a62c',
 
-				'left_image'         => PRAD_URL . 'assets/img/dashboard_banner/flash_sale/left_image.png',
-				'right_image'        => PRAD_URL . 'assets/img/dashboard_banner/flash_sale/right_image.png',
-				'bg_image'           => PRAD_URL . 'assets/img/dashboard_banner/flash_sale/bg.png',
+				'left_image'         => PRAD_URL . 'assets/img/dashboard_banner/spring_sale/left_image.png',
+				'right_image'        => PRAD_URL . 'assets/img/dashboard_banner/spring_sale/right_image.png',
+				'bg_image'           => PRAD_URL . 'assets/img/dashboard_banner/spring_sale/bg.png',
 				'text'               => 'Hurry Before It Ends!',
 				'countdown_duration' => 259200, // Duration in seconds.
 				'countdown_color'    => '#FD284B',
 				'url'                => Xpo::generate_utm_link(
 					array(
-						'utmKey' => 'flash_sale',
+						'utmKey' => 'spring_sale',
 					)
 				),
 
@@ -232,7 +234,7 @@ class Notice {
 						justify-content: center;
 						font-weight: 700;
 						font-size: 28px;
-						color: #fff;
+						color: #333333;
 						line-height: 32px;
 						text-align: center;
 					}
@@ -309,6 +311,231 @@ class Notice {
 				</div>
 				
 				<?php
+			}
+		}
+	}
+
+	/**
+	 * Dashboard Content Notice
+	 *
+	 * @return void
+	 */
+	public function prad_dashboard_content_notice() {
+
+		$content_notices = array(
+			array(
+				'key'                => 'prad_dashboard_content_notice_spring_sale_v1',
+				'start'              => '2026-03-16 00:00 Asia/Dhaka',
+				'end'                => '2026-03-25 23:59 Asia/Dhaka',
+				'url'                => Xpo::generate_utm_link(
+					array(
+						'utmKey' => 'content_notice',
+					)
+				),
+				'visibility'         => ! Xpo::is_lc_active(),
+				'content_heading'    => __( 'Spring Sale:', 'product-addons' ),
+				'content_subheading' => __( 'WowAddons offers are live - Enjoy %s off on WowAddons Pro.', 'product-addons' ),
+				'discount_content'   => ' up to 55% OFF',
+				'border_color'       => '#86a62c',
+				'icon'               => PRAD_URL . 'assets/img/dashboard_banner/logo.svg',
+				'button_text'        => __( 'Claim Your Discount!', 'product-addons' ),
+				'is_discount_logo'   => true,
+			),
+			array(
+				'key'                => 'prad_dashboard_content_notice_spring_sale_v2',
+				'start'              => '2026-03-26 00:00 Asia/Dhaka',
+				'end'                => '2026-04-04 23:59 Asia/Dhaka',
+				'url'                => Xpo::generate_utm_link(
+					array(
+						'utmKey' => 'content_notice',
+					)
+				),
+				'visibility'         => ! Xpo::is_lc_active(),
+				'content_heading'    => __( 'Spring Sale:', 'product-addons' ),
+				'content_subheading' => __( 'WowAddons offers are live - Enjoy %s off on WowAddons Pro.', 'product-addons' ),
+				'discount_content'   => ' up to 55% OFF',
+				'border_color'       => '#86a62c',
+				'icon'               => PRAD_URL . 'assets/img/dashboard_banner/discount.svg',
+				'button_text'        => __( 'Claim Your Discount!', 'product-addons' ),
+				'is_discount_logo'   => true,
+			),
+
+		);
+
+		$prad_db_nonce = wp_create_nonce( 'prad-dashboard-nonce' );
+
+		foreach ( $content_notices as $key => $notice ) {
+			$notice_key = isset( $notice['key'] ) ? $notice['key'] : $this->notice_version;
+			if ( isset( $_GET['disable_prad_notice'] ) && $notice_key === $_GET['disable_prad_notice'] ) {
+				continue;
+			} else {
+				$border_color = $notice['border_color'];
+
+				$current_time = gmdate( 'U' );
+				$notice_start = gmdate( 'U', strtotime( $notice['start'] ) );
+				$notice_end   = gmdate( 'U', strtotime( $notice['end'] ) );
+				if ( $current_time >= $notice_start && $current_time <= $notice_end && $notice['visibility'] ) {
+					$notice_transient = Xpo::get_transient_without_cache( 'prad_get_pro_notice_' . $notice_key );
+
+					if ( 'off' !== $notice_transient ) {
+
+						$query_args = array(
+							'disable_prad_notice' => $notice_key,
+							'prad_db_nonce'       => $prad_db_nonce,
+						);
+						if ( isset( $notice['repeat_interval'] ) && $notice['repeat_interval'] ) {
+							$query_args['prad_interval'] = $notice['repeat_interval'];
+						}
+
+						$url = isset( $notice['url'] ) ? $notice['url'] : Xpo::generate_utm_link(
+							array(
+								'utmKey' => 'content_notice',
+							)
+						);
+
+						?>
+
+						<style id="prad-notice-css" type="text/css">
+							.prad-content-notice-wrapper {
+								border: 1px solid #c3c4c7;
+								border-left: 3px solid #037fff;
+								margin: 15px 0 !important;
+								display: flex;
+								align-items: center;
+								background: #ffffff;
+								width: 100%;
+								padding: 10px 0;
+								position: relative;
+								box-sizing: border-box;
+							}
+
+							.prad-content-notice-wrapper.notice {
+								margin: 10px 0;
+								width: calc(100% - 20px);
+							}
+
+							.wrap .prad-content-notice-wrapper.notice {
+								width: 100%;
+							}
+
+							.prad-content-notice-icon {
+								margin-left: 15px;
+							}
+
+							.prad-content-notice-discout-icon {
+								margin-left: 10px;
+							}
+
+							.prad-content-notice-icon img {
+								max-width: 42px;
+								height: 70px;
+							}
+
+							.prad-content-notice-discout-icon img {
+								height: 70px;
+								width: 70px;
+							}
+
+							.prad-notice-content-wrapper {
+								display: flex;
+								flex-direction: column;
+								gap: 8px;
+								font-size: 14px;
+								line-height: 20px;
+								margin-left: 15px;
+							}
+
+							.prad-content-notice-buttons {
+								display: flex;
+								align-items: center;
+								gap: 15px;
+							}
+
+							.prad-content-notice-btn {
+								font-weight: 600;
+								text-transform: uppercase !important;
+								padding: 2px 10px !important;
+								background-color: #86a62c;
+								border: none !important;
+							}
+
+							.prad-content-discount_btn {
+								background-color: #ffffff;
+								text-decoration: none;
+								border: 1px solid #86a62c;
+								padding: 5px 10px;
+								border-radius: 5px;
+								font-weight: 500;
+								text-transform: uppercase;
+								color: #86a62c !important;
+							}
+
+							.prad-content-notice-close {
+								position: absolute;
+								right: 2px;
+								top: 5px;
+								text-decoration: none;
+								color: #b6b6b6;
+								font-family: dashicons;
+								font-size: 16px;
+								line-height: 20px;
+							}
+
+							.prad-content-notice-close-icon {
+								font-size: 14px;
+							}
+						</style>
+					<div class="prad-content-notice-wrapper notice data_collection_notice" 
+					style="border-left: 3px solid <?php echo esc_attr( $border_color ); ?>;"
+					> 
+						<?php
+						if ( $notice['is_discount_logo'] ) {
+							?>
+								<div class="prad-content-notice-discout-icon"> <img src="<?php echo esc_url( $notice['icon'] ); ?>"/>  </div>
+							<?php
+						} else {
+							?>
+								<div class="prad-content-notice-icon"> <img src="<?php echo esc_url( $notice['icon'] ); ?>"/>  </div>
+							<?php
+						}
+						?>
+						
+						<div class="prad-notice-content-wrapper">
+							<div class="">
+								<strong><?php printf( esc_html( $notice['content_heading'] ) ); ?> </strong>
+						<?php
+						printf(
+							wp_kses_post( $notice['content_subheading'] ),
+							'<strong>' . esc_html( $notice['discount_content'] ) . '</strong>'
+						);
+						?>
+							</div>
+							<div class="prad-content-notice-buttons">
+							<?php if ( isset( $notice['is_discount_logo'] ) && $notice['is_discount_logo'] ) : ?>
+									<a class="prad-content-discount_btn" href="<?php echo esc_url( $url ); ?>" target="_blank">
+										<?php echo esc_html( $notice['button_text'] ); ?>
+									</a>
+								<?php else : ?>
+									<a class="prad-content-notice-btn button button-primary" href="<?php echo esc_url( $url ); ?>" target="_blank" style="background-color: <?php echo ! empty( $notice['background_color'] ) ? esc_attr( $notice['background_color'] ) : '#86a62c'; ?>;">
+									<?php echo esc_html( $notice['button_text'] ); ?>
+										
+									</a>
+								<?php endif; ?>
+							</div>
+						</div>
+						<a href=
+							<?php
+							echo esc_url(
+								add_query_arg(
+									$query_args
+								)
+							);
+							?>
+						class="prad-content-notice-close"><span class="prad-content-notice-close-icon dashicons dashicons-dismiss"> </span></a>
+					</div>
+								<?php
+					}
+				}
 			}
 		}
 	}

@@ -41,10 +41,10 @@ class Options {
 	public function plugin_action_links_callback( $links ) {
 		$offer_config = array(
 			array(
-				'start'  => '2026-02-19 00:00 Asia/Dhaka',
-				'end'    => '2026-02-23 23:59 Asia/Dhaka',
+				'start'  => '2026-03-16 00:00 Asia/Dhaka',
+				'end'    => '2026-04-14 23:59 Asia/Dhaka',
 				'text'   => __(
-					'Flash Sale - Up to 50% OFF',
+					'Spring Sale - Up to 55% OFF',
 					'product-addons'
 				),
 				'utmKey' => 'plugin_meta',
