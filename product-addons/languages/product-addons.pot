@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv3.
 msgid ""
 msgstr ""
-"Project-Id-Version: WowAddons - Product Addons for WooCommerce 1.6.2\n"
+"Project-Id-Version: WowAddons - Product Addons for WooCommerce 1.6.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/build\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-03-12T07:51:10+00:00\n"
+"POT-Creation-Date: 2026-03-31T09:59:45+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: product-addons\n"
@@ -53,19 +53,19 @@ msgstr ""
 msgid "Claim Your Discount!"
 msgstr ""
 
-#: includes/admin/class-notice.php:760
+#: includes/admin/class-notice.php:761
 msgid "Want to help make WowAddons even more awesome?"
 msgstr ""
 
-#: includes/admin/class-notice.php:762
+#: includes/admin/class-notice.php:763
 msgid "Allow us to collect diagnostic data and usage information. see "
 msgstr ""
 
-#: includes/admin/class-notice.php:763
+#: includes/admin/class-notice.php:764
 msgid "what we collect."
 msgstr ""
 
-#: includes/admin/class-notice.php:781
+#: includes/admin/class-notice.php:782
 msgid "Accept & Close"
 msgstr ""
 
@@ -78,12 +78,12 @@ msgid "Final Hour Sale - Up to 55% OFF"
 msgstr ""
 
 #: includes/admin/class-options.php:64
-msgid "Options"
+msgid "Create Options"
 msgstr ""
 
 #: includes/admin/class-options.php:73
 #: includes/admin/class-options.php:204
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Renew License"
 msgstr ""
 
@@ -96,6 +96,7 @@ msgid "Docs"
 msgstr ""
 
 #: includes/admin/class-options.php:118
+#: assets/js/wowaddons.js:155
 msgid "Support"
 msgstr ""
 
@@ -240,7 +241,7 @@ msgid "Not Option found in Trash"
 msgstr ""
 
 #: includes/order/class-cart-page.php:328
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Name"
 msgstr ""
 
@@ -424,21 +425,29 @@ msgid "Fonts"
 msgstr ""
 
 #: assets/js/wowaddons.js:1
+msgid "More"
+msgstr ""
+
+#: assets/js/wowaddons.js:1
 msgid "Menu logo"
 msgstr ""
 
 #: assets/js/wowaddons.js:1
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Create Option"
 msgstr ""
 
 #: assets/js/wowaddons.js:1
-#: assets/js/wowaddons.js:151
-msgid "Our Plugins"
+msgid "Upgrade Pro"
 msgstr ""
 
 #: assets/js/wowaddons.js:1
-msgid "Upgrade Pro"
+msgid "Menu"
+msgstr ""
+
+#: assets/js/wowaddons.js:1
+#: assets/js/wowaddons.js:155
+msgid "Our Plugins"
 msgstr ""
 
 #: assets/js/wowaddons.js:1
@@ -470,21 +479,22 @@ msgid "Delete Font"
 msgstr ""
 
 #: assets/js/wowaddons.js:1
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Confirm Deletion"
 msgstr ""
 
 #: assets/js/wowaddons.js:1
-msgid "Are you sure you want to delete this font?"
+msgid "Are you sure you want to delete this font? Be careful, this procedure is irreversible. Do you want to proceed?"
 msgstr ""
 
 #: assets/js/wowaddons.js:1
 #: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Cancel"
 msgstr ""
 
 #: assets/js/wowaddons.js:1
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Delete"
 msgstr ""
 
@@ -513,15 +523,23 @@ msgid "CSS font-family name. Auto-generated if left empty."
 msgstr ""
 
 #: assets/js/wowaddons.js:1
-msgid "Font Files *"
+msgid "File size:"
+msgstr ""
+
+#: assets/js/wowaddons.js:1
+msgid "Clear this file"
+msgstr ""
+
+#: assets/js/wowaddons.js:1
+msgid "Drag and Drop File Here or"
+msgstr ""
+
+#: assets/js/wowaddons.js:1
+msgid "Click here to upload"
 msgstr ""
 
 #: assets/js/wowaddons.js:1
 msgid "Accepted formats: WOFF, WOFF2, TTF (Max: 10MB)"
-msgstr ""
-
-#: assets/js/wowaddons.js:1
-msgid "Upload Font Files"
 msgstr ""
 
 #: assets/js/wowaddons.js:1
@@ -650,7 +668,7 @@ msgid "Migrate"
 msgstr ""
 
 #: assets/js/wowaddons.js:1
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Get Support"
 msgstr ""
 
@@ -663,7 +681,7 @@ msgid "YouTube Tutorials"
 msgstr ""
 
 #: assets/js/wowaddons.js:1
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Documentation"
 msgstr ""
 
@@ -708,18 +726,6 @@ msgid "View"
 msgstr ""
 
 #: assets/js/wowaddons.js:1
-msgid "Last 7 Days"
-msgstr ""
-
-#: assets/js/wowaddons.js:1
-msgid "Last 30 Days"
-msgstr ""
-
-#: assets/js/wowaddons.js:1
-msgid "Last 12 Months"
-msgstr ""
-
-#: assets/js/wowaddons.js:1
 msgid "Total Sales (Addons)"
 msgstr ""
 
@@ -733,6 +739,18 @@ msgstr ""
 
 #: assets/js/wowaddons.js:1
 msgid "Add to Cart Count"
+msgstr ""
+
+#: assets/js/wowaddons.js:1
+msgid "Last 7 Days"
+msgstr ""
+
+#: assets/js/wowaddons.js:1
+msgid "Last 30 Days"
+msgstr ""
+
+#: assets/js/wowaddons.js:1
+msgid "Last 12 Months"
 msgstr ""
 
 #: assets/js/wowaddons.js:1
@@ -757,66 +775,6 @@ msgstr ""
 
 #. translators: 1: Current page number, 2: Total number of pages.
 #: assets/js/wowaddons.js:151
-msgid "Color selected"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Remove color"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "dates selected"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Pick a Date"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Enable Conditional Logic for this Element"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Show"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Hide"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "this field if"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Any"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "All"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "of these rules match:"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Field"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Comparison"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Value"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Add Conditions"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
 msgid "Price"
 msgstr ""
 
@@ -829,6 +787,7 @@ msgid "Weight"
 msgstr ""
 
 #: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Width"
 msgstr ""
 
@@ -837,6 +796,7 @@ msgid "Length"
 msgstr ""
 
 #: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Height"
 msgstr ""
 
@@ -857,15 +817,12 @@ msgid "Functions"
 msgstr ""
 
 #: assets/js/wowaddons.js:151
-msgid "Title"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
 msgid "Enter title here.."
 msgstr ""
 
 #: assets/js/wowaddons.js:151
-msgid "Help Text"
+#: assets/js/wowaddons.js:155
+msgid "Title"
 msgstr ""
 
 #: assets/js/wowaddons.js:151
@@ -873,7 +830,11 @@ msgid "Enter help text here.."
 msgstr ""
 
 #: assets/js/wowaddons.js:151
-msgid "Formula Expression"
+msgid "Help Text"
+msgstr ""
+
+#: assets/js/wowaddons.js:151
+msgid "Item"
 msgstr ""
 
 #: assets/js/wowaddons.js:151
@@ -893,35 +854,57 @@ msgid "Maximum Quantity"
 msgstr ""
 
 #: assets/js/wowaddons.js:151
+msgid "Formula Expression"
+msgstr ""
+
+#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Hide Title"
 msgstr ""
 
 #: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Required"
 msgstr ""
 
 #: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Enable Formula Value"
 msgstr ""
 
 #: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Allow Multiple"
 msgstr ""
 
 #: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Min Max Restriction"
 msgstr ""
 
 #: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Enable Quantity"
 msgstr ""
 
 #: assets/js/wowaddons.js:151
-msgid "Text Format & Headings"
+msgid "Bold (Ctrl+B)"
+msgstr ""
+
+#: assets/js/wowaddons.js:151
+msgid "Italic (Ctrl+I)"
+msgstr ""
+
+#: assets/js/wowaddons.js:151
+msgid "Underline (Ctrl+U)"
 msgstr ""
 
 #: assets/js/wowaddons.js:151
 msgid "Highlight"
+msgstr ""
+
+#: assets/js/wowaddons.js:151
+msgid "Remove"
 msgstr ""
 
 #: assets/js/wowaddons.js:151
@@ -933,15 +916,11 @@ msgid "Add Image"
 msgstr ""
 
 #: assets/js/wowaddons.js:151
-msgid "Images cannot be inserted inside table cells"
+msgid "Upload Image"
 msgstr ""
 
 #: assets/js/wowaddons.js:151
 msgid "Edit Image"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Upload Image"
 msgstr ""
 
 #: assets/js/wowaddons.js:151
@@ -977,7 +956,15 @@ msgid "Insert Link"
 msgstr ""
 
 #: assets/js/wowaddons.js:151
+msgid "URL"
+msgstr ""
+
+#: assets/js/wowaddons.js:151
 msgid "Enter URL…"
+msgstr ""
+
+#: assets/js/wowaddons.js:151
+msgid "Link Target"
 msgstr ""
 
 #: assets/js/wowaddons.js:151
@@ -993,14 +980,6 @@ msgid "Apply"
 msgstr ""
 
 #: assets/js/wowaddons.js:151
-msgid "Remove Link"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Remove"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
 msgid "List Styles"
 msgstr ""
 
@@ -1010,6 +989,10 @@ msgstr ""
 
 #: assets/js/wowaddons.js:151
 msgid "Bullet List"
+msgstr ""
+
+#: assets/js/wowaddons.js:151
+msgid "1."
 msgstr ""
 
 #: assets/js/wowaddons.js:151
@@ -1036,827 +1019,1043 @@ msgstr ""
 msgid "Remove List"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
-msgid "Table Operations"
+#. translators: 1: number of rows, 2: number of columns
+#: assets/js/wowaddons.js:152
+msgid "%1$d x %2$d Table"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
+msgid "Select table size"
+msgstr ""
+
+#: assets/js/wowaddons.js:152
 msgid "Insert Table"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Row/Column Options"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Add Row Above"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Add Row Below"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Add Column Left"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Add Column Right"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Delete Row"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Delete Column"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Cell Operations"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Merge Cells"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Split Cell"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Toggle Header Row"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Toggle Header Column"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Delete Table"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Undo (Ctrl+Z)"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Redo (Ctrl+Y)"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Enter HTML code here…"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Loading editor…"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Content Editor"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Popup Content Editor"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Disable Specific Dates"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Remove date"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Min Date"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "None"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Current Day"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Custom"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Max Date"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
-msgid "Price Type"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Regular"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Sales"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Active"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Add New Option"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Applied Fields"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Formula cannot be empty."
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Formula contains invalid characters."
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Value is not a valid number."
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Invalid formula."
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Processed formula is empty."
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Calculation resulted in a non-numeric or invalid value."
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Calculation resulted in an infinite value, returning 0."
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Calculation error:"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Help Text Position"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Below Title"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Tooltip"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Custom Formula"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Example 1:"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Example 2:"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Add Variables to Formula"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Product Price"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Addon Field"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Minimum Character"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Maximum Character"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Flag Style"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Enable PostFix"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "PostFix Text"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Minimum Value"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Maximum Value"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Steps"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Default Value"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Enable Min/Max Restriction"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Row"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Placeholder"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Merge Variation Products into one product"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Update product image on selection"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Enabled by default"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Upload Text"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Drag & Drop Text"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Maximum File Size (MB)"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Error Message"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "File Size Prefix Text"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Maximum Number of Files"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "File Number Prefix Text"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Allowed Type Prefix Text"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Allowed File Types"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
-msgid "Fixed Height"
+#: assets/js/wowaddons.js:152
+msgid "Below Field"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
-msgid "Columns"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Image Style"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
+msgid "Normal"
+msgstr ""
+
+#: assets/js/wowaddons.js:152
+msgid "Circle"
+msgstr ""
+
+#: assets/js/wowaddons.js:152
+msgid "Fixed Height"
+msgstr ""
+
+#: assets/js/wowaddons.js:152
+msgid "Columns"
+msgstr ""
+
+#: assets/js/wowaddons.js:152
 msgid "Price Position"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Text Transform"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Image Styles"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Border Radius"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Visibility"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Always"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Show on Hover"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Hide on Hover"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
+msgid "Overlay Color"
+msgstr ""
+
+#: assets/js/wowaddons.js:152
+msgid "Overlay Background"
+msgstr ""
+
+#: assets/js/wowaddons.js:152
 msgid "Element Class Name"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:152
 msgid "Element ID"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#. translators: %d: number of colors selected.
+#: assets/js/wowaddons.js:155
+msgid "%d color selected"
+msgid_plural "%d colors selected"
+msgstr[0] ""
+msgstr[1] ""
+
+#: assets/js/wowaddons.js:155
+msgid "Select colors"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Remove color"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Add a color"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Back to list"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "This color is already added"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Add Color"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "dates selected"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Pick a Date"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Enable Conditional Logic for this Element"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Show"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Hide"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "this field if"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Any"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "All"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "of these rules match:"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Field"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Comparison"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Value"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Is"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Not Is"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "In"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Not In"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Is Empty"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Is Not Empty"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Contains"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Not Contains"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Less than"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Less or Equal than"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Greater than"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Great or Equal than"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Between"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Before(Time)"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "After(Time)"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Select Relation"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Add Conditions"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
 msgid "Browse Elements"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Close"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Search elements…"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
+msgid "Italic"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Underline"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Line through"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
 msgid "Preview"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Assign Options To"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Select Products"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Select Categories"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Exclude Specific Products"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "You are not allowed to do this"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
-msgid "You have unsaved changes. Save Before leave"
+#: assets/js/wowaddons.js:155
+msgid "You have unsaved changes. Save Before leave. If you want to discard changes, click \"Discard & Exit\"."
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Alert"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
-msgid "Please choose at least one product."
+#: assets/js/wowaddons.js:155
+msgid "Please choose at least one product. If you want to save without choosing products, please select \"Draft\" status."
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Proceed"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Confirm"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
-msgid "Discard"
+#: assets/js/wowaddons.js:155
+msgid "Discard & Exit"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Save & Exit"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Add"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Exit"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Global Style"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Save"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Saved"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Ready to Use Product Addons Pro?"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Enter Your License Key Here…"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "If you’re unable to activate your product license, please contact the"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "support team"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
+msgid "License activated successfully"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Some issues occured"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Please enter a license key."
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Activating License…"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
 msgid "Activate License"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Congratulations!"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "You've unlocked Product Addons Pro - all you have to do is build campaigns and deploy. Product Addons will take care of the rest!"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Do I need the free version of the plugin on my site?"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Yes. You can use the free version of the plugin, which includes the free features of Product Addons. However, please note that to use the pro features, you need the free version of the plugin installed on your WordPress site."
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Where do I get my product license?"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "You can copy the product license from the client dashboard. Once you copy it, paste the license key into the Product Addons License validation page."
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "How do I get help to use Product Addons Pro?"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Please go to the support link: <a href='https://www.wpxpo.com/contact/.' target='_blank'>www.wpxpo.com/contact</a>"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Product Addons is a product of WPXPO. The contact support team is ready to help you with any queries, including how to use the pro version of Product Addons."
 msgstr ""
 
-#: assets/js/wowaddons.js:151
-msgid "License Type"
+#: assets/js/wowaddons.js:155
+msgid "License Type:"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
-msgid "Expire On"
+#: assets/js/wowaddons.js:155
+msgid "Expire On:"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
+msgid "Deactivating…"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
 msgid "Deactivate License"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Unlimited Sites - Yearly"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "1 Site - Lifetime"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "25 Sites - Lifetime"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Choose a upgrade plan"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Upgrade Now"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Import Lists"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "blocks"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Uploading:"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Select at least item from the list"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Import Selected"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
+msgid "There is nothing to import in this file."
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Invalid JSON file. Please upload a valid JSON file."
+msgstr ""
+
+#: assets/js/wowaddons.js:155
 msgid "Import"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Option Status Updated"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "ID"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Status"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Assigned Product"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Options Applied"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Untitled"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
+msgid "Active"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
 msgid "Deactive"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Edit"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Export"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Duplicate"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
-msgid "Are you sure you want to delete these options?"
+#: assets/js/wowaddons.js:155
+msgid "Are you sure you want to delete these options? This action cannot be undone."
 msgstr ""
 
-#: assets/js/wowaddons.js:151
-msgid "Are you sure you want to delete this option?"
+#: assets/js/wowaddons.js:155
+msgid "Are you sure you want to delete this option? This action cannot be undone."
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "No"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Yes, Delete"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "is a B2B wholesale plugin featuring advanced wholesale pricing and customization features."
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "is a complete WooCommerce store builder featuring advanced options to improve sales!"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "boost sales and maximize revenue with the advanced discount campaigns of WowRevenue."
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "generates actionable leads and boost sales with popups, banners, and floating bars using WowOptin."
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "creates wonderful custom blogs and more using the powerful and customizable PostX site builder."
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "WowStore"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "No-code WooCommerce, start to finish!"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "WowRevenue"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Boost Sales & AOV with Custom Campaigns!"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "WholesaleX"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "All-in-One B2B Wholesale Solution."
 msgstr ""
 
-#: assets/js/wowaddons.js:151
-msgid "Read Now"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Beginner Tutorials"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Watch Video"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Failed to load settings"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Settings saved successfully!"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Save failed"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Cleanup Upload Field Files"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Clean up all files uploaded through this field to free storage and remove unused data."
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Files that are uploaded but not placed in order"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Removes after a specified number of days."
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Files that are uploaded and placed in order"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Files that are uploaded and completed in order"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Other Settings"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Configure the field label along with all related appearance and behavior settings."
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Change your Addon Price text here."
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Change your Total Price text here."
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Change your shop page Add to Cart text here."
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Save Settings"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Thank You!"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Your message has been received. We will contact you soon on your email with a response. Stay connected and check mail!"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Message"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Write your message here..."
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Sending"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Send"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Activate"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Install"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Activated"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Main logo"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Unlock Customizations without Boundaries"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "Effortlessly add custom product options—text fields, images, swatches, and more!"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "WowOptions Badge"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "This is Dummy Data"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
-msgid "View All"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Join Our Community"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Join the WowAddons community to connect with other users and share your experience with everyone"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Join The Community"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
-msgid "Resources"
-msgstr ""
-
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Leave a review!"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Love the features and functionalities of WowAddons - show your support by sharing a 5-star review."
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Write a Review"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
+msgid "Read Now"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Beginner Tutorials"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Watch Video"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Failed to load settings"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Settings saved successfully!"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Save failed"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Cleanup Upload Field Files"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Clean up all files uploaded through this field to free storage and remove unused data."
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Files that are uploaded but not placed in order"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Removes after a specified number of days."
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Files that are uploaded and placed in order"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Files that are uploaded and completed in order"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Other Settings"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Configure the field label along with all related appearance and behavior settings."
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Change your Addon Price text here."
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Change your Total Price text here."
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Change your shop page Add to Cart text here."
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Save Settings"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Questions? Create an Issue!"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Thank You!"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Your message has been received. We will contact you soon on your email with a response. Stay connected and check mail!"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Email"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Message"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Invalid file type(s):"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Only images, CSV, Excel, PDF, and Word documents are allowed."
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Choose Files"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Sending…"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Send"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Activated"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Activate"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Install"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Main logo"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Unlock Customizations without Boundaries"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Effortlessly add custom product options—text fields, images, swatches, and more!"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "WowOptions Badge"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "This is Dummy Data"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "View All"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
+msgid "Resources"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
 msgid "Applied to (Product)"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Click Rate"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
 msgid "Add to Cart Rate"
 msgstr ""
 
-#: assets/js/wowaddons.js:151
+#: assets/js/wowaddons.js:155
+msgid "Sales"
+msgstr ""
+
+#: assets/js/wowaddons.js:155
 msgid "Plugin Details"
 msgstr ""
 

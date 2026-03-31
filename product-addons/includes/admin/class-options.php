@@ -61,7 +61,7 @@ class Options {
 		);
 
 		$setting_link = array(
-			'prad_options' => '<a href="' . esc_url( admin_url( 'admin.php?page=prad-dashboard#lists' ) ) . '">' . esc_html__( 'Options', 'product-addons' ) . '</a>',
+			'prad_options' => '<a href="' . esc_url( admin_url( 'admin.php?page=prad-dashboard#lists' ) ) . '">' . esc_html__( 'Create Options', 'product-addons' ) . '</a>',
 		);
 
 		$upgrade_link = array();

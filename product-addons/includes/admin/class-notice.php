@@ -190,7 +190,7 @@ class Notice {
 				}
 				$query_args = array(
 					'disable_prad_notice' => $notice_key,
-					'wpnonce'             => $prad_db_nonce,
+					'prad_db_nonce'       => $prad_db_nonce,
 				);
 				if ( isset( $notice['repeat_interval'] ) && $notice['repeat_interval'] ) {
 					$query_args['prad_interval'] = $notice['repeat_interval'];
@@ -362,7 +362,7 @@ class Notice {
 
 		);
 
-		$prad_db_nonce = wp_create_nonce( 'prad-dashboard-nonce' );
+		$prad_db_nonce = wp_create_nonce( 'prad-nonce' );
 
 		foreach ( $content_notices as $key => $notice ) {
 			$notice_key = isset( $notice['key'] ) ? $notice['key'] : $this->notice_version;
@@ -652,8 +652,9 @@ class Notice {
 	 * @return void
 	 */
 	public function set_dismiss_notice_callback() {
+		$prad_db_nonce = sanitize_text_field( wp_unslash( $_GET['prad_db_nonce'] ?? '' ) );
 
-		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['wpnonce'] ?? '' ) ), 'prad-nonce' ) ) {
+		if ( ! ( ! empty( $prad_db_nonce ) && wp_verify_nonce( $prad_db_nonce, 'prad-nonce' ) ) ) {
 			return;
 		}
 
@@ -772,7 +773,7 @@ class Notice {
 											array(
 												'prad_durbin_key' => $durbin_key,
 												'prad_get_durbin' => 'get',
-												'wpnonce' => $prad_db_nonce,
+												'prad_db_nonce' => $prad_db_nonce,
 											)
 										)
 									);
@@ -786,7 +787,7 @@ class Notice {
 								add_query_arg(
 									array(
 										'prad_durbin_key' => $durbin_key,
-										'wpnonce'         => $prad_db_nonce,
+										'prad_db_nonce'   => $prad_db_nonce,
 									)
 								)
 							);
