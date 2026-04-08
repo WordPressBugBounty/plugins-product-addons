@@ -279,10 +279,10 @@ class Xpo {
 		);
 
 		// Step 1: Get parameters.
-		$base_url      = $params['url'] ?? 'https://www.wpxpo.com/product/wowaddons/';
+		$base_url      = $params['url'] ?? 'https://www.wpxpo.com/product/wowaddons/pricing';
 		$utm_key       = $params['utmKey'] ?? null;
 		$affiliate     = $params['affiliate'] ?? apply_filters( 'prad_affiliate_id', '' );
-		$hash          = $params['hash'] ?? 'pricing';
+		$hash          = $params['hash'] ?? '';
 		$custom_config = $params['config'] ?? null;
 
 		$parsed_url = parse_url( $base_url );
@@ -339,6 +339,7 @@ class Xpo {
 	public static function get_wow_products_details() {
 		return array(
 			'products'        => array(
+				'wow_shipping'      => file_exists( WP_PLUGIN_DIR . '/wow-table-rate-shipping/wow-table-rate-shipping.php' ),
 				'post_x'      => file_exists( WP_PLUGIN_DIR . '/ultimate-post/ultimate-post.php' ),
 				'wow_store'   => file_exists( WP_PLUGIN_DIR . '/product-blocks/product-blocks.php' ),
 				'wow_optin'   => file_exists( WP_PLUGIN_DIR . '/optin/optin.php' ),
@@ -347,12 +348,13 @@ class Xpo {
 				'wow_addon'   => file_exists( WP_PLUGIN_DIR . '/product-addons/product-addons.php' ),
 			),
 			'products_active' => array(
-				'post_x'      => defined( 'ULTP_VER' ),
-				'wow_store'   => defined( 'WOPB_VER' ),
-				'wow_optin'   => defined( 'OPTN_VERSION' ),
-				'wow_revenue' => defined( 'REVENUE_VER' ),
-				'wholesale_x' => defined( 'WHOLESALEX_VER' ),
-				'wow_addon'   => defined( 'PRAD_VER' ),
+				'wow_shipping' => defined( 'WTRS_VER' ),
+				'post_x'       => defined( 'ULTP_VER' ),
+				'wow_store'    => defined( 'WOPB_VER' ),
+				'wow_optin'    => defined( 'OPTN_VERSION' ),
+				'wow_revenue'  => defined( 'REVENUE_VER' ),
+				'wholesale_x'  => defined( 'WHOLESALEX_VER' ),
+				'wow_addon'    => defined( 'PRAD_VER' ),
 			),
 		);
 	}
@@ -367,6 +369,9 @@ class Xpo {
 		$to_r        = array( 'done' => true );
 		$plugin_slug = '';
 		switch ( $name ) {
+			case 'wow_shipping':
+				$plugin_slug = 'wow-table-rate-shipping';
+				break;
 			case 'post_x':
 				$plugin_slug = 'ultimate-post';
 				break;

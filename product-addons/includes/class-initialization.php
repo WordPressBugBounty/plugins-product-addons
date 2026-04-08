@@ -129,7 +129,7 @@ class Initialization {
 							'uploadFileTypes' => product_addons()->prad_get_upload_allowed_file_types(),
 							'pradAttributes'  => product_addons()->prad_get_attributes(),
 						),
-						product_addons()->get_wow_products_details()
+						Xpo::get_wow_products_details()
 					)
 				);
 				wp_set_script_translations( 'prad-editor-script', 'product-addons', PRAD_PATH . 'languages/' );

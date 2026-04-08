@@ -1008,6 +1008,7 @@ class Functions {
 	public function get_wow_products_details() {
 		return array(
 			'products'        => array(
+				'wow_shipping' => file_exists( WP_PLUGIN_DIR . '/wow-table-rate-shipping/wow-table-rate-shipping.php' ),
 				'post_x'      => file_exists( WP_PLUGIN_DIR . '/ultimate-post/ultimate-post.php' ),
 				'wow_store'   => file_exists( WP_PLUGIN_DIR . '/product-blocks/product-blocks.php' ),
 				'wow_optin'   => file_exists( WP_PLUGIN_DIR . '/optin/optin.php' ),
@@ -1015,6 +1016,7 @@ class Functions {
 				'wholesale_x' => file_exists( WP_PLUGIN_DIR . '/wholesalex/wholesalex.php' ),
 			),
 			'products_active' => array(
+				'wow_shipping' => defined( 'WTRS_VER' ),
 				'post_x'      => defined( 'ULTP_VER' ),
 				'wow_store'   => defined( 'WOPB_VER' ),
 				'wow_optin'   => defined( 'OPTN_VERSION' ),
