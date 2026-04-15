@@ -195,7 +195,7 @@ class Options {
 				$notice_start = gmdate( 'U', strtotime( $start ) );
 				$notice_end   = gmdate( 'U', strtotime( $end ) );
 				if ( $current_time >= $notice_start && $current_time <= $notice_end ) {
-					$pro_link_text = esc_html__( 'New Year Offer!', 'product-options' );
+					$pro_link_text = esc_html__( 'New Year Offer!', 'product-addons' );
 				}
 			}
 		} elseif ( Xpo::is_lc_expired() ) {

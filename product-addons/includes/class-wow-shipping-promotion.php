@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class WowShippingPromotion {
 
-	private const VERSION              = '10'; // Cache buster.
+	private const VERSION              = '20'; // Cache buster.
 	private const MENU_SLUG            = 'prad-dashboard'; // CHANGE THIS.
 	private const PROMOTED_PLUGIN_SLUG = 'wow-table-rate-shipping';
 	private const PROMOTED_PLUGIN_FILE = 'wow-table-rate-shipping/wow-table-rate-shipping.php';
@@ -22,54 +22,65 @@ class WowShippingPromotion {
 	 * Setup class.
 	 */
 	public function __construct() {
-		add_action( 'plugins_loaded', array( $this, 'load' ) );
+		add_filter( 'wtrs_promotion_hooks', array( $this, 'load' ) );
+		add_action( 'plugins_loaded', array( $this, 'run_promotions' ) );
+	}
+
+	/**
+	 * Run promotions.
+	 *
+	 * @return void
+	 */
+	public function run_promotions() {
+		if ( ! class_exists( '\WooCommerce' ) || defined( 'WTRS_VER' ) ) {
+				return;
+		}
+
+		add_action( 'admin_menu', array( $this, 'add_submenu' ), 9999 );
+
+		if ( $GLOBALS['wtrs_promotion']['init'] ?? false ) {
+				return;
+		}
+
+		$GLOBALS['wtrs_promotion'] = array( 'init' => true );
+		$hooks                     = apply_filters( 'wtrs_promotion_hooks', array() );
+
+		if ( ! is_array( $hooks ) ) {
+				return;
+		}
+
+		uksort( $hooks, 'version_compare' );
+		$latest_hook = end( $hooks );
+
+		if ( is_callable( $latest_hook ) ) {
+				$latest_hook();
+		}
 	}
 
 	/**
 	 * Load plugin
 	 *
-	 * @return void
+	 * @param array $callbacks Callbacks array.
+	 * @return array
 	 */
-	public function load() {
-		if ( ! class_exists( '\WooCommerce' ) ||
-		defined( 'WTRS_VER' )
-		) {
-			return;
+	public function load( $callbacks ) {
+		if ( isset( $callbacks[ self::VERSION ] ) ) {
+				return $callbacks;
 		}
 
-		// Plugin sidemenu.
-		add_action( 'admin_menu', array( $this, 'add_submenu' ), 9999 );
+		$callbacks[ self::VERSION ] = function () {
+				add_action( 'wp_ajax_wtrs_dismiss_promotion', array( $this, 'ajax_dismiss_promotion' ) );
+				add_action( 'wp_ajax_wtrs_install_promotion_plugin', array( $this, 'ajax_install_promotion_plugin' ) );
+				add_action( 'woocommerce_product_options_shipping', array( $this, 'render_shipping_notice' ) );
+				add_action( 'product_cat_add_form_fields', array( $this, 'render_product_category_add_notice' ) );
+				add_filter( 'woocommerce_general_settings', array( $this, 'register_general_shipping_location_notice' ) );
+				add_filter( 'woocommerce_product_settings', array( $this, 'register_product_dimensions_notice' ) );
+				add_action( 'woocommerce_admin_field_wtrs_promotion_notice', array( $this, 'render_settings_promotion_field' ) );
+				add_action( 'admin_notices', array( $this, 'render_orders_page_notice' ) );
+				add_action( 'admin_notices', array( $this, 'render_shipping_page_notice' ) );
+		};
 
-		if ( $GLOBALS['wtrs_promotion']['init'] ?? false ) {
-			return;
-		}
-
-		$GLOBALS['wtrs_promotion'] = array(
-			'init' => true,
-		);
-
-		// Dismiss actions.
-		add_action( 'wp_ajax_wtrs_dismiss_promotion', array( $this, 'ajax_dismiss_promotion' ) );
-		add_action( 'wp_ajax_wtrs_install_promotion_plugin', array( $this, 'ajax_install_promotion_plugin' ) );
-
-		// Promotions.
-		// ------------------.
-
-		// Product edit shipping tab.
-		add_action( 'woocommerce_product_options_shipping', array( $this, 'render_shipping_notice' ) );
-
-		// Product category page.
-		add_action( 'product_cat_add_form_fields', array( $this, 'render_product_category_add_notice' ) );
-
-		// WC General settings.
-		add_filter( 'woocommerce_general_settings', array( $this, 'register_general_shipping_location_notice' ) );
-		add_action( 'woocommerce_admin_field_wtrs_promotion_notice', array( $this, 'render_settings_promotion_field' ) );
-
-		// Order Page.
-		add_action( 'admin_notices', array( $this, 'render_orders_page_notice' ) );
-
-		// Shipping Settings page.
-		add_action( 'admin_notices', array( $this, 'render_shipping_page_notice' ) );
+		return $callbacks;
 	}
 
 	/**
@@ -133,7 +144,7 @@ class WowShippingPromotion {
 		if ( ! $plugin_exists && ! current_user_can( 'install_plugins' ) ) {
 			wp_send_json_error(
 				array(
-					'message' => esc_html__( 'You are not allowed to install plugins.', 'wow-table-rate-shipping' ),
+					'message' => esc_html__( 'You are not allowed to install plugins.', 'product-addons' ),
 				)
 			);
 		}
@@ -141,7 +152,7 @@ class WowShippingPromotion {
 		if ( $plugin_exists && ! current_user_can( 'activate_plugins' ) ) {
 			wp_send_json_error(
 				array(
-					'message' => esc_html__( 'You are not allowed to activate plugins.', 'wow-table-rate-shipping' ),
+					'message' => esc_html__( 'You are not allowed to activate plugins.', 'product-addons' ),
 				)
 			);
 		}
@@ -151,7 +162,7 @@ class WowShippingPromotion {
 		if ( false === $result ) {
 			wp_send_json_error(
 				array(
-					'message' => esc_html__( 'Failed to install WowShipping.', 'wow-table-rate-shipping' ),
+					'message' => esc_html__( 'Failed to install WowShipping.', 'product-addons' ),
 				)
 			);
 		}
@@ -160,7 +171,7 @@ class WowShippingPromotion {
 			array(
 				'status'        => $result,
 				'dashboard_url' => $this->get_dashboard_url(),
-				'message'       => esc_html__( 'WowShipping installed successfully.', 'wow-table-rate-shipping' ),
+				'message'       => esc_html__( 'WowShipping installed successfully.', 'product-addons' ),
 			)
 		);
 	}
@@ -214,10 +225,16 @@ class WowShippingPromotion {
 
 		global $pagenow;
 		$post_type = get_post_type();
-		$action    = sanitize_text_field( wp_unslash( $_GET['action'] ?? '' ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( empty( $post_type ) ) {
+				$post_type = sanitize_text_field( wp_unslash( $_GET['post_type'] ?? '' ) );
+		}
+		$action = sanitize_text_field( wp_unslash( $_GET['action'] ?? '' ) );
 
-		if ( 'edit' !== $action || 'product' !== $post_type || 'post.php' !== $pagenow ) {
-			return;
+		$is_edit_product_page = 'post.php' === $pagenow && 'edit' === $action;
+		$is_new_product_page  = 'post-new.php' === $pagenow;
+
+		if ( 'product' !== $post_type || ( ! $is_edit_product_page && ! $is_new_product_page ) ) {
+				return;
 		}
 
 		$this->render_promotion_notice(
@@ -227,8 +244,8 @@ class WowShippingPromotion {
 			'margin-inline:10px;',
 			true,
 			array(
-				'default' => 'Configure Now',
-				'loading' => 'Configuring...',
+				'default' => 'Get Started',
+				'loading' => 'Starting...',
 			)
 		);
 	}
@@ -303,36 +320,74 @@ class WowShippingPromotion {
 	}
 
 	/**
+	 * Insert a promotion field after the Product dimension unit setting.
+	 *
+	 * @param array $settings WooCommerce product settings.
+	 * @return array
+	 */
+	public function register_product_dimensions_notice( $settings ) {
+		if ( ! is_array( $settings ) || ! $this->should_show_promotion( 'product_dimensions_unit' ) ) {
+				return $settings;
+		}
+
+		$notice = array(
+			'title' => '',
+			'type'  => 'wtrs_promotion_notice',
+			'id'    => 'wtrs-product-dimensions-unit',
+		);
+
+		$updated_settings = array();
+
+		foreach ( $settings as $setting ) {
+				$updated_settings[] = $setting;
+
+			if ( 'woocommerce_dimension_unit' === ( $setting['id'] ?? '' ) ) {
+					$updated_settings[] = $notice;
+			}
+		}
+
+		return $updated_settings;
+	}
+
+	/**
 	 * Render the WooCommerce settings promotion row.
 	 *
 	 * @param array $field Custom field definition.
 	 * @return void
 	 */
 	public function render_settings_promotion_field( $field ) {
+		$field_id = $field['id'] ?? '';
 
-		if ( 'wtrs-general-shipping-location' !== ( $field['id'] ?? '' ) ) {
-			return;
+		if ( 'wtrs-general-shipping-location' === $field_id ) {
+				$message = 'Set Shipping Rules for Specific Location';
+				$type    = 'general_shipping_location';
+				$id      = 'wtrs-general-shipping-location';
+				$style   = 'width:400px;';
+				$labels  = array(
+					'default' => 'Quick Setup',
+					'loading' => 'Setting up...',
+				);
+		} elseif ( 'wtrs-product-dimensions-unit' === $field_id ) {
+				$message = 'Set shipping rates based on <strong>cart weight</strong> and <strong>dimension</strong>';
+				$type    = 'product_dimensions_unit';
+				$id      = 'wtrs-product-dimensions-unit';
+				$style   = 'width:400px;';
+				$labels  = array(
+					'default' => 'Get Started',
+					'loading' => 'Starting...',
+				);
+		} else {
+				return;
 		}
 
 		?>
 		<tr valign="top">
-			<th scope="row"></th>
-			<td>
-				<?php
-				$this->render_promotion_notice(
-					'wtrs-general-shipping-location',
-					'general_shipping_location',
-					'Set Shipping Rules for Specific Location',
-					'width:400px;',
-					true,
-					array(
-						'default'   => 'Quick Setup',
-						'loading'   => 'Setting up...',
-						'installed' => 'Installed',
-					)
-				);
-				?>
-			</td>
+				<th scope="row"></th>
+				<td>
+						<?php
+						$this->render_promotion_notice( $id, $type, $message, $style, true, $labels );
+						?>
+				</td>
 		</tr>
 		<?php
 	}
@@ -446,8 +501,8 @@ class WowShippingPromotion {
 		$button_labels = wp_parse_args(
 			is_array( $button_labels ) ? $button_labels : array(),
 			array(
-				'default' => 'Install WowShipping - Free',
-				'loading' => 'Installing...',
+				'default' => 'Start Now',
+				'loading' => 'Starting...',
 			)
 		);
 
@@ -481,7 +536,7 @@ class WowShippingPromotion {
 				</a>
 			</div>
 			<button type="button" class="notice-dismiss">
-				<span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice.', 'wow-table-rate-shipping' ); ?></span>
+				<span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice.', 'product-addons' ); ?></span>
 			</button>
 		</div>
 		<?php $this->echo_dismiss_notice_js( '#' . $id ); ?>
@@ -542,7 +597,7 @@ class WowShippingPromotion {
 				$( document ).on( 'click', '<?php echo esc_js( $id ); ?> .wtrs-promotion-install-link', function( event ) {
 					var $button = $( this );
 					var $notice = $button.closest( '<?php echo esc_js( $id ); ?>' );
-					var defaultErrorMessage = <?php echo wp_json_encode( esc_html__( 'Failed to install WowShipping.', 'wow-table-rate-shipping' ) ); ?>;
+					var defaultErrorMessage = <?php echo wp_json_encode( esc_html__( 'Failed to install WowShipping.', 'product-addons' ) ); ?>;
 
 					event.preventDefault();
 

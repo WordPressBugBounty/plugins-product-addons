@@ -4,7 +4,7 @@ Tags: product addons, woocommerce product addons, extra product options, product
 Requires at least: 6.8
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.6.4
+Stable tag: 1.6.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -115,6 +115,8 @@ Thank you for choosing WowAddons, a leading WooCommerce Product Addons plugin. D
 
 Thank you for considering WowAddons. We have more plugins that can be beneficial for your business. So please have a look at our other plugins.
 
+🚚 [**WowShipping 🔥:**](https://wordpress.org/plugins/wow-table-rate-shipping/) Dynamically calculate shipping rates based on weight, quantity, product, categories, country, etc, allowing you to avoid undercharging and overcharging.
+
 💝 [**WowStore:**](https://wordpress.org/plugins/product-blocks/) The ultimate WooCommerce solution for building and managing eCommerce sites. Packed with features to enhance conversions and boost sales, it streamlines your store’s performance.
 
 💸 [**WowRevenue:**](https://wordpress.org/plugins/revenue/) The premier WooCommerce plugin for discounts, offering product bundles, BOGO deals, bulk discounts, and more. Increase order value and revenue with seamless WooCommerce Product Options.
@@ -197,6 +199,9 @@ No, for some product fields like Headings, Texts, advanced custom logic options 
 7. Strategic Cross-selling 
 
 == Changelog ==
+= 1.6.5 – 15th April 2026 =
+* Fix: Minor bug fixes and improvements.
+
 = 1.6.4 – 8th April 2026 =
 * Fix: Performance Improved.
 

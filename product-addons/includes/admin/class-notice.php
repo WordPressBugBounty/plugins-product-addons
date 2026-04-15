@@ -334,6 +334,7 @@ class Notice {
 				),
 				'visibility'         => ! Xpo::is_lc_active(),
 				'content_heading'    => __( 'Spring Sale:', 'product-addons' ),
+				/* translators: %s: discount percentage */
 				'content_subheading' => __( 'WowAddons offers are live - Enjoy %s off on WowAddons Pro.', 'product-addons' ),
 				'discount_content'   => ' up to 55% OFF',
 				'border_color'       => '#86a62c',
@@ -352,6 +353,7 @@ class Notice {
 				),
 				'visibility'         => ! Xpo::is_lc_active(),
 				'content_heading'    => __( 'Spring Sale:', 'product-addons' ),
+				/* translators: %s: discount percentage */
 				'content_subheading' => __( 'WowAddons offers are live - Enjoy %s off on WowAddons Pro.', 'product-addons' ),
 				'discount_content'   => ' up to 55% OFF',
 				'border_color'       => '#86a62c',
