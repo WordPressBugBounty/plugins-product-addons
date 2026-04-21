@@ -31,18 +31,37 @@ defined( 'ABSPATH' ) || exit;
  * Parses a token stream into an AST.
  */
 final class Expression_Parser {
-	/** @var Expression_Token[] */
+	/**
+	 * Token stream to be parsed.
+	 *
+	 * @var Expression_Token[]
+	 */
 	private $tokens;
-	/** @var int */
+	/**
+	 * Current token index.
+	 *
+	 * @var int
+	 */
 	private $i = 0;
 
+	/**
+	 * Constructor for Expression_Parser.
+	 *
+	 * Initializes the Expression_Parser with a token stream.
+	 *
+	 * Expression_Parser constructor.
+	 *
+	 * @param Expression_Token[] $tokens Token stream to be parsed.
+	 */
 	public function __construct( array $tokens ) {
 		$this->tokens = $tokens;
 	}
 
 	/**
+	 * Parses the token stream and returns the root AST node.
+	 *
 	 * @return Expression_Node
-	 * @throws Expression_Exception
+	 * @throws Expression_Exception If the token stream contains unexpected tokens or invalid syntax.
 	 */
 	public function parse() {
 		$node = $this->parse_or();
@@ -50,15 +69,32 @@ final class Expression_Parser {
 		return $node;
 	}
 
+	/**
+	 * Returns the current token in the token stream.
+	 *
+	 * @return Expression_Token Current token.
+	 */
 	private function current() {
 		return $this->tokens[ $this->i ];
 	}
 
+	/**
+	 * Advances the current token index and returns the previous token.
+	 *
+	 * @return Expression_Token The token before advancing.
+	 */
 	private function advance() {
 		++$this->i;
 		return $this->tokens[ $this->i - 1 ];
 	}
 
+	/**
+	 * Checks if the current token matches the given type and optional value, advances if matched.
+	 *
+	 * @param string $type  The token type to match.
+	 * @param mixed  $value Optional token value to match.
+	 * @return Expression_Token|false Returns the token if matched, false otherwise.
+	 */
 	private function match( $type, $value = null ) {
 		$t = $this->current();
 		if ( $t->type !== $type ) {
@@ -71,16 +107,31 @@ final class Expression_Parser {
 		return $t;
 	}
 
+	/**
+	 * Checks if the current token matches the given type and optional value, throws exception if not matched.
+	 *
+	 * @param string $type  The token type to match.
+	 * @param mixed  $value Optional token value to match.
+	 * @return Expression_Token Returns the token if matched.
+	 * @throws Expression_Exception If the token does not match the expected type or value.
+	 */
 	private function expect( $type, $value = null ) {
 		$t = $this->current();
 		if ( ! $this->match( $type, $value ) ) {
 			$want = $type . ( null !== $value ? ( ':' . $value ) : '' );
 			$got  = $t->type . ( null !== $t->value ? ( ':' . $t->value ) : '' );
-			throw new Expression_Exception( 'Expected ' . $want . ' but got ' . $got . ' at position ' . $t->pos );
+			throw new Expression_Exception(
+				'Expected ' . esc_html( $want ) . ' but got ' . esc_html( $got ) . ' at position ' . esc_html( $t->pos )
+			);
 		}
 		return $t;
 	}
 
+	/**
+	 * Parses logical OR expressions (||) in the token stream.
+	 *
+	 * @return Expression_Node The parsed expression node.
+	 */
 	private function parse_or() {
 		$node = $this->parse_and();
 		while ( $this->match( Expression_Token::T_OPERATOR, '||' ) ) {
@@ -90,6 +141,11 @@ final class Expression_Parser {
 		return $node;
 	}
 
+	/**
+	 * Parses logical AND expressions (&) in the token stream.
+	 *
+	 * @return Expression_Node The parsed expression node.
+	 */
 	private function parse_and() {
 		$node = $this->parse_compare();
 		while ( $this->match( Expression_Token::T_OPERATOR, '&' ) ) {
@@ -99,6 +155,11 @@ final class Expression_Parser {
 		return $node;
 	}
 
+	/**
+	 * Parses comparison expressions (>, <, >=, <=, !=, =) in the token stream.
+	 *
+	 * @return Expression_Node The parsed expression node.
+	 */
 	private function parse_compare() {
 		$node = $this->parse_add();
 
@@ -119,6 +180,11 @@ final class Expression_Parser {
 		return $node;
 	}
 
+	/**
+	 * Parses addition and subtraction expressions (+, -) in the token stream.
+	 *
+	 * @return Expression_Node The parsed expression node.
+	 */
 	private function parse_add() {
 		$node = $this->parse_mul();
 		while ( true ) {
@@ -137,6 +203,11 @@ final class Expression_Parser {
 		return $node;
 	}
 
+	/**
+	 * Parses multiplication and division expressions (*, /) in the token stream.
+	 *
+	 * @return Expression_Node The parsed expression node.
+	 */
 	private function parse_mul() {
 		$node = $this->parse_unary();
 		while ( true ) {
@@ -155,6 +226,11 @@ final class Expression_Parser {
 		return $node;
 	}
 
+	/**
+	 * Parses unary expressions (+, -) in the token stream.
+	 *
+	 * @return Expression_Node The parsed unary expression node.
+	 */
 	private function parse_unary() {
 		if ( $this->match( Expression_Token::T_OPERATOR, '+' ) ) {
 			return new Expression_Unary_Node( '+', $this->parse_unary() );
@@ -165,6 +241,12 @@ final class Expression_Parser {
 		return $this->parse_primary();
 	}
 
+	/**
+	 * Parses primary expressions (numbers, variables, function calls, parentheses) in the token stream.
+	 *
+	 * @return Expression_Node The parsed primary expression node.
+	 * @throws Expression_Exception If an unexpected token is encountered.
+	 */
 	private function parse_primary() {
 		$t = $this->current();
 
@@ -199,6 +281,8 @@ final class Expression_Parser {
 			return $node;
 		}
 
-		throw new Expression_Exception( 'Unexpected token ' . $t->type . ' at position ' . $t->pos );
+		throw new Expression_Exception(
+			'Unexpected token ' . esc_html( $t->type ) . ' at position ' . esc_html( $t->pos )
+		);
 	}
 }

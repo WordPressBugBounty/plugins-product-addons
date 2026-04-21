@@ -279,13 +279,13 @@ class Xpo {
 		);
 
 		// Step 1: Get parameters.
-		$base_url      = $params['url'] ?? 'https://www.wpxpo.com/product/wowaddons/pricing';
+		$base_url      = $params['url'] ?? 'https://www.wpxpo.com/product/wowaddons/pricing/';
 		$utm_key       = $params['utmKey'] ?? null;
 		$affiliate     = $params['affiliate'] ?? apply_filters( 'prad_affiliate_id', '' );
 		$hash          = $params['hash'] ?? '';
 		$custom_config = $params['config'] ?? null;
 
-		$parsed_url = parse_url( $base_url );
+		$parsed_url = wp_parse_url( $base_url );
 		$scheme     = $parsed_url['scheme'] ?? 'https';
 		$host       = $parsed_url['host'] ?? '';
 		$path       = $parsed_url['path'] ?? '';
@@ -466,11 +466,12 @@ class Xpo {
 	 * Handles both array and object formats for backward compatibility.
 	 *
 	 * @param string $key The key of the setting to retrieve.
+	 * @param mixed  $def The default value to return if the key is not found.
 	 * @return mixed|null The value of the setting if found, otherwise null.
 	 */
-	public static function get_prad_settings_item( $key, $default = '' ) {
+	public static function get_prad_settings_item( $key, $def = '' ) {
 		if ( empty( $key ) ) {
-			return $default;
+			return $def;
 		}
 
 		$prad_settings = get_option( 'prad_settings', array() );
@@ -482,19 +483,35 @@ class Xpo {
 			return $prad_settings->$key;
 		}
 
-		return $default;
+		return $def;
 	}
 
-	public static function prad_old_view_permisson_handler( $default = 'manage_options' ) {
-		$view_capability = apply_filters( 'prad_handle_capability_admin_only', $default );  // check for admin hook first.
+	/**
+	 * Handles view permission capability for old demo and admin hooks.
+	 *
+	 * Applies filters for admin-only, view-only, and old demo capability checks.
+	 *
+	 * @param string $def Default capability (usually 'manage_options').
+	 * @return string The resolved capability.
+	 */
+	public static function prad_old_view_permisson_handler( $def = 'manage_options' ) {
+		$view_capability = apply_filters( 'prad_handle_capability_admin_only', $def );  // check for admin hook first.
 		$view_capability = apply_filters( 'prad_handle_capability_view_only', $view_capability );   // then check for view only hook.
 		$view_capability = apply_filters( 'prad_demo_capability_check', $view_capability ); // finally check for old demo hook for backward compatibility.
 
 		return $view_capability;
 	}
 
-	public static function prad_manage_admin_permisson_handler( $default = 'manage_options' ) {
-		$admin_capability = apply_filters( 'prad_handle_capability_admin_only', $default );  // check for admin hook.
+	/**
+	 * Handles admin permission capability for admin hooks.
+	 *
+	 * Applies filter for admin-only capability checks.
+	 *
+	 * @param string $def Default capability (usually 'manage_options').
+	 * @return string The resolved capability.
+	 */
+	public static function prad_manage_admin_permisson_handler( $def = 'manage_options' ) {
+		$admin_capability = apply_filters( 'prad_handle_capability_admin_only', $def );  // check for admin hook.
 
 		return $admin_capability;
 	}

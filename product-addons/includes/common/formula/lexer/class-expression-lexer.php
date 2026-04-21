@@ -16,19 +16,38 @@ defined( 'ABSPATH' ) || exit;
  * Converts an expression string into a token stream.
  */
 final class Expression_Lexer {
-	/** @var string */
+	/**
+	 * The input expression string.
+	 *
+	 * @var string
+	 */
 	private $input;
-	/** @var int */
+	/**
+	 * The length of the input expression string.
+	 *
+	 * @var int
+	 */
 	private $len;
-	/** @var int */
+	/**
+	 * The current position in the input string.
+	 *
+	 * @var int
+	 */
 	private $i = 0;
 
+	/**
+	 * Constructor for Expression_Lexer.
+	 *
+	 * @param string $input The input expression string.
+	 */
 	public function __construct( $input ) {
 		$this->input = (string) $input;
 		$this->len   = strlen( $this->input );
 	}
 
 	/**
+	 * Tokenizes the input expression string into an array of tokens.
+	 *
 	 * @return Expression_Token[]
 	 * @throws Expression_Exception When tokenization fails.
 	 */
@@ -43,7 +62,7 @@ final class Expression_Lexer {
 				continue;
 			}
 
-			// Dynamic placeholder: [ ... ]
+			// Dynamic placeholder: [ ... ].
 			if ( '[' === $ch ) {
 				$start = $this->i;
 				++$this->i;
@@ -53,18 +72,18 @@ final class Expression_Lexer {
 					++$this->i;
 				}
 				if ( $this->i >= $this->len || ']' !== $this->input[ $this->i ] ) {
-					throw new Expression_Exception( 'Unclosed dynamic placeholder starting at position ' . $start );
+					throw new Expression_Exception( 'Unclosed dynamic placeholder starting at position ' . esc_html( $start ) );
 				}
 				++$this->i;
 				$name = trim( $name );
 				if ( '' === $name ) {
-					throw new Expression_Exception( 'Empty dynamic placeholder at position ' . $start );
+					throw new Expression_Exception( 'Empty dynamic placeholder at position ' . esc_html( $start ) );
 				}
 				$tokens[] = new Expression_Token( Expression_Token::T_VARIABLE, $name, $start );
 				continue;
 			}
 
-			// Numbers: 12, 12.34, .5
+			// Numbers: 12, 12.34, .5.
 			if ( ctype_digit( $ch ) || '.' === $ch ) {
 				$start  = $this->i;
 				$number = '';
@@ -89,7 +108,7 @@ final class Expression_Lexer {
 				}
 
 				if ( '.' === $number ) {
-					throw new Expression_Exception( 'Invalid number at position ' . $start );
+					throw new Expression_Exception( 'Invalid number at position ' . esc_html( $start ) );
 				}
 				$tokens[] = new Expression_Token( Expression_Token::T_NUMBER, (float) $number, $start );
 				continue;
@@ -143,7 +162,7 @@ final class Expression_Lexer {
 				continue;
 			}
 
-			throw new Expression_Exception( 'Unexpected character "' . $ch . '" at position ' . $this->i );
+			throw new Expression_Exception( 'Unexpected character "' . esc_html( $ch ) . '" at position ' . esc_html( $this->i ) );
 		}
 
 		$tokens[] = new Expression_Token( Expression_Token::T_EOF, null, $this->len );

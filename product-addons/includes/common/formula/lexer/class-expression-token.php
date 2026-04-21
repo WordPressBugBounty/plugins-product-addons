@@ -23,14 +23,28 @@ final class Expression_Token {
 	public const T_COMMA      = 'comma';
 	public const T_EOF        = 'eof';
 
-	/** @var string */
+	/**
+	 * Token type.
+	 *
+	 * @var string
+	 */
 	public $type;
-	/** @var mixed */
+	/**
+	 * Token value.
+	 *
+	 * @var mixed
+	 */
 	public $value;
-	/** @var int */
+	/**
+	 * Character position within input.
+	 *
+	 * @var int
+	 */
 	public $pos;
 
 	/**
+	 * Constructs a new Expression_Token instance.
+	 *
 	 * @param string $type Token type.
 	 * @param mixed  $value Token value.
 	 * @param int    $pos Character position within input.

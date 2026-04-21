@@ -131,7 +131,7 @@ abstract class Abstract_Expression_Engine {
 			return $value;
 		}
 		if ( is_numeric( $value ) ) {
-			return (float) $value !== 0.0;
+			return 0.0 !== (float) $value;
 		}
 		return ! empty( $value );
 	}

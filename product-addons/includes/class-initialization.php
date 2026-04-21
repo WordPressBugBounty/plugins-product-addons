@@ -88,9 +88,7 @@ class Initialization {
 			wp_localize_script(
 				'prad-admin-script',
 				'prad_admin',
-				array(
-					'license' => get_option( 'edd_prad_license_key' ),
-				)
+				array()
 			);
 			if ( 'prad-dashboard' === $page ) {
 				$user_info = get_userdata( get_current_user_id() );

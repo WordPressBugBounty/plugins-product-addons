@@ -419,6 +419,16 @@ class Analytics {
 	public function update_stats_table( $option_id, $stat_type, $count ) {
 		global $wpdb;
 
+		$table_name = "{$wpdb->prefix}prad_stats_table";
+		if ( $wpdb->get_var( // phpcs:ignore
+			$wpdb->prepare( 'SHOW TABLES LIKE %s', $table_name )
+		) !== $table_name ) {
+			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+
+			$this->create_stats_table();
+			$this->create_stats_graph_table();
+		}
+
 		$allowed_columns = array(
 			'impression_count',
 			'click_count',

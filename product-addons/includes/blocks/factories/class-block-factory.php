@@ -1,4 +1,4 @@
-<?php
+<?php //phpcs:ignore
 /**
  * Block Factory
  *
@@ -28,20 +28,20 @@ class Block_Factory {
 	/**
 	 * Register a block type
 	 *
-	 * @param string $type Block type identifier
-	 * @param string $class_name Full class name
-	 * @throws \InvalidArgumentException If class doesn't implement Block_Interface
+	 * @param string $type Block type identifier.
+	 * @param string $class_name Full class name.
+	 * @throws \InvalidArgumentException If class doesn't implement Block_Interface.
 	 */
 	public static function register_block( string $type, string $class_name ): void {
 		if ( ! class_exists( $class_name ) ) {
 			throw new \InvalidArgumentException(
-				sprintf( 'Block class %s does not exist', $class_name )
+				sprintf( 'Block class %s does not exist', esc_html( $class_name ) )
 			);
 		}
 
 		if ( ! is_subclass_of( $class_name, Block_Interface::class ) ) {
 			throw new \InvalidArgumentException(
-				sprintf( 'Block class %s must implement Block_Interface', $class_name )
+				sprintf( 'Block class %s must implement Block_Interface', esc_html( $class_name ) )
 			);
 		}
 
@@ -53,9 +53,9 @@ class Block_Factory {
 	/**
 	 * Create a block instance
 	 *
-	 * @param string $type Block type
-	 * @param array  $data Block configuration data
-	 * @param int    $product_id Product ID
+	 * @param string $type Block type.
+	 * @param array  $data Block configuration data.
+	 * @param int    $product_id Product ID.
 	 * @return Block_Interface|null
 	 */
 	public static function create_block( string $type, array $data, int $product_id ): ?Block_Interface {
@@ -69,14 +69,14 @@ class Block_Factory {
 		try {
 			$block = new $class_name( $data, $product_id );
 
-			// Apply filters to allow modification
+			// Apply filters to allow modification.
 			$block = apply_filters( 'prad_block_created', $block, $type, $data, $product_id );
 			$block = apply_filters( "prad_block_created_{$type}", $block, $data, $product_id );
 
 			return $block;
 
 		} catch ( \Exception $e ) {
-			error_log(
+			error_log(//phpcs:ignore
 				sprintf(
 					'PRAD Block Factory Error: Failed to create block type "%s". Error: %s',
 					$type,
@@ -93,6 +93,7 @@ class Block_Factory {
 	/**
 	 * Get ClassName by block type
 	 *
+	 * @param string $type Block type.
 	 * @return string
 	 */
 	public static function get_block_class_name_by_type( $type ) {
@@ -129,7 +130,7 @@ class Block_Factory {
 			'advanced_formula' => 'PRAD\Includes\Blocks\Types\Advanced_Formula_Block',
 		);
 
-		if ( product_addons()->is_pro_feature_available() ) {
+		// if ( product_addons()->is_pro_feature_available() ) {
 			// $blocks_array['button']       = class_exists( 'PRAD_PRO_Block\Frontend\Blocks\Types\Button_Block' ) ? 'PRAD_PRO_Block\Frontend\Blocks\Types\Button_Block' : $blocks_array['button'];
 			// $blocks_array['checkbox']     = class_exists( 'PRAD_PRO_Block\Frontend\Blocks\Types\Checkbox_Block' ) ? 'PRAD_PRO_Block\Frontend\Blocks\Types\Checkbox_Block' : $blocks_array['checkbox'];
 			// $blocks_array['color_switch'] = class_exists( 'PRAD_PRO_Block\Frontend\Blocks\Types\Color_Switch_Block' ) ? 'PRAD_PRO_Block\Frontend\Blocks\Types\Color_Switch_Block' : $blocks_array['color_switch'];
@@ -137,7 +138,7 @@ class Block_Factory {
 			// $blocks_array['switch']       = class_exists( 'PRAD_PRO_Block\Frontend\Blocks\Types\Switch_Block' ) ? 'PRAD_PRO_Block\Frontend\Blocks\Types\Switch_Block' : $blocks_array['switch'];
 			// $blocks_array['upload']       = class_exists( 'PRAD_PRO_Block\Frontend\Blocks\Types\Upload_Block' ) ? 'PRAD_PRO_Block\Frontend\Blocks\Types\Upload_Block' : $blocks_array['upload'];
 			// $blocks_array['radio']        = class_exists( 'PRAD_PRO_Block\Frontend\Blocks\Types\Radio_Block' ) ? 'PRAD_PRO_Block\Frontend\Blocks\Types\Radio_Block' : $blocks_array['radio'];
-		}
+		// }.
 
 		return $blocks_array[ $type ] ?? null;
 	}

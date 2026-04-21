@@ -18,7 +18,7 @@ class YayCurrency {
 	 * @return float The converted price in the active currency.
 	 */
 	public function convert( $price ) {
-		return apply_filters( 'yay_currency_convert_price', $price, '' );
+		return apply_filters( 'yay_currency_convert_price', $price, '' );// phpcs:ignore
 	}
 
 	/**
@@ -31,6 +31,6 @@ class YayCurrency {
 	 * @return float The reverted price in the base currency.
 	 */
 	public function revert( $price ) {
-		return apply_filters( 'yay_currency_revert_price', $price, '' );
+		return apply_filters( 'yay_currency_revert_price', $price, '' );// phpcs:ignore
 	}
 }

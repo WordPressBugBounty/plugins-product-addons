@@ -32,11 +32,11 @@ class Product_Blocks_Service {
 	/**
 	 * Get blocks data for a product
 	 *
-	 * @param int $product_id
+	 * @param int $product_id Product ID to retrieve blocks for.
 	 * @return array
 	 */
 	public function get_product_blocks_data( int $product_id ): array {
-		// Check cache first
+		// Check cache first.
 		if ( isset( $this->blocks_cache[ $product_id ] ) ) {
 			return $this->blocks_cache[ $product_id ];
 		}
@@ -47,7 +47,7 @@ class Product_Blocks_Service {
 			'total_addons'  => 0,
 		);
 
-		// Get option IDs for this product
+		// Get option IDs for this product.
 		$option_ids = $this->get_product_option_ids( $product_id );
 
 		if ( empty( $option_ids ) ) {
@@ -57,11 +57,11 @@ class Product_Blocks_Service {
 		foreach ( $option_ids as $option_id ) {
 			$status = get_post_status( $option_id );
 
-			if ( $status === 'publish' ) {
+			if ( 'publish' === $status ) {
 				$blocks_content = $this->get_addon_blocks_content( $option_id );
 
 				if ( ! empty( $blocks_content ) ) {
-					// Render addon CSS if needed
+					// Render addon CSS if needed.
 					$this->maybe_render_addon_css( $option_id );
 
 					$result['blocks'][ $option_id ] = $blocks_content;
@@ -69,12 +69,12 @@ class Product_Blocks_Service {
 					++$result['total_addons'];
 				}
 			} elseif ( ! $status ) {
-				// Clean up deleted options
+				// Clean up deleted options.
 				do_action( 'prad_delete_option_product_meta', $option_id );
 			}
 		}
 
-		// Cache the result
+		// Cache the result.
 		$this->blocks_cache[ $product_id ] = $result;
 
 		return $result;
@@ -83,27 +83,27 @@ class Product_Blocks_Service {
 	/**
 	 * Get option IDs assigned to a product
 	 *
-	 * @param int $product_id
+	 * @param int $product_id Product ID to retrieve assigned option IDs for.
 	 * @return array
 	 */
 	private function get_product_option_ids( int $product_id ): array {
-		// Get options assigned to all products
+		// Get options assigned to all products.
 		$option_all = $this->get_json_option( 'prad_option_assign_all', array() );
 
-		// Get options assigned directly to this product
+		// Get options assigned directly to this product.
 		$option_product = $this->get_json_meta( $product_id, 'prad_product_assigned_meta_inc', array() );
 
-		// Get options excluded from this product
+		// Get options excluded from this product.
 		$option_exclude = $this->get_json_meta( $product_id, 'prad_product_assigned_meta_exc', array() );
 
-		// Get options from product terms (categories, tags, brands)
+		// Get options from product terms (categories, tags, brands).
 		$option_terms = $this->get_product_term_options( $product_id );
 
-		// Merge and filter
+		// Merge and filter.
 		$merged     = array_unique( array_merge( $option_all, $option_terms, $option_product ) );
 		$option_ids = array_diff( $merged, $option_exclude );
 
-		// Sort for consistency
+		// Sort for consistency.
 		sort( $option_ids );
 
 		return apply_filters( 'prad_product_option_ids', $option_ids, $product_id );
@@ -112,7 +112,7 @@ class Product_Blocks_Service {
 	/**
 	 * Get options from product taxonomy terms
 	 *
-	 * @param int $product_id
+	 * @param int $product_id Product ID to retrieve options from taxonomy terms.
 	 * @return array
 	 */
 	private function get_product_term_options( int $product_id ): array {
@@ -139,7 +139,7 @@ class Product_Blocks_Service {
 	/**
 	 * Get addon blocks content
 	 *
-	 * @param int $addon_id
+	 * @param int $addon_id Addon post ID to retrieve blocks content for.
 	 * @return array
 	 */
 	private function get_addon_blocks_content( int $addon_id ): array {
@@ -149,7 +149,7 @@ class Product_Blocks_Service {
 			return array();
 		}
 
-		// Ensure proper JSON encoding/decoding
+		// Ensure proper JSON encoding/decoding.
 		if ( is_string( $content ) ) {
 			$content = json_decode( $content, true );
 		}
@@ -164,7 +164,7 @@ class Product_Blocks_Service {
 	/**
 	 * Maybe render addon CSS
 	 *
-	 * @param int $addon_id
+	 * @param int $addon_id Addon post ID to render CSS for.
 	 */
 	private function maybe_render_addon_css( int $addon_id ): void {
 		$print_styles = wp_doing_ajax() || wp_is_serving_rest_request() ? 'print' : '';
@@ -179,13 +179,13 @@ class Product_Blocks_Service {
 	/**
 	 * Get product price data
 	 *
-	 * @param \WC_Product $product
+	 * @param \WC_Product $product Product object to retrieve price data for.
 	 * @return array
 	 */
 	public function get_product_price_data( \WC_Product $product ): array {
 		$product_id = $product->get_id();
 
-		// Check cache
+		// Check cache.
 		if ( isset( $this->price_cache[ $product_id ] ) ) {
 			return $this->price_cache[ $product_id ];
 		}
@@ -197,7 +197,7 @@ class Product_Blocks_Service {
 			'variations_percentage' => array(),
 		);
 
-		// Get variation prices for variable products
+		// Get variation prices for variable products.
 		if ( $product->is_type( 'variable' ) ) {
 			$variation_ids = $product->get_children();
 
@@ -215,7 +215,7 @@ class Product_Blocks_Service {
 			}
 		}
 
-		// Cache the result
+		// Cache the result.
 		$this->price_cache[ $product_id ] = $price_data;
 
 		return $price_data;
@@ -224,7 +224,7 @@ class Product_Blocks_Service {
 	/**
 	 * Get product base price
 	 *
-	 * @param \WC_Product $product
+	 * @param \WC_Product $product Product object to retrieve base price for.
 	 * @return float
 	 */
 	public function get_product_base_price( \WC_Product $product ): float {
@@ -239,7 +239,7 @@ class Product_Blocks_Service {
 	/**
 	 * Get product base price percentage
 	 *
-	 * @param \WC_Product $product
+	 * @param \WC_Product $product Product object to retrieve base price percentage for.
 	 * @return float
 	 */
 	private function get_product_base_price_percentage( \WC_Product $product ): float {
@@ -255,7 +255,7 @@ class Product_Blocks_Service {
 	/**
 	 * Get blocks by product category
 	 *
-	 * @param int $category_id
+	 * @param int $category_id Category term ID to retrieve blocks for.
 	 * @return array
 	 */
 	public function get_blocks_by_category( int $category_id ): array {
@@ -265,7 +265,7 @@ class Product_Blocks_Service {
 	/**
 	 * Get blocks by product tag
 	 *
-	 * @param int $tag_id
+	 * @param int $tag_id Tag term ID to retrieve blocks for.
 	 * @return array
 	 */
 	public function get_blocks_by_tag( int $tag_id ): array {
@@ -275,7 +275,7 @@ class Product_Blocks_Service {
 	/**
 	 * Check if product has any addons
 	 *
-	 * @param int $product_id
+	 * @param int $product_id Product ID to check for addons.
 	 * @return bool
 	 */
 	public function product_has_addons( int $product_id ): bool {
@@ -286,7 +286,7 @@ class Product_Blocks_Service {
 	/**
 	 * Get addon statistics for a product
 	 *
-	 * @param int $product_id
+	 * @param int $product_id Product ID to retrieve addon statistics for.
 	 * @return array
 	 */
 	public function get_product_addon_stats( int $product_id ): array {
@@ -309,31 +309,31 @@ class Product_Blocks_Service {
 	/**
 	 * Analyze blocks statistics
 	 *
-	 * @param array $blocks
-	 * @param array &$stats
+	 * @param array $blocks Array of block data to analyze.
+	 * @param array &$stats Reference to statistics array to update.
 	 */
 	private function analyze_blocks_stats( array $blocks, array &$stats ): void {
 		foreach ( $blocks as $block ) {
 			$type = $block['type'] ?? 'unknown';
 			++$stats['total_blocks'];
 
-			// Count by type
+			// Count by type.
 			if ( ! isset( $stats['block_types'][ $type ] ) ) {
 				$stats['block_types'][ $type ] = 0;
 			}
 			++$stats['block_types'][ $type ];
 
-			// Count required blocks
+			// Count required blocks.
 			if ( ! empty( $block['required'] ) ) {
 				++$stats['required_blocks'];
 			}
 
-			// Count conditional blocks
+			// Count conditional blocks.
 			if ( ! empty( $block['en_logic'] ) ) {
 				++$stats['conditional_blocks'];
 			}
 
-			// Recursively analyze inner blocks (for sections)
+			// Recursively analyze inner blocks (for sections).
 			if ( isset( $block['innerBlocks'] ) && is_array( $block['innerBlocks'] ) ) {
 				$this->analyze_blocks_stats( $block['innerBlocks'], $stats );
 			}
@@ -343,7 +343,7 @@ class Product_Blocks_Service {
 	/**
 	 * Clear cache for a specific product
 	 *
-	 * @param int $product_id
+	 * @param int $product_id Product ID to clear cache for.
 	 */
 	public function clear_product_cache( int $product_id ): void {
 		unset( $this->blocks_cache[ $product_id ] );
@@ -365,70 +365,70 @@ class Product_Blocks_Service {
 	/**
 	 * Get and decode JSON option
 	 *
-	 * @param string $option_name
-	 * @param array  $default
-	 * @return array
+	 * @param string $option_name Name of the option to retrieve.
+	 * @param array  $def Default value to return if option is not found or invalid.
+	 * @return array Decoded option value as array.
 	 */
-	private function get_json_option( string $option_name, array $default = array() ): array {
+	private function get_json_option( string $option_name, array $def = array() ): array {
 		$value   = get_option( $option_name, '[]' );
 		$decoded = json_decode( product_addons()->safe_stripslashes( $value ), true );
 
-		return is_array( $decoded ) ? $decoded : $default;
+		return is_array( $decoded ) ? $decoded : $def;
 	}
 
 	/**
 	 * Get and decode JSON meta
 	 *
-	 * @param int    $post_id
-	 * @param string $meta_key
-	 * @param array  $default
-	 * @return array
+	 * @param int    $post_id Product ID to retrieve meta for.
+	 * @param string $meta_key Meta key to retrieve.
+	 * @param array  $def Default value to return if meta is not found or invalid.
+	 * @return array Decoded meta value as array.
 	 */
-	private function get_json_meta( int $post_id, string $meta_key, array $default = array() ): array {
+	private function get_json_meta( int $post_id, string $meta_key, array $def = array() ): array {
 		$value = get_post_meta( $post_id, $meta_key, true );
 
 		if ( empty( $value ) ) {
-			return $default;
+			return $def;
 		}
 
 		$decoded = json_decode( product_addons()->safe_stripslashes( $value ), true );
 
-		return is_array( $decoded ) ? $decoded : $default;
+		return is_array( $decoded ) ? $decoded : $def;
 	}
 
 	/**
 	 * Get and decode JSON term meta
 	 *
-	 * @param int    $term_id
-	 * @param string $meta_key
-	 * @param array  $default
+	 * @param int    $term_id   Term ID to retrieve meta for.
+	 * @param string $meta_key  Meta key to retrieve.
+	 * @param array  $def   Default value to return if meta is not found or invalid.
 	 * @return array
 	 */
-	private function get_json_term_meta( int $term_id, string $meta_key, array $default = array() ): array {
+	private function get_json_term_meta( int $term_id, string $meta_key, array $def = array() ): array {
 		$value = get_term_meta( $term_id, $meta_key, true );
 
 		if ( empty( $value ) ) {
-			return $default;
+			return $def;
 		}
 
 		$decoded = json_decode( product_addons()->safe_stripslashes( $value ), true );
 
-		return is_array( $decoded ) ? $decoded : $default;
+		return is_array( $decoded ) ? $decoded : $def;
 	}
 
 	/**
 	 * Get products that use a specific addon
 	 *
-	 * @param int $addon_id
-	 * @return array
+	 * @param int $addon_id Addon ID to check.
+	 * @return array List of product IDs using the addon.
 	 */
 	public function get_products_using_addon( int $addon_id ): array {
 		global $wpdb;
 
 		$products = array();
 
-		// Check products with direct assignment
-		$direct_products = $wpdb->get_col(
+		// Check products with direct assignment.
+		$direct_products = $wpdb->get_col( //phpcs:ignore
 			$wpdb->prepare(
 				"SELECT post_id FROM {$wpdb->postmeta} 
              WHERE meta_key = 'prad_product_assigned_meta_inc' 
@@ -439,21 +439,21 @@ class Product_Blocks_Service {
 
 		$products = array_merge( $products, $direct_products );
 
-		// Check if addon is in global assignment
+		// Check if addon is in global assignment.
 		$global_addons = $this->get_json_option( 'prad_option_assign_all', array() );
 		if ( in_array( $addon_id, $global_addons, true ) ) {
-			// Get all products (this might be expensive for large stores)
-			$all_products = $wpdb->get_col(
+			// Get all products (this might be expensive for large stores).
+			$all_products = $wpdb->get_col( //phpcs:ignore
 				"SELECT ID FROM {$wpdb->posts} 
                  WHERE post_type = 'product' AND post_status = 'publish'"
 			);
 			$products     = array_merge( $products, $all_products );
 		}
 
-		// Remove duplicates and excluded products
+		// Remove duplicates and excluded products.
 		$products = array_unique( $products );
 
-		// Filter out products that explicitly exclude this addon
+		// Filter out products that explicitly exclude this addon.
 		$products = array_filter(
 			$products,
 			function ( $product_id ) use ( $addon_id ) {
@@ -468,7 +468,7 @@ class Product_Blocks_Service {
 	/**
 	 * Update product blocks cache when addon is updated
 	 *
-	 * @param int $addon_id
+	 * @param int $addon_id Addon ID to invalidate cache for.
 	 */
 	public function invalidate_addon_cache( int $addon_id ): void {
 		$affected_products = $this->get_products_using_addon( $addon_id );

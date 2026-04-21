@@ -20,7 +20,7 @@ class YithCurrencySwitcher {
 	 * @return float The converted price in the active currency.
 	 */
 	public function convert( $price ) {
-		return apply_filters( 'yith_wcmcs_convert_price', $price, '' );
+		return apply_filters( 'yith_wcmcs_convert_price', $price, '' ); // phpcs:ignore
 	}
 
 	/**

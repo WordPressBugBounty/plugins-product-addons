@@ -24,7 +24,7 @@ class CartPage {
 	public function __construct() {
 		add_filter( 'woocommerce_add_cart_item_data', array( $this, 'save_custom_meta_to_cart' ), 10, 4 );
 		add_filter( 'woocommerce_get_item_data', array( $this, 'display_custom_meta_in_cart' ), 10, 2 );
-		// add_action( 'woocommerce_add_order_item_meta', array( $this, 'save_custom_meta_to_order' ), 10, 2 );
+		// add_action( 'woocommerce_add_order_item_meta', array( $this, 'save_custom_meta_to_order' ), 10, 2 );.
 		add_action( 'woocommerce_before_calculate_totals', array( $this, 'woocommerce_before_calculate_totals' ), 999, 1 );
 		add_action( 'woocommerce_add_to_cart', array( $this, 'prad_add_option_product_to_cart' ), 10, 6 );
 
@@ -152,7 +152,7 @@ class CartPage {
 			}
 		}
 		if ( ! empty( $prad_selection ) ) {
-			$data = $this->calculate_option_price( $prad_selection, $product_id, $option_ids, ! empty( $variation_id ) ? $variation_id : '', $_POST['quantity'] ?? 1 );
+			$data = $this->calculate_option_price( $prad_selection, $product_id, $option_ids, ! empty( $variation_id ) ? $variation_id : '', isset( $_POST['quantity'] ) ? absint( wp_unslash( $_POST['quantity'] ) ) : 1 ); // phpcs:ignore WordPress.Security.NonceVerification
 
 			$cart_item_data['prad_selection']            = $data; // This will be used in checkout order create and others order area
 			$cart_item_data['prad_products_selection']   = $prad_products_selection;
@@ -303,7 +303,7 @@ class CartPage {
 
 			$prad_cart_item_selection = json_decode( product_addons()->safe_stripslashes( $prad_selection ), true );
 			if ( is_array( $prad_cart_item_selection ) && ! empty( $prad_cart_item_selection ) ) {
-				$prad_allowed_html_tags = apply_filters( 'get_prad_allowed_html_tags', array() );
+				$prad_allowed_html_tags = apply_filters( 'get_prad_allowed_html_tags', array() );// phpcs:ignore
 				foreach ( $prad_cart_item_selection as $key => $field ) {
 					$option_data    = $this->get_options_by_blockid( $merged_content, $key );
 					$custom_formula = ( isset( $field['type'] ) && 'custom_formula' === $field['type'] );
@@ -412,7 +412,7 @@ class CartPage {
 										} elseif ( ( 'select' === $f_value['type'] || 'dropdown' === $f_value['type'] ) && isset( $f_value['_vDatas'][0] ) ) {
 											// $dynamic_variables[ $f_key ] = isset( $f_value['cost'][0] ) ? floatval( $f_value['cost'][0] ) : 0;
 											$selected_option_index = $f_value['_vDatas'][0];
-											if ( $selected_option_index !== '' ) {
+											if ( '' !== $selected_option_index ) {
 												$select_block_data   = $this->get_options_by_blockid( $merged_content, $f_key );
 												$select_block_cost   = ( isset( $select_block_data[ $selected_option_index ]->sale ) && $select_block_data[ $selected_option_index ]->sale && $pro_active ) ? $select_block_data[ $selected_option_index ]->sale : $select_block_data[ $selected_option_index ]->regular;
 												$select_block_p_type = $select_block_data[ $selected_option_index ]->type;
@@ -505,7 +505,7 @@ class CartPage {
 									)
 								) . '</span></strong>',
 							),
-							'name'            => ! empty( $field['label'] ) ? $field['label'] : 'Addons Field',
+							'name'            => ! empty( $field['label'] ) ? esc_html( $field['label'] ) : __( 'Addons Field', 'product-addons' ),
 							'value'           => $opt_price ? $res . '<strong>  +<span class="prad-price">' . wc_price(
 								apply_filters(
 									'prad_raw_tax_currency_compitable_price',

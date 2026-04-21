@@ -21,7 +21,7 @@ class CheckoutPage {
 		add_action( 'woocommerce_checkout_create_order_line_item', array( $this, 'woocommerce_checkout_create_order_line_item' ), 10, 4 );
 		// if ( ! has_action( 'woocommerce_checkout_create_order_line_item', [ $this, 'woocommerce_checkout_create_order_line_item' ] ) ) {
 		// add_action( 'woocommerce_checkout_create_order_line_item', [ $this, 'woocommerce_checkout_create_order_line_item' ], 10, 4 );
-		// }
+		// }.
 		add_action( 'woocommerce_checkout_order_processed', array( $this, 'woocommerce_checkout_create_order' ), 10 );
 		add_action( 'woocommerce_store_api_checkout_order_processed', array( $this, 'woocommerce_checkout_create_order' ), 10 );
 		add_action( 'woocommerce_view_order', array( $this, 'prad_custom_view_order_fields' ), 10, 1 );
@@ -54,9 +54,9 @@ class CheckoutPage {
 			// $prad_option_uploads_path = $item->get_meta( '_prad_option_uploads_path' );
 			// if ( ! empty( $prad_option_uploads_path ) ) {
 			// $moved_data = product_addons()->prad_move_uploadblock_files( $prad_option_uploads_path, 'order_placed' );
-			// }
+			// }.
 
-			// starts
+			// starts.
 			$cart_item_prad_selection = $item->get_meta( 'cart_item_prad_selection' );
 			if ( ! empty( $cart_item_prad_selection['extra_data'] ) ) {
 
@@ -75,7 +75,7 @@ class CheckoutPage {
 										$changed_path = $moved_data[0]['updated_src']['curr_src'];
 										$changed_name = $moved_data[0]['updated_src']['curr_name'];
 									}
-									$res .= wp_kses( '<a href="' . esc_url( $changed_path ) . '">' . esc_html( $changed_name ) . '</a>&nbsp;&nbsp;', apply_filters( 'get_prad_allowed_html_tags', array() ) );
+									$res .= wp_kses( '<a href="' . esc_url( $changed_path ) . '">' . esc_html( $changed_name ) . '</a>&nbsp;&nbsp;', apply_filters( 'get_prad_allowed_html_tags', array() ) );// phpcs:ignore
 
 								}
 								$res .= '</span>';
@@ -125,10 +125,10 @@ class CheckoutPage {
 	/**
 	 * WooCommerce create order line item
 	 *
-	 * @param object   $item Item Data.
-	 * @param string   $cart_item_key Cart Item Key.
-	 * @param array    $cart_item Cart Item.
-	 * @param WC_Order $order Order.
+	 * @param object    $item Item Data.
+	 * @param string    $cart_item_key Cart Item Key.
+	 * @param array     $cart_item Cart Item.
+	 * @param \WC_Order $order Order.
 	 * @return void
 	 */
 	public function woocommerce_checkout_create_order_line_item( $item, $cart_item_key, $cart_item, $order ) {
@@ -162,7 +162,7 @@ class CheckoutPage {
 									$changed_name        = $moved_data[0]['updated_src']['curr_name'];
 									$prad_uploads_path[] = $changed_path;
 								}
-								$res .= wp_kses( '<a href="' . esc_url( $changed_path ) . '">' . esc_html( $changed_name ) . '</a>&nbsp;&nbsp;', apply_filters( 'get_prad_allowed_html_tags', array() ) );
+								$res .= wp_kses( '<a href="' . esc_url( $changed_path ) . '">' . esc_html( $changed_name ) . '</a>&nbsp;&nbsp;', apply_filters( 'get_prad_allowed_html_tags', array() ) );// phpcs:ignore
 							}
 							$res .= '</span>';
 						}
@@ -180,7 +180,7 @@ class CheckoutPage {
 			}
 		}
 
-		// Add Price Data
+		// Add Price Data.
 		if ( isset( $cart_item['prad_selection']['price_data'] ) ) {
 			$item->add_meta_data( '_prad_option_price_data', $cart_item['prad_selection']['price_data'] );
 		}
@@ -191,7 +191,7 @@ class CheckoutPage {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param WC_Order $order Order.
+	 * @param W\C_Order $order Order.
 	 * @return void
 	 */
 	public function woocommerce_checkout_create_order( $order ) {
@@ -225,7 +225,7 @@ class CheckoutPage {
 				}
 			}
 
-			// Add Order Item Meta & Handle Upload paths
+			// Add Order Item Meta & Handle Upload paths.
 			$cart_item_prad_selection = $item->get_meta( 'cart_item_prad_selection' );
 			if ( ! empty( $cart_item_prad_selection['extra_data'] ) ) {
 				$prad_uploads_path = array();
@@ -246,7 +246,7 @@ class CheckoutPage {
 										$changed_name        = $moved_data[0]['updated_src']['curr_name'];
 										$prad_uploads_path[] = $changed_path;
 									}
-									$res .= wp_kses( '<a href="' . esc_url( $changed_path ) . '">' . esc_html( $changed_name ) . '</a>&nbsp;&nbsp;', apply_filters( 'get_prad_allowed_html_tags', array() ) );
+									$res .= wp_kses( '<a href="' . esc_url( $changed_path ) . '">' . esc_html( $changed_name ) . '</a>&nbsp;&nbsp;', apply_filters( 'get_prad_allowed_html_tags', array() ) );// phpcs:ignore
 
 								}
 								$res .= '</span>';
@@ -272,7 +272,7 @@ class CheckoutPage {
 			$order->save();
 			foreach ( $data as $campaign_id ) {
 				do_action( 'prad_update_stats_table_data', $campaign_id, 'order_count', '' );
-				// do_action( 'prad_update_stats_table_data', $campaign_id, 'sales', $order->get_total() );
+				// do_action( 'prad_update_stats_table_data', $campaign_id, 'sales', $order->get_total() );.
 			}
 		}
 	}

@@ -2,7 +2,7 @@
 /**
  * Plugin Name: WowAddons - Product Addons for WooCommerce
  * Description: The ultimate WooCommerce product addons plugin to add extra product options, including, swatches, image uploads, text area, and more!
- * Version:     1.6.5
+ * Version:     1.6.6
  * Author:      WPXPO
  * Author URI:  https://www.wpxpo.com/about
  * Text Domain: product-addons
@@ -21,7 +21,7 @@ use PRAD\Includes\WowShippingPromotion;
 defined( 'ABSPATH' ) || exit;
 
 // Define Vars.
-define( 'PRAD_VER', '1.6.5' );
+define( 'PRAD_VER', '1.6.6' );
 define( 'PRAD_URL', plugin_dir_url( __FILE__ ) );
 define( 'PRAD_BASE', plugin_basename( __FILE__ ) );
 define( 'PRAD_PATH', plugin_dir_path( __FILE__ ) );
@@ -29,18 +29,32 @@ define( 'PRAD_PATH', plugin_dir_path( __FILE__ ) );
 spl_autoload_register( 'prad_autoloader' );
 
 if ( ! function_exists( 'product_addons' ) ) {
-	function product_addons() {
+	/**
+	 * Returns an instance of the Functions class for product addons.
+	 *
+	 * @return Functions
+	 */
+	function product_addons() { //phpcs:ignore
 		return new Functions();
 	}
 }
 new WowShippingPromotion(); // Initialize the promotion class early to ensure it runs before any potential output.
 add_action( 'plugins_loaded', 'prad_init', 10 );
+
+/**
+ * Initializes the plugin by creating Initialization instance and bootstrapping blocks.
+ */
 function prad_init() {
 	new Initialization();
 	$bootstrap = Blocks_Bootstrap::get_instance();
 	$bootstrap->init();
 }
 
+/**
+ * Autoloader for PRAD namespace classes.
+ *
+ * @param string $class_name The fully-qualified class name.
+ */
 function prad_autoloader( $class_name ) {
 	$namespace = 'PRAD\\';
 	$base_dir  = trailingslashit( PRAD_PATH );

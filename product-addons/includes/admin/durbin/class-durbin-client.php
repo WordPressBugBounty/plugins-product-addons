@@ -1,4 +1,4 @@
-<?php
+<?php //phpcs:ignore
 
 namespace PRAD\Includes\Admin\Durbin;
 
@@ -9,7 +9,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class DurbinClient {
 
-	// Do not change these constants
+	// Do not change these constants.
 	const DEACTIVATE_ACTION = 'deactive';
 	const ACTIVATE_ACTION   = 'active';
 	const WIZARD_ACTION     = 'wizard';

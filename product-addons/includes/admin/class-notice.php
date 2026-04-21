@@ -12,11 +12,23 @@ defined( 'ABSPATH' ) || exit;
 class Notice {
 
 	/**
-	 * Notice Constructor
+	 * Notice version
+	 *
+	 * @var string $notice_version
 	 */
+	private $notice_version = 'v1511';
 
-	private $notice_version        = 'v1511';
+	/**
+	 * Flag to check if notice JS and CSS have been applied
+	 *
+	 * @var bool $notice_js_css_applied
+	 */
 	private $notice_js_css_applied = false;
+	/**
+	 * Constructor for the Notice class.
+	 *
+	 * Initializes admin notice hooks and REST API routes.
+	 */
 	public function __construct() {
 		add_action( 'admin_notices', array( $this, 'admin_notices_callback' ) );
 		add_action( 'admin_init', array( $this, 'set_dismiss_notice_callback' ) );
@@ -79,8 +91,8 @@ class Notice {
 	 */
 	public function hello_bar_callback( \WP_REST_Request $request ) {
 		$request_params = $request->get_params();
-		$type           = isset( $request_params['type'] ) ? $request_params['type'] : '';
-		$id             = isset( $request_params['id'] ) ? $request_params['id'] : '';
+		$type           = isset( $request_params['type'] ) ? sanitize_text_field( $request_params['type'] ) : '';
+		$id             = isset( $request_params['id'] ) ? sanitize_key( $request_params['id'] ) : '';
 
 		if ( 'hello_bar' === $type && ! empty( $id ) ) {
 			Xpo::set_transient_without_cache( $id, 'hide', 1296000 );
@@ -368,7 +380,12 @@ class Notice {
 
 		foreach ( $content_notices as $key => $notice ) {
 			$notice_key = isset( $notice['key'] ) ? $notice['key'] : $this->notice_version;
-			if ( isset( $_GET['disable_prad_notice'] ) && $notice_key === $_GET['disable_prad_notice'] ) {
+			if (
+				isset( $_GET['disable_prad_notice'] ) &&
+				$notice_key === $_GET['disable_prad_notice'] &&
+				isset( $_GET['prad_db_nonce'] ) &&
+				wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['prad_db_nonce'] ) ), 'prad-dashboard-nonce' )
+			) {
 				continue;
 			} else {
 				$border_color = $notice['border_color'];

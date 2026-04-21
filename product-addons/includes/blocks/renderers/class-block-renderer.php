@@ -20,8 +20,8 @@ class Block_Renderer {
 	/**
 	 * Render multiple blocks
 	 *
-	 * @param array $blocks_data Array of block configuration data
-	 * @param int   $product_id Product ID
+	 * @param array $blocks_data Array of block configuration data.
+	 * @param int   $product_id Product ID.
 	 * @return string Rendered HTML
 	 */
 	public function render_blocks( array $blocks_data, int $product_id ): string {
@@ -41,7 +41,7 @@ class Block_Renderer {
 			}
 		}
 
-		// Apply filters to final output
+		// Apply filters to final output.
 		$output = apply_filters( 'prad_rendered_blocks_output', $output, $blocks_data, $product_id );
 
 		do_action( 'prad_blocks_rendered', $rendered_blocks, $product_id );
@@ -52,10 +52,10 @@ class Block_Renderer {
 	/**
 	 * Render a single block
 	 *
-	 * @param array $block_data Block configuration data
-	 * @param int   $product_id Product ID
-	 * @param int   $index Block index in the collection
-	 * @return string Rendered HTML
+	 * @param array $block_data Block configuration data.
+	 * @param int   $product_id Product ID.
+	 * @param int   $index Block index in the collection.
+	 * @return string Rendered HTML.
 	 */
 	public function render_single_block( array $block_data, int $product_id, int $index = 0 ): string {
 		$type = $block_data['type'] ?? '';
@@ -65,7 +65,7 @@ class Block_Renderer {
 			return '';
 		}
 
-		// Create block instance
+		// Create block instance.
 		$block = Block_Factory::create_block( $type, $block_data, $product_id );
 
 		if ( ! $block ) {
@@ -74,10 +74,10 @@ class Block_Renderer {
 		}
 
 		try {
-			// Render the block
+			// Render the block.
 			$html = $block->render();
 
-			// Apply filters to individual block output
+			// Apply filters to individual block output.
 			$html = apply_filters( 'prad_block_rendered', $html, $block, $product_id );
 			$html = apply_filters( "prad_block_rendered_{$type}", $html, $block, $product_id );
 
@@ -86,7 +86,7 @@ class Block_Renderer {
 			return $html;
 
 		} catch ( \Exception $e ) {
-			error_log(
+			error_log(//phpcs:ignore
 				sprintf(
 					'PRAD Block Render Error: Failed to render block type "%s". Error: %s',
 					$type,

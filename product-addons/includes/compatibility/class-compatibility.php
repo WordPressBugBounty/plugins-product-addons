@@ -18,33 +18,34 @@ class Compatibility {
 	 */
 	public function __construct() {
 
-		// WPC Compatibility
+		// WPC Compatibility.
 		add_filter( 'woosb_cart_item_subtotal', array( $this, 'handle_woosb_cart_item_subtotal' ), 99, 3 );
 		add_filter( 'woosb_cart_item_price', array( $this, 'handle_woosb_cart_item_price' ), 99, 3 );
 		add_filter( 'woosb_bundles_price', array( $this, 'handle_woosb_bundles_price' ), 99, 3 );
 
-		// PRAD single product page price
+		// PRAD single product page price.
 		add_filter( 'prad_single_product_page_price', array( $this, 'handle_prad_single_product_page_price' ), 99, 1 );
 
-		// PRAD cart/checkout page price
+		// PRAD cart/checkout page price.
 		add_filter( 'prad_cart_checkout_page_price', array( $this, 'handle_prad_cart_checkout_page_price' ), 99, 1 );
 		add_filter( 'prad_cart_checkout_page_percentage_price', array( $this, 'handle_prad_cart_checkout_page_percentage_price' ), 99, 1 );
 
 		add_filter( 'prad_percentage_based_price_raw', array( $this, 'handle_prad_percentage_based_price_raw' ), 99, 2 );
 
-		// Currency Reverted Price
+		// Currency Reverted Price.
 		add_filter( 'prad_get_currency_reverted_price', array( $this, 'handle_prad_get_currency_reverted_price' ), 99, 1 );
 
-		// WP Rocket Cache
+		// WP Rocket Cache.
 		add_action( 'prad_handle_cache_on_save', array( $this, 'handle_cache_on_save' ) );
 
-		// add body class in front end
+		// add body class in front end.
 		add_filter( 'body_class', array( $this, 'add_body_class' ) );
 	}
 
 	/**
 	 * Add Class to body
 	 *
+	 * @param array $classes Array of body classes.
 	 * @return array
 	 */
 	public function add_body_class( $classes ) {
@@ -61,6 +62,7 @@ class Compatibility {
 	 * @since 1.0.6
 	 *
 	 * @param string $product_id  Product Id.
+	 * @param string $type        Type of price handling (default: 'revert').
 	 *
 	 * @return string Price.
 	 */
@@ -140,16 +142,16 @@ class Compatibility {
 	public function handle_prad_single_product_page_price( $product_id ) {
 		$product    = wc_get_product( $product_id );
 		$sale_price = $product->get_sale_price();
-		$toReturn   = $sale_price || '' !== $sale_price ? $sale_price : $product->get_regular_price();
-		$toReturn   = apply_filters(
+		$to_return  = $sale_price || '' !== $sale_price ? $sale_price : $product->get_regular_price();
+		$to_return  = apply_filters(
 			'prad_raw_tax_compitable_price',
 			array(
 				'product_id' => $product_id,
-				'price'      => $toReturn,
+				'price'      => $to_return,
 				'source'     => 'product_page',
 			)
 		);
-		return $toReturn;
+		return $to_return;
 	}
 
 	/**
@@ -177,11 +179,11 @@ class Compatibility {
 	 *
 	 * This function allows customization of the displayed subtotal for bundled items.
 	 *
-	 * @param string $_subtotal The modified subtotal to be returned.
-	 * @param string $subtotal  The original calculated subtotal.
-	 * @param array  $cart_item The cart item array containing product and bundle details.
+	 * @param string $woosb_price The modified price to be returned.
+	 * @param string $price       The original calculated price.
+	 * @param array  $cart_item   The cart item array containing product and bundle details.
 	 *
-	 * @return string The filtered subtotal value.
+	 * @return string The filtered price value.
 	 */
 	public function handle_woosb_cart_item_price( $woosb_price, $price, $cart_item ) {
 		if ( isset( $cart_item['prad_selection']['price'] ) && isset( $cart_item['woosb_ids'], $cart_item['woosb_price'], $cart_item['woosb_fixed_price'] ) && ! $cart_item['woosb_fixed_price'] ) {

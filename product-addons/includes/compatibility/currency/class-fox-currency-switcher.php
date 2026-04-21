@@ -18,7 +18,7 @@ class FoxCurrencySwitcher {
 	 * @return float The converted price in the active currency.
 	 */
 	public function convert( $price ) {
-		return apply_filters( 'woocs_convert_price', $price, '' );
+		return apply_filters( 'woocs_convert_price', $price, '' ); // phpcs:ignore
 	}
 
 	/**
@@ -31,6 +31,6 @@ class FoxCurrencySwitcher {
 	 * @return float The reverted price in the base currency.
 	 */
 	public function revert( $price ) {
-		return apply_filters( 'woocs_back_convert_price', $price, '' );
+		return apply_filters( 'woocs_back_convert_price', $price, '' );// phpcs:ignore
 	}
 }

@@ -18,8 +18,23 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Hooks {
 
+	/**
+	 * Stores the current product ID.
+	 *
+	 * @var int|string
+	 */
 	private $p_id = '';
+	/**
+	 * Stores the current product object.
+	 *
+	 * @var WC_Product|null
+	 */
 	private $prad_product;
+	/**
+	 * Stores the tax display setting for the shop.
+	 *
+	 * @var mixed
+	 */
 	private $tax_display_shop;
 
 	/**
@@ -40,6 +55,13 @@ class Hooks {
 		add_action( 'prad_load_script_on_ajax', array( $this, 'handle_prad_load_script_on_ajax' ), 99 );
 	}
 
+	/**
+	 * Loads required scripts and styles via AJAX for the frontend.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
 	public function handle_prad_load_script_on_ajax() {
 
 		// Load Needed JS.
@@ -218,8 +240,9 @@ class Hooks {
 	/**
 	 * Generate HTML for Pricing
 	 *
-	 * @param float      $regular Regular price.
-	 * @param float|null $sale    Sale price (optional).
+	 * @param float      $regular    Regular price.
+	 * @param float|null $sale       Sale price (optional).
+	 * @param int        $product_id Product ID.
 	 *
 	 * @return string HTML representation of the pricing.
 	 */
@@ -440,13 +463,13 @@ class Hooks {
 	}
 
 	/**
-	 * Delete Product Meta
+	 * Converts the price to a compatible value with tax and currency.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $option_id Option id.
+	 * @param array $args Arguments for price conversion.
 	 *
-	 * @return void
+	 * @return float Converted price.
 	 */
 	public function handle_prad_raw_tax_currency_compitable_price( $args ) {
 		$price = $this->prad_get_price_including_tax( $args );
@@ -454,13 +477,13 @@ class Hooks {
 	}
 
 	/**
-	 * Delete Product Meta
+	 * Get price including tax.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $option_id Option id.
+	 * @param array $args Arguments for price calculation.
 	 *
-	 * @return void
+	 * @return float Price including tax.
 	 */
 	public function prad_get_price_including_tax( $args ) {
 		$price      = isset( $args['price'] ) ? $args['price'] : 0;
@@ -494,6 +517,13 @@ class Hooks {
 		);
 	}
 
+	/**
+	 * Retrieves front-end option data for PRAD scripts.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array Front-end option data.
+	 */
 	public function get_prad_option_front_data() {
 		return array_merge(
 			array(

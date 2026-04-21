@@ -16,11 +16,13 @@ defined( 'ABSPATH' ) || exit;
 class Array_Expression_Engine extends Abstract_Expression_Engine {
 
 	/**
+	 * Evaluates an expression using provided dynamics.
+	 *
 	 * @param string $expression Expression to evaluate.
 	 * @param array  $dynamics   Map of placeholder name => value.
 	 *
 	 * @return mixed
-	 * @throws Expression_Exception
+	 * @throws Expression_Exception If the expression cannot be parsed or evaluated.
 	 */
 	public static function evaluate_expression( $expression, array $dynamics = array() ) {
 		$engine = new self();
@@ -46,7 +48,12 @@ class Array_Expression_Engine extends Abstract_Expression_Engine {
 	}
 
 	/**
-	 * @inheritDoc
+	 * Retrieves the dynamic value for a given placeholder name from the context array.
+	 *
+	 * @param string $name    The placeholder name to resolve.
+	 * @param array  $context Associative array of placeholder values.
+	 *
+	 * @return mixed
 	 */
 	public function get_dynamic_value( $name, array $context = array() ) {
 		if ( array_key_exists( $name, $context ) ) {

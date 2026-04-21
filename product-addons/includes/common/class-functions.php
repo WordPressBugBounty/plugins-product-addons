@@ -144,6 +144,13 @@ class Functions {
 		return false;
 	}
 
+	/**
+	 * Checks if the pro feature is available based on plugin activation and license status.
+	 *
+	 * Returns true if the Product Addons Pro plugin is active and the license is either valid or expired.
+	 *
+	 * @return bool True if pro features are available, false otherwise.
+	 */
 	public function is_pro_feature_available() {
 		if ( defined( 'PRAD_PRO_VER' ) ) {
 			$license_data = get_option( 'edd_prad_license_data', array() );
@@ -241,9 +248,7 @@ class Functions {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $term     The search term.
-	 * @param int    $limit    The number of categories to return. Default is all.
-	 * @param array  $includes Array of category IDs to include in the search.
+	 * @param mixed $params The search parameters.
 	 *
 	 * @return array An array of category details, including item ID, name, URL, and thumbnail URL.
 	 */
@@ -289,7 +294,8 @@ class Functions {
 	 * for the given post ID. If CSS is found, it registers a dummy style handle,
 	 * enqueues it, and adds the CSS inline using `wp_add_inline_style`.
 	 *
-	 * @param int $id The post ID from which to retrieve and render the addon CSS.
+	 * @param int   $id   The post ID from which to retrieve and render the addon CSS.
+	 * @param mixed $type The context in which to render the CSS (e.g., 'print' for printing).
 	 */
 	public function render_addon_css( $id, $type = '' ) {
 		$prad_addons_css = get_post_meta( $id, 'prad_addons_css', true );
@@ -299,7 +305,7 @@ class Functions {
 			wp_add_inline_style( 'prad-addons-css-' . $id, $prad_addons_css );
 		}
 		if ( 'print' === $type ) {
-			echo '<style id="prad-addons-css-' . $id . '-inline">' . esc_html( $prad_addons_css ) . '</style>';
+			echo '<style id="prad-addons-css-' . esc_attr( $id ) . '-inline">' . esc_html( $prad_addons_css ) . '</style>';
 		}
 	}
 
@@ -386,7 +392,7 @@ class Functions {
 
 		// WooCommerce Currency Switcher by WPExperts.
 		if ( defined( 'WCCS_VERSION' ) ) {
-			$price = apply_filters( 'woocommerce_product_addons_option_price_raw', $price, '' );
+			$price = apply_filters( 'woocommerce_product_addons_option_price_raw', $price, '' ); //phpcs:ignore
 			return $price;
 		}
 
@@ -405,13 +411,13 @@ class Functions {
 
 		// Yay_Currency Switcher.
 		if ( defined( 'YAY_CURRENCY_VERSION' ) ) {
-			$price = apply_filters( 'yay_currency_convert_price', $price, '' );
+			$price = apply_filters( 'yay_currency_convert_price', $price, '' ); // phpcs:ignore
 			return $price;
 		}
 
 		// FOX - Currency Switcher.
 		if ( defined( 'WOOCS_VERSION' ) ) {
-			$price = apply_filters( 'woocs_convert_price', $price, '' );
+			$price = apply_filters( 'woocs_convert_price', $price, '' );// phpcs:ignore
 			return $price;
 		}
 
@@ -434,15 +440,15 @@ class Functions {
 
 		// Yith Currency Switcher.
 		if ( function_exists( 'yith_wcmcs_convert_price' ) ) {
-			$price = apply_filters( 'yith_wcmcs_convert_price', $price, '' );
+			$price = apply_filters( 'yith_wcmcs_convert_price', $price, '' );// phpcs:ignore
 			return $price;
 		}
 
 		// Aelia Currency Switcher.
 		if ( class_exists( 'WC_Aelia_CurrencySwitcher' ) ) {
-			$base_currency   = apply_filters( 'wc_aelia_cs_base_currency', '' );
+			$base_currency   = apply_filters( 'wc_aelia_cs_base_currency', '' );// phpcs:ignore
 			$active_currency = get_woocommerce_currency();
-			$price           = apply_filters( 'wc_aelia_cs_convert', $price, $base_currency, $active_currency );
+			$price           = apply_filters( 'wc_aelia_cs_convert', $price, $base_currency, $active_currency );// phpcs:ignore
 			return $price;
 		}
 
@@ -461,7 +467,7 @@ class Functions {
 				}
 			}
 
-			// Convert price if instance exists
+			// Convert price if instance exists.
 			if ( $multi_currency instanceof \WCPay\MultiCurrency\MultiCurrency && method_exists( $multi_currency, 'get_price' ) ) {
 				$price = $multi_currency->get_price( $price, 'product' );
 				return $price;
@@ -474,7 +480,7 @@ class Functions {
 	/**
 	 * Revert the given price to the base price.
 	 *
-	 * price is returned.
+	 * Price is returned.
 	 *
 	 * @since 1.0.4
 	 *
@@ -525,13 +531,13 @@ class Functions {
 
 		// Yay_Currency Switcher.
 		if ( defined( 'YAY_CURRENCY_VERSION' ) ) {
-			$price = apply_filters( 'yay_currency_revert_price', $price, '' );
+			$price = apply_filters( 'yay_currency_revert_price', $price, '' );// phpcs:ignore
 			return $price;
 		}
 
 		// FOX - Currency Switcher.
 		if ( defined( 'WOOCS_VERSION' ) ) {
-			$price = apply_filters( 'woocs_back_convert_price', $price, '' );
+			$price = apply_filters( 'woocs_back_convert_price', $price, '' );// phpcs:ignore
 			return $price;
 		}
 
@@ -551,9 +557,9 @@ class Functions {
 
 		// Aelia Currency Switcher.
 		if ( class_exists( 'WC_Aelia_CurrencySwitcher' ) ) {
-			$base_currency   = apply_filters( 'wc_aelia_cs_base_currency', '' );
+			$base_currency   = apply_filters( 'wc_aelia_cs_base_currency', '' );// phpcs:ignore
 			$active_currency = get_woocommerce_currency();
-			$price           = apply_filters( 'wc_aelia_cs_convert', $price, $active_currency, $base_currency );
+			$price           = apply_filters( 'wc_aelia_cs_convert', $price, $active_currency, $base_currency );// phpcs:ignore
 			return $price;
 		}
 
@@ -573,7 +579,7 @@ class Functions {
 				}
 			}
 
-			// Convert price if instance exists
+			// Convert price if instance exists.
 			if ( $multi_currency instanceof \WCPay\MultiCurrency\MultiCurrency && method_exists( $multi_currency, 'get_price' ) ) {
 				$currency = $multi_currency->get_selected_currency();
 				$rate     = $currency->get_rate();
@@ -581,7 +587,7 @@ class Functions {
 					return $converted_price;
 				}
 
-				// Reverse conversion
+				// Reverse conversion.
 				$base_price = (float) $converted_price / $rate;
 
 				return (float) $base_price;
@@ -617,6 +623,16 @@ class Functions {
 		return $custom_array;
 	}
 
+	/**
+	 * Manually revert a converted currency price to its base value.
+	 *
+	 * This function uses the conversion rate and extra value from get_currency_converted_data()
+	 * to calculate the original price before conversion.
+	 *
+	 * @since 1.0.4
+	 * @param float $price The converted price to revert.
+	 * @return float The reverted base price.
+	 */
 	public function manual_currency_reverted_price( $price ) {
 		$currency_data = $this->get_currency_converted_data();
 		if ( $currency_data['cr_active'] ) {
@@ -807,8 +823,17 @@ class Functions {
 		return $result;
 	}
 
+	/**
+	 * Generates the HTML for the product block variation section.
+	 *
+	 * This function outputs the variation selection UI for a given product block item.
+	 *
+	 * @param array $args Arguments containing the product item.
+	 * @return string The generated HTML for the variation section.
+	 */
 	public function generate_products_block_variation_section_html( $args ) {
 		$item = $args['item'];
+		$allowed_html_tags = apply_filters( 'get_prad_allowed_html_tags', array() );
 		ob_start();
 		if ( isset( $item->variation ) && $item->variation ) {
 			$select_options       = '';
@@ -854,7 +879,7 @@ class Functions {
 					}
 					if ( $valid_variation ) {
 						$option_label    = rawurldecode( wp_strip_all_tags( $option_label ) );
-						$select_options .= '<div class="prad-select-option" title="' . esc_html( $option_label ) . '" value="' . $price_obj['price'] . '" data-variation-id="' . $variation_id . '"  data-pricehtml="' . esc_html( $price_obj['html'] ) . '">' . $option_label . '</div>';
+						$select_options .= '<div class="prad-select-option" title="' . esc_attr( $option_label ) . '" value="' . esc_attr( $price_obj['price'] ) . '" data-variation-id="' . esc_attr( $variation_id ) . '"  data-pricehtml="' . esc_attr( $price_obj['html'] ) . '">' . esc_html( $option_label ) . '</div>';
 					}
 				}
 			}
@@ -865,7 +890,7 @@ class Functions {
 					<div class="prad-custom-select prad-w-full prad-product-variation-select-comp">
 						<div class="prad-select-box prad-block-input prad-block-content" readonly="readonly"><div style="max-width: 120px" class="prad-select-box-item prad-mr-12 prad-ellipsis"><?php esc_html_e( 'Select an option', 'product-addons' ); ?></div> <div class="prad-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="8" fill="none"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m1 1 6 6 6-6"></path></svg></div></div>
 						<div class="prad-select-options">
-							<?php echo $select_options; ?>
+							<?php echo wp_kses( $select_options, $allowed_html_tags ); ?>
 						</div>
 					</div>
 				</div>
@@ -876,6 +901,16 @@ class Functions {
 		return ob_get_clean();
 	}
 
+	/**
+	 * Retrieves product block attributes for a given product ID.
+	 *
+	 * Returns an object containing product details such as ID, type, variation status,
+	 * URL, name, image, regular and sale prices, stock status, and purchasable status.
+	 *
+	 * @param int  $p_id   Product ID.
+	 * @param bool $var_p  Whether the product is a variation.
+	 * @return object|null Product attributes object or null if not found.
+	 */
 	public function get_product_block_product_attr( $p_id, $var_p = false ) {
 		$product = wc_get_product( $p_id );
 		if ( $product ) {
@@ -913,8 +948,24 @@ class Functions {
 		return null;
 	}
 
-	function generate_utm_link( $params ) {
-		// Default UTM configurations
+	/**
+	 * Generates a UTM link with specified parameters and configuration.
+	 *
+	 * This method constructs a URL with UTM parameters for tracking purposes,
+	 * optionally including affiliate and hash values, and supports custom UTM configurations.
+	 *
+	 * @param array $params {
+	 *     Array of parameters for generating the UTM link.
+	 *     @type string $url        Base URL to append UTM parameters to.
+	 *     @type string $utmKey     Key to select default UTM configuration.
+	 *     @type string $affiliate  Affiliate ID to append as 'ref'.
+	 *     @type string $hash       Hash fragment to append to the URL.
+	 *     @type array  $config     Custom UTM configuration array.
+	 * }
+	 * @return string The generated URL with UTM parameters.
+	 */
+	public function generate_utm_link( $params ) {
+		// Default UTM configurations.
 		$default_config = array(
 			'example'         => array(
 				'source'   => 'db-wowaddons-featurename',
@@ -948,28 +999,28 @@ class Functions {
 			),
 		);
 
-		// Step 1: Get parameters
+		// Step 1: Get parameters.
 		$base_url      = $params['url'] ?? 'https://www.wpxpo.com/product/wowaddons/';
 		$utm_key       = $params['utmKey'] ?? null;
 		$affiliate     = $params['affiliate'] ?? apply_filters( 'prad_affiliate_id', '' );
 		$hash          = $params['hash'] ?? '';
 		$custom_config = $params['config'] ?? null;
 
-		$parsed_url = parse_url( $base_url );
+		$parsed_url = wp_parse_url( $base_url );
 		$scheme     = $parsed_url['scheme'] ?? 'https';
 		$host       = $parsed_url['host'] ?? '';
 		$path       = $parsed_url['path'] ?? '';
 		$query      = array();
 
-		// Step 3: Extract existing query params if present
+		// Step 3: Extract existing query params if present.
 		if ( isset( $parsed_url['query'] ) ) {
 			parse_str( $parsed_url['query'], $query );
 		}
 
-		// Step 4: Determine config
+		// Step 4: Determine config.
 		$utm_config = $custom_config ?? ( $utm_key && isset( $default_config[ $utm_key ] ) ? $default_config[ $utm_key ] : array() );
 
-		// Step 5: Add UTM parameters
+		// Step 5: Add UTM parameters.
 		if ( ! empty( $utm_config ) ) {
 			$query = array_merge(
 				$query,
@@ -981,12 +1032,12 @@ class Functions {
 			);
 		}
 
-		// Step 6: Add affiliate if present
+		// Step 6: Add affiliate if present.
 		if ( $affiliate ) {
 			$query['ref'] = $affiliate;
 		}
 
-		// Step 7: Reconstruct URL
+		// Step 7: Reconstruct URL.
 		$final_url = $scheme . '://' . $host . $path;
 
 		if ( ! empty( $query ) ) {
@@ -1029,12 +1080,13 @@ class Functions {
 	/**
 	 * Move or copy files from temp folder to on_cart folder.
 	 *
-	 * @param array $src_files Absolute file paths (from temp folder).
-	 * @param bool  $delete    Whether to delete original files (true = move, false = copy).
+	 * @param array  $src_files Absolute file paths (from temp folder).
+	 * @param string $_from     Source folder name ('temp' or 'order_placed').
+	 * @param bool   $delete    Whether to delete original files (true = move, false = copy).
 	 *
 	 * @return array List of processed files with new paths & URLs.
 	 */
-	function prad_move_uploadblock_files( array $src_files, string $_from = 'temp', bool $delete = false ) {
+	public function prad_move_uploadblock_files( array $src_files, string $_from = 'temp', bool $delete = false ) {
 		$upload_dir = wp_upload_dir();
 
 		$_to = 'order_placed';
@@ -1058,13 +1110,13 @@ class Functions {
 		$processed = array();
 
 		foreach ( $src_files as $src ) {
-			// Extract filename with extension
+			// Extract filename with extension.
 			$filename = basename( $src );
 
 			$source_path      = $from_dir . '/' . $filename;
 			$destination_path = $to_dir . '/' . $filename;
 
-			// Skip if source file doesn't exist
+			// Skip if source file doesn't exist.
 			if ( ! file_exists( $source_path ) ) {
 				continue;
 			}
@@ -1083,7 +1135,7 @@ class Functions {
 
 			if ( copy( $source_path, $destination_path ) ) {
 				if ( $delete ) {
-					unlink( $source_path );
+					wp_delete_file( $source_path );
 				}
 
 				$processed[] = array(

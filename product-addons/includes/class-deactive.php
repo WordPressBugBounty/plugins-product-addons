@@ -17,6 +17,11 @@ defined( 'ABSPATH' ) || exit;
  */
 class Deactive {
 
+	/**
+	 * Plugin slug used for identifying the plugin.
+	 *
+	 * @var string
+	 */
 	private $plugin_slug = 'product-addons';
 
 	/**
@@ -34,7 +39,6 @@ class Deactive {
 	/**
 	 * Send plugin deactivation data to remote server.
 	 *
-	 * @param string|null $type Optional. Unused for now.
 	 * @return void
 	 */
 	public function send_plugin_data() {
@@ -133,6 +137,59 @@ class Deactive {
 	}
 
 	/**
+	 * Performs cleanup tasks when the plugin is deactivated.
+	 *
+	 * @return void
+	 */
+	public static function cleanup() {
+		global $wpdb;
+
+		// Remove scheduled cron jobs.
+		wp_clear_scheduled_hook( 'prad_cleanup_upload_files' );
+
+		// Remove all plugin temporary data.
+
+		$prad_option_posts = get_posts(
+			array(
+				'post_type'      => 'prad_option',
+				'post_status'    => 'any',
+				'posts_per_page' => -1,
+				'fields'         => 'ids',
+			)
+		);
+
+		if ( ! empty( $prad_option_posts ) ) {
+			foreach ( $prad_option_posts as $post_id ) {
+				wp_delete_post( $post_id, true );
+			}
+		}
+
+		$options = array(
+			'prad_addons_default_option_created',
+			'prad_option_assign_all',
+			'prad_product_image_update_data',
+			'prad_global_style',
+			'prad_global_style_css',
+			'prad_settings',
+			'prad_custom_fonts',
+			'edd_prad_license_data',
+			'edd_prad_license_key',
+		);
+
+		foreach ( $options as $option ) {
+			delete_option( $option );
+		}
+
+		$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}prad_stats_graph" );// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
+		$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}prad_stats_table" );// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
+
+		$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->termmeta} WHERE meta_key = %s", 'prad_term_assigned_meta_inc' ) );// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
+
+		$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->postmeta} WHERE meta_key = %s", 'prad_product_assigned_meta_exc' ) );// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
+		$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->postmeta} WHERE meta_key = %s", 'prad_product_assigned_meta_inc' ) );// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
+	}
+
+	/**
 	 * Output inline CSS for the modal.
 	 *
 	 * @return void
@@ -191,7 +248,7 @@ class Deactive {
 				max-width: 570px;
 				border-radius: 5px;
 				margin: 5% auto;
-				overflow: hidden
+				overflow: hidden;
 			}
 			#prad-deactive-modal .prad-modal-header {
 				padding: 17px 30px;

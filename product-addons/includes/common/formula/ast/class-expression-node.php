@@ -17,6 +17,8 @@ defined( 'ABSPATH' ) || exit;
  */
 interface Expression_Node {
 	/**
+	 * Evaluates the expression node.
+	 *
 	 * @param Abstract_Expression_Engine $engine Engine instance.
 	 * @param array                      $context Context passed to evaluate().
 	 *

@@ -29,7 +29,7 @@ class OurPlugins {
 	public function prad_install_plugin_callback() {
 
 		$nonce  = isset( $_POST['wpnonce'] ) ? sanitize_key( wp_unslash( $_POST['wpnonce'] ) ) : '';
-		$plugin = isset( $_POST['plugin'] ) ? $_POST['plugin'] : '';
+		$plugin = isset( $_POST['plugin'] ) ? sanitize_text_field( wp_unslash( $_POST['plugin'] ) ) : '';
 
 		if ( ! wp_verify_nonce( $nonce, 'prad-nonce' ) || ! current_user_can( 'manage_options' ) ) {
 			wp_send_json_error( array( 'message' => 'No plugin specified' ) );

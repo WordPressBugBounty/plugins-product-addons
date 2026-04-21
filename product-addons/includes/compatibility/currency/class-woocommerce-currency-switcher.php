@@ -17,7 +17,7 @@ class WoocommerceCurrencySwitcher {
 	 */
 	public function convert( $price ) {
 		if ( defined( 'WCCS_VERSION' ) ) {
-			return apply_filters( 'woocommerce_product_addons_option_price_raw', $price, '' );
+			return apply_filters( 'woocommerce_product_addons_option_price_raw', $price, '' );// phpcs:ignore
 		}
 		return $price;
 	}

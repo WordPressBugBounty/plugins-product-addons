@@ -18,7 +18,7 @@ trait Price_Handler {
 	/**
 	 * Get formatted price information
 	 *
-	 * @param object $item Price item object
+	 * @param object $item Price item object.
 	 * @return array
 	 */
 	protected function get_price_info( $item ) {
@@ -44,40 +44,40 @@ trait Price_Handler {
 	/**
 	 * Should price be displayed with title
 	 *
-	 * @param array $price_info
+	 * @param array $price_info Price information array.
 	 * @return bool
 	 */
 	protected function should_show_price_with_title( array $price_info ): bool {
-		return $this->get_property( 'pricePosition', 'with_title' ) === 'with_title' &&
-				$price_info['type'] !== 'no_cost';
+		return 'with_title' === $this->get_property( 'pricePosition', 'with_title' ) &&
+				'no_cost' !== $price_info['type'];
 	}
 
 	/**
 	 * Should price be displayed beside input/field
 	 *
-	 * @param array $price_info
+	 * @param array $price_info Price information array.
 	 * @return bool
 	 */
 	protected function should_show_price_beside_field( array $price_info ): bool {
-		return $this->get_property( 'pricePosition', 'with_title' ) !== 'with_title' &&
-				$price_info['type'] !== 'no_cost';
+		return 'with_title' !== $this->get_property( 'pricePosition', 'with_title' ) &&
+				'no_cost' !== $price_info['type'];
 	}
 
 	/**
 	 * Render price HTML
 	 *
-	 * @param array  $price_info
-	 * @param string $position
+	 * @param array  $price_info Price information array.
+	 * @param string $position   Position to display price ('with_title' or 'beside').
 	 * @return string
 	 */
 	protected function render_price_html( array $price_info, string $position = 'beside' ): string {
-		if ( $price_info['type'] === 'no_cost' || empty( $price_info['html'] ) ) {
+		if ( 'no_cost' === $price_info['type'] || empty( $price_info['html'] ) ) {
 			return '';
 		}
 
 		$css_classes = array( 'prad-block-price', 'prad-text-upper' );
 
-		if ( $position === 'with_title' ) {
+		if ( 'with_title' === $position ) {
 			$css_classes[] = 'prad-price-with-title';
 		} else {
 			$css_classes[] = 'prad-price-beside-field';
@@ -93,8 +93,8 @@ trait Price_Handler {
 	/**
 	 * Format price for display
 	 *
-	 * @param float  $price
-	 * @param string $currency
+	 * @param float  $price    The price value to format.
+	 * @param string $currency Currency symbol to use (optional).
 	 * @return string
 	 */
 	protected function format_price( float $price, string $currency = '' ): string {
@@ -109,8 +109,8 @@ trait Price_Handler {
 	/**
 	 * Calculate total price based on quantity or multiplier
 	 *
-	 * @param float     $base_price
-	 * @param int|float $multiplier
+	 * @param float     $base_price   The base price to be multiplied.
+	 * @param int|float $multiplier   The multiplier (quantity or value).
 	 * @return float
 	 */
 	protected function calculate_total_price( float $base_price, $multiplier = 1 ): float {

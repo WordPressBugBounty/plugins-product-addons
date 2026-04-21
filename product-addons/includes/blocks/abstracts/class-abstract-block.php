@@ -46,13 +46,13 @@ abstract class Abstract_Block implements Block_Interface {
 	/**
 	 * Constructor
 	 *
-	 * @param array $data Block configuration data
-	 * @param int   $product_id WooCommerce product ID
+	 * @param array $data Block configuration data.
+	 * @param int   $product_id WooCommerce product ID.
 	 */
 	public function __construct( array $data, int $product_id ) {
 		$this->data              = $data;
 		$this->product_id        = $product_id;
-		$this->allowed_html_tags = apply_filters( 'get_prad_allowed_html_tags', array() );
+		$this->allowed_html_tags = apply_filters( 'get_prad_allowed_html_tags', array() );// phpcs:ignore
 
 		$this->init();
 	}
@@ -61,23 +61,24 @@ abstract class Abstract_Block implements Block_Interface {
 	 * Initialize block-specific setup
 	 */
 	protected function init(): void {
-		// Override in child classes if needed
+		// Override in child classes if needed.
 	}
 
 	/**
 	 * Get property from block data
 	 *
-	 * @param string $key Property key
-	 * @param mixed  $default Default value
+	 * @param string $key Property key.
+	 * @param mixed  $def Default value.
 	 * @return mixed
 	 */
-	protected function get_property( string $key, $default = '' ) {
-		return $this->data[ $key ] ?? $default;
+	protected function get_property( string $key, $def = '' ) {
+		return $this->data[ $key ] ?? $def;
 	}
 
 	/**
 	 * Get property from block data
 	 *
+	 * @param mixed $handle_pro Whether to handle pro features.
 	 * @return array
 	 */
 	protected function get_field_options( $handle_pro = false ) {
@@ -99,7 +100,7 @@ abstract class Abstract_Block implements Block_Interface {
 	}
 
 	/**
-	 * is formula value enabled
+	 * Is formula value enabled.
 	 *
 	 * @return bool
 	 */
@@ -306,11 +307,11 @@ abstract class Abstract_Block implements Block_Interface {
 		$desc_position   = $this->get_description_position();
 		$has_description = $this->get_description();
 
-		// Early exit conditions
+		// Early exit conditions.
 		if (
-			( $title_hidden && $desc_position === 'tooltip' ) ||
-			( $title_hidden && $desc_position === 'belowField' ) ||
-			( $title_hidden && $desc_position === 'belowTitle' && ! $has_description )
+			( $title_hidden && 'tooltip' === $desc_position ) ||
+			( $title_hidden && 'belowField' === $desc_position ) ||
+			( $title_hidden && 'belowTitle' === $desc_position && ! $has_description )
 		) {
 			return '';
 		}
@@ -333,6 +334,7 @@ abstract class Abstract_Block implements Block_Interface {
 	/**
 	 * Render Title , Description
 	 *
+	 * @param array $price_info Price information.
 	 * @return string
 	 */
 	protected function render_title_description_price_with_position( $price_info ) {
@@ -341,10 +343,10 @@ abstract class Abstract_Block implements Block_Interface {
 		$has_description  = $this->get_description();
 		$price_with_title = $this->should_show_price_with_title( $price_info );
 
-		// Early exit conditions
+		// Early exit conditions.
 		if (
-			( $title_hidden && $desc_position === 'tooltip' && ! $price_with_title ) ||
-			( $title_hidden && $desc_position === 'belowTitle' && ! $has_description )
+			( $title_hidden && 'tooltip' === $desc_position && ! $price_with_title ) ||
+			( $title_hidden && 'belowTitle' === $desc_position && ! $has_description )
 		) {
 			return '';
 		}
@@ -372,7 +374,7 @@ abstract class Abstract_Block implements Block_Interface {
 	/**
 	 * Render block title section
 	 *
-	 * @param array|null $price_info Price information
+	 * @param array|null $price_info Price information.
 	 * @return string
 	 */
 	protected function render_title_section( ?array $price_info = null ): string {
@@ -382,12 +384,12 @@ abstract class Abstract_Block implements Block_Interface {
 
 		$html = '<div class="prad-d-flex prad-item-center prad-gap-12 prad-mb-12">';
 
-		// Title and required indicator
+		// Title and required indicator.
 		if ( ! $this->is_title_hidden() ) {
 			$html .= $this->render_title_with_required();
 		}
 
-		// Price with title
+		// Price with title.
 		if ( $price_info && $this->should_show_price_with_title( $price_info ) ) {
 			$html .= $this->render_price_html( $price_info, 'with_title' );
 		}
@@ -446,12 +448,12 @@ abstract class Abstract_Block implements Block_Interface {
 	 * @return bool
 	 */
 	public function should_display(): bool {
-		// Basic display logic - override in child classes for specific conditions
+		// Basic display logic - override in child classes for specific conditions.
 		if ( $this->is_title_hidden() ) {
 			return false;
 		}
 
-		// Add logic evaluation here if needed
+		// Add logic evaluation here if needed.
 		if ( $this->is_logic_enabled() && ! empty( $this->get_field_conditions() ) ) {
 			return $this->evaluate_field_conditions();
 		}
@@ -466,7 +468,7 @@ abstract class Abstract_Block implements Block_Interface {
 	 */
 	protected function evaluate_field_conditions(): bool {
 		// Implement conditional logic evaluation
-		// This would need to be implemented based on your specific requirements
+		// This would need to be implemented based on your specific requirements.
 		return true;
 	}
 
@@ -478,7 +480,7 @@ abstract class Abstract_Block implements Block_Interface {
 	public function validate(): bool {
 		if ( $this->is_required() ) {
 			$value = $this->get_property( 'value' );
-			if ( empty( $value ) && $value !== '0' && $value !== 0 ) {
+			if ( empty( $value ) && '0' !== $value && 0 !== $value ) {
 				return false;
 			}
 		}
@@ -506,10 +508,10 @@ abstract class Abstract_Block implements Block_Interface {
 	/**
 	 * Render block content using common template
 	 *
-	 * @param object  $item Item to render
-	 * @param integer $index Item index
-	 * @param array   $price_info Price information
-	 * @param string  $variation_html Optional variation HTML
+	 * @param object  $item Item to render.
+	 * @param integer $index Item index.
+	 * @param array   $price_info Price information.
+	 * @param string  $variation_html Optional variation HTML.
 	 * @return string Rendered content
 	 */
 	protected function render_block_content( $item, int $index, array $price_info, string $variation_html = '' ): string {
@@ -528,7 +530,7 @@ abstract class Abstract_Block implements Block_Interface {
 				<div title="<?php echo wp_kses( $item->value, $allowed_tags ); ?>" class="prad-block-content prad-ellipsis-2<?php echo $p_url ? ' prad-cursor-pointer prad-product-link' : ''; ?>" data-phref="<?php echo esc_url( $p_url ); ?>">
 					<?php echo wp_kses( $item->value, $allowed_tags ); ?>
 				</div>
-				<?php if ( $item->type != 'no_cost' ) : ?>
+				<?php if ( 'no_cost' !== $item->type ) : ?>
 					<div class="prad-block-price prad-text-upper">
 						<?php echo wp_kses( $price_info['html'], $allowed_tags ); ?>
 					</div>
@@ -536,7 +538,7 @@ abstract class Abstract_Block implements Block_Interface {
 			</div>
 			<?php
 			if ( $variation_html ) :
-				echo $variation_html;
+				echo wp_kses( $variation_html, $allowed_tags );
 			endif;
 			?>
 			<?php if ( $enable_count ) : ?>

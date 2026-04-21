@@ -18,16 +18,16 @@ trait Attribute_Builder {
 	/**
 	 * Build HTML attributes string from array
 	 *
-	 * @param array $attributes Associative array of attributes
+	 * @param array $attributes Associative array of attributes.
 	 * @return string
 	 */
 	protected function build_attributes( array $attributes ): string {
 		$attr_strings = array();
 
 		foreach ( $attributes as $key => $value ) {
-			if ( $value !== '' && $value !== null && $value !== false ) {
-				if ( is_bool( $value ) && $value === true ) {
-					// Boolean attributes like 'required', 'disabled'
+			if ( '' !== $value && null !== $value && false !== $value ) {
+				if ( is_bool( $value ) && true === $value ) {
+					// Boolean attributes like 'required', 'disabled'.
 					$attr_strings[] = esc_attr( $key );
 				} else {
 					$attr_strings[] = sprintf( '%s="%s"', esc_attr( $key ), esc_attr( $value ) );
@@ -41,7 +41,7 @@ trait Attribute_Builder {
 	/**
 	 * Build data attributes from array
 	 *
-	 * @param array $data_attributes
+	 * @param array $data_attributes Associative array of data attributes to be converted to HTML data-* attributes.
 	 * @return array
 	 */
 	protected function build_data_attributes( array $data_attributes ): array {
@@ -65,14 +65,14 @@ trait Attribute_Builder {
 	/**
 	 * Build CSS classes string from array
 	 *
-	 * @param array $classes
+	 * @param array $classes Array of CSS class names.
 	 * @return string
 	 */
 	protected function build_css_classes( array $classes ): string {
 		$classes = array_filter(
 			$classes,
-			function ( $class ) {
-				return ! empty( trim( $class ) );
+			function ( $cls ) {
+				return ! empty( trim( $cls ) );
 			}
 		);
 
@@ -82,7 +82,7 @@ trait Attribute_Builder {
 	/**
 	 * Sanitize CSS class name
 	 *
-	 * @param string $class_name
+	 * @param string $class_name The CSS class name to sanitize.
 	 * @return string
 	 */
 	protected function sanitize_css_class( string $class_name ): string {

@@ -29,7 +29,7 @@ class AeliaCurrencySwitcher {
 	 */
 	public function __construct() {
 		$this->active_currency = get_woocommerce_currency();
-		$this->base_currency   = apply_filters( 'wc_aelia_cs_base_currency', '' );
+		$this->base_currency   = apply_filters( 'wc_aelia_cs_base_currency', '' );// phpcs:ignore
 	}
 
 	/**
@@ -42,7 +42,7 @@ class AeliaCurrencySwitcher {
 	 * @return float The converted price in the active currency.
 	 */
 	public function convert( $price ) {
-		return apply_filters( 'wc_aelia_cs_convert', $price, $this->base_currency, $this->active_currency );
+		return apply_filters( 'wc_aelia_cs_convert', $price, $this->base_currency, $this->active_currency );// phpcs:ignore
 	}
 
 	/**
@@ -55,6 +55,6 @@ class AeliaCurrencySwitcher {
 	 * @return float The reverted price in the base currency.
 	 */
 	public function revert( $price ) {
-		return apply_filters( 'wc_aelia_cs_convert', $price, $this->active_currency, $this->base_currency );
+		return apply_filters( 'wc_aelia_cs_convert', $price, $this->active_currency, $this->base_currency );// phpcs:ignore
 	}
 }

@@ -185,7 +185,7 @@ class RequestApi {
 				'callback'            => array( $this, 'product_image_callback' ),
 				'permission_callback' => array( $this, 'prad_get_admin_permissions' ),
 			),
-			
+
 			// Font Upload.
 			array(
 				'endpoint'            => 'upload_font',
@@ -313,6 +313,17 @@ class RequestApi {
 		$status  = isset( $params['status'] ) ? sanitize_text_field( $params['status'] ) : 'draft';
 		$content = isset( $params['content'] ) && is_array( $params['content'] ) ? product_addons()->sanitize_rest_params( $params['content'] ) : '';
 		$css     = isset( $params['css'] ) ? product_addons()->sanitize_rest_params( $params['css'] ) : '';
+		$nonce   = isset( $params['wpnonce'] ) ? sanitize_text_field( $params['wpnonce'] ) : '';
+
+		if ( ! $nonce || ! wp_verify_nonce( $nonce, 'prad-nonce' ) ) {
+			return new WP_REST_Response(
+				array(
+					'success' => false,
+					'message' => __( 'Invalid or missing nonce.', 'product-addons' ),
+				),
+				403
+			);
+		}
 
 		// Prepare the attributes for the post.
 		$attr = array(
@@ -393,6 +404,17 @@ class RequestApi {
 		$params = $request->get_params();
 		$ids    = isset( $params['ids'] ) ? sanitize_text_field( $params['ids'] ) : '';
 		$status = isset( $params['status'] ) ? sanitize_text_field( $params['status'] ) : '';
+		$nonce  = isset( $params['wpnonce'] ) ? sanitize_text_field( $params['wpnonce'] ) : '';
+
+		if ( ! $nonce || ! wp_verify_nonce( $nonce, 'prad-nonce' ) ) {
+			return new WP_REST_Response(
+				array(
+					'success' => false,
+					'message' => __( 'Invalid or missing nonce.', 'product-addons' ),
+				),
+				403
+			);
+		}
 
 		if ( empty( $ids ) ) {
 			return new WP_REST_Response(
@@ -454,6 +476,17 @@ class RequestApi {
 		// Retrieve and sanitize request parameters.
 		$params = $request->get_params();
 		$ids    = isset( $params['ids'] ) ? sanitize_text_field( $params['ids'] ) : '';
+		$nonce  = isset( $params['wpnonce'] ) ? sanitize_text_field( $params['wpnonce'] ) : '';
+
+		if ( ! $nonce || ! wp_verify_nonce( $nonce, 'prad-nonce' ) ) {
+			return new WP_REST_Response(
+				array(
+					'success' => false,
+					'message' => __( 'Invalid or missing nonce.', 'product-addons' ),
+				),
+				403
+			);
+		}
 
 		if ( empty( $ids ) ) {
 			return new WP_REST_Response(
@@ -509,7 +542,18 @@ class RequestApi {
 		// Retrieve and sanitize the request parameter.
 		$params  = $request->get_params();
 		$id      = isset( $params['id'] ) ? sanitize_text_field( $params['id'] ) : '';
-		$content = isset( $params['content'] ) && is_array( $params['content'] ) ? product_addons()->sanitize_rest_params( $params['content'] ) : '';
+		$content = isset( $params['content'] ) && is_array( $params['content'] ) ? product_addons()->sanitize_rest_params( $params['content'] ) : array();
+		$nonce   = isset( $params['wpnonce'] ) ? sanitize_text_field( $params['wpnonce'] ) : '';
+
+		if ( ! $nonce || ! wp_verify_nonce( $nonce, 'prad-nonce' ) ) {
+			return new WP_REST_Response(
+				array(
+					'success' => false,
+					'message' => __( 'Invalid or missing nonce.', 'product-addons' ),
+				),
+				403
+			);
+		}
 
 		if ( empty( $id ) ) {
 			return new WP_REST_Response(
@@ -586,6 +630,17 @@ class RequestApi {
 		$params  = $request->get_params();
 		$title   = isset( $params['title'] ) ? sanitize_text_field( $params['title'] ) : '';
 		$content = isset( $params['content'] ) && is_array( $params['content'] ) ? product_addons()->sanitize_rest_params( $params['content'] ) : array();
+		$nonce   = isset( $params['wpnonce'] ) ? sanitize_text_field( $params['wpnonce'] ) : '';
+
+		if ( ! $nonce || ! wp_verify_nonce( $nonce, 'prad-nonce' ) ) {
+			return new WP_REST_Response(
+				array(
+					'success' => false,
+					'message' => __( 'Invalid or missing nonce.', 'product-addons' ),
+				),
+				403
+			);
+		}
 
 		$args = array(
 			'post_status' => 'draft',
@@ -620,6 +675,17 @@ class RequestApi {
 		$paged    = isset( $params['page'] ) ? sanitize_text_field( $params['page'] ) : 1;
 		$per_page = isset( $params['per_page'] ) ? sanitize_text_field( $params['per_page'] ) : 3;
 		$order    = isset( $params['order'] ) ? sanitize_text_field( $params['order'] ) : 'DESC';
+		$nonce    = isset( $params['wpnonce'] ) ? sanitize_text_field( $params['wpnonce'] ) : '';
+
+		if ( ! $nonce || ! wp_verify_nonce( $nonce, 'prad-nonce' ) ) {
+			return new WP_REST_Response(
+				array(
+					'success' => false,
+					'message' => __( 'Invalid or missing nonce.', 'product-addons' ),
+				),
+				403
+			);
+		}
 
 		$args = array(
 			'post_type'      => 'prad_option',
@@ -784,8 +850,8 @@ class RequestApi {
 	 */
 	public function get_product_link_callback( \WP_REST_Request $request ) {
 		$params        = $request->get_params();
-		$assigned_data = isset( $params['assignedData'] ) ? $params['assignedData'] : array();
-		$option_id     = isset( $params['optionId'] ) ? $params['optionId'] : '';
+		$assigned_data = isset( $params['assignedData'] ) && is_array( $params['assignedData'] ) ? product_addons()->sanitize_rest_params( $params['assignedData'] ) : array();
+		$option_id     = isset( $params['optionId'] ) ? sanitize_text_field( $params['optionId'] ) : '';
 
 		// Validate assigned data.
 		if ( empty( $assigned_data ) || ! isset( $assigned_data['aType'] ) ) {
@@ -1059,6 +1125,17 @@ class RequestApi {
 		$params        = $request->get_params();
 		$option_id     = ! empty( $params['option_id'] ) ? sanitize_text_field( $params['option_id'] ) : '';
 		$product_image = ! empty( $params['product_image'] ) ? product_addons()->sanitize_rest_params( $params['product_image'] ) : array();
+		$nonce         = isset( $params['wpnonce'] ) ? sanitize_text_field( $params['wpnonce'] ) : '';
+
+		if ( ! $nonce || ! wp_verify_nonce( $nonce, 'prad-nonce' ) ) {
+			return new WP_REST_Response(
+				array(
+					'success' => false,
+					'message' => __( 'Invalid or missing nonce.', 'product-addons' ),
+				),
+				403
+			);
+		}
 
 		if ( empty( $option_id ) ) {
 			return new WP_REST_Response(
@@ -1229,8 +1306,19 @@ class RequestApi {
 	 */
 	public function set_global_callback( \WP_REST_Request $request ) {
 		$request_params = $request->get_params();
-		$style          = isset( $request_params['style'] ) ? $request_params['style'] : '';
-		$css            = isset( $request_params['css'] ) ? $request_params['css'] : '';
+		$style          = isset( $request_params['style'] ) ? product_addons()->sanitize_rest_params( $request_params['style'] ) : '';
+		$css            = isset( $request_params['css'] ) ? sanitize_textarea_field( $request_params['css'] ) : '';
+		$nonce          = isset( $request_params['wpnonce'] ) ? sanitize_text_field( $request_params['wpnonce'] ) : '';
+
+		if ( ! $nonce || ! wp_verify_nonce( $nonce, 'prad-nonce' ) ) {
+			return new WP_REST_Response(
+				array(
+					'success' => false,
+					'message' => __( 'Invalid or missing nonce.', 'product-addons' ),
+				),
+				403
+			);
+		}
 
 		if ( $style ) {
 			update_option( 'prad_global_style', $style );
@@ -1275,7 +1363,18 @@ class RequestApi {
 	 */
 	public function set_settings_callback( \WP_REST_Request $request ) {
 		$request_params = $request->get_params();
-		$settings       = isset( $request_params['settings'] ) ? $request_params['settings'] : '';
+		$settings       = isset( $request_params['settings'] ) ? product_addons()->sanitize_rest_params( $request_params['settings'] ) : '';
+		$nonce          = isset( $request_params['wpnonce'] ) ? sanitize_text_field( $request_params['wpnonce'] ) : '';
+
+		if ( ! $nonce || ! wp_verify_nonce( $nonce, 'prad-nonce' ) ) {
+			return new WP_REST_Response(
+				array(
+					'success' => false,
+					'message' => __( 'Invalid or missing nonce.', 'product-addons' ),
+				),
+				403
+			);
+		}
 
 		if ( $settings ) {
 			update_option( 'prad_settings', $settings );
@@ -1301,7 +1400,7 @@ class RequestApi {
 	 */
 	public function product_image_callback( \WP_REST_Request $request ) {
 		$request_params = $request->get_params();
-		$product_data   = isset( $request_params['productData'] ) ? $request_params['productData'] : '';
+		$product_data   = isset( $request_params['productData'] ) && is_array( $request_params['productData'] ) ? product_addons()->sanitize_rest_params( $request_params['productData'] ) : array();
 
 		$to_return = array();
 		if ( ! empty( $product_data ) && is_array( $product_data ) ) {
@@ -1324,6 +1423,7 @@ class RequestApi {
 	/**
 	 * Allowed file extensions and MIME types.
 	 *
+	 * @param array $mimes Existing allowed MIME types.
 	 * @return array
 	 */
 	public function prad_handle_upload_field_mimes( $mimes ) {
@@ -1338,6 +1438,12 @@ class RequestApi {
 	 * @return array|WP_Error
 	 */
 	protected function get_uploaded_file() {
+
+		// Nonce verification before processing form data.
+		$nonce = isset( $_POST['pradnonce'] ) ? sanitize_key( wp_unslash( $_POST['pradnonce'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
+		if ( ! wp_verify_nonce( $nonce, 'prad-nonce' ) ) {
+			return new \WP_Error( 'invalid_nonce', __( 'Invalid nonce.', 'product-addons' ) );
+		}
 
 		if ( empty( $_FILES['prad_file'] ) ||
 			empty( $_FILES['prad_file']['name'] )
@@ -1364,8 +1470,6 @@ class RequestApi {
 		);
 
 		if ( empty( $filetype['ext'] ) || empty( $filetype['type'] ) ) {
-			$file_mime_type = mime_content_type( $file['tmp_name'] );
-			print_r( $file_mime_type );
 			return new \WP_Error(
 				'invalid_type',
 				__( 'Invalid file type.', 'product-addons' )
@@ -1376,7 +1480,25 @@ class RequestApi {
 	}
 
 
+	/**
+	 * Handles file uploads via REST API.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return WP_REST_Response Response indicating success or failure of the upload.
+	 */
 	public function upload_files_callback() {
+
+		$nonce = isset( $_POST['pradnonce'] ) ? sanitize_key( wp_unslash( $_POST['pradnonce'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
+		if ( ! wp_verify_nonce( $nonce, 'prad-nonce' ) ) {
+			return new WP_REST_Response(
+				array(
+					'success' => false,
+					'message' => __( 'Invalid nonce.', 'product-addons' ),
+				),
+				403
+			);
+		}
 
 		add_filter( 'upload_mimes', array( $this, 'prad_handle_upload_field_mimes' ) );
 
@@ -1445,10 +1567,30 @@ class RequestApi {
 		return $upload;
 	}
 
+	/**
+	 * Set analytics data callback.
+	 *
+	 * Handles updating analytics data for a given option ID and type.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param \WP_REST_Request $request The REST API request object.
+	 * @return WP_REST_Response Response indicating success or failure.
+	 */
 	public function set_analytics_data_callback( \WP_REST_Request $request ) {
 		$request_params = $request->get_params();
-		$option_id      = isset( $request_params['optionId'] ) ? sanitize_text_field( $request_params['optionId'] ) : '';
-		$type           = isset( $request_params['type'] ) ? sanitize_text_field( $request_params['type'] ) : '';
+		$nonce          = isset( $request_params['nonce'] ) ? sanitize_key( $request_params['nonce'] ) : '';
+		if ( ! wp_verify_nonce( $nonce, 'prad-nonce' ) ) {
+			return new WP_REST_Response(
+				array(
+					'success' => false,
+					'message' => __( 'Invalid nonce.', 'product-addons' ),
+				),
+				403
+			);
+		}
+		$option_id = isset( $request_params['optionId'] ) ? sanitize_text_field( $request_params['optionId'] ) : '';
+		$type      = isset( $request_params['type'] ) ? sanitize_text_field( $request_params['type'] ) : '';
 
 		if ( $option_id && $type ) {
 			do_action( 'prad_update_stats_table_data', $option_id, $type, '' );
@@ -1486,9 +1628,9 @@ class RequestApi {
 		global $wpdb;
 
 		$table_name   = $wpdb->prefix . 'prad_stats_graph';
-		$table_exists = $wpdb->get_var( "SHOW TABLES LIKE '$table_name'" );
+		$table_exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table_name ) ); // phpcs:ignore
 		if ( $table_exists ) {
-			$stats_graph = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}prad_stats_graph ORDER BY id ASC" );
+			$stats_graph = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM `%1$s` ORDER BY id ASC', $table_name ) ); // phpcs:ignore
 		} else {
 			$wpdb->hide_errors();
 			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
@@ -1507,11 +1649,18 @@ class RequestApi {
 		);
 	}
 
+	/**
+	 * Retrieves analytics stats table data for options.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array Stats table data for options.
+	 */
 	public function stats_table_data() {
 		global $wpdb;
 
 		$table_name   = $wpdb->prefix . 'prad_stats_table';
-		$table_exists = $wpdb->get_var( "SHOW TABLES LIKE '$table_name'" );
+		$table_exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table_name ) ); // phpcs:ignore
 		if ( ! $table_exists ) {
 			$wpdb->hide_errors();
 			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
@@ -1540,7 +1689,7 @@ class RequestApi {
 			while ( $query->have_posts() ) {
 				$query->the_post();
 				$id           = get_the_ID();
-				$option_stats = $wpdb->get_results(
+				$option_stats = $wpdb->get_results(//phpcs:ignore
 					$wpdb->prepare(
 						"SELECT * FROM {$wpdb->prefix}prad_stats_table WHERE option_id = %d",
 						$id
@@ -1785,6 +1934,17 @@ class RequestApi {
 	public function delete_font_callback( \WP_REST_Request $request ) {
 		$params  = $request->get_params();
 		$font_id = isset( $params['font_id'] ) ? sanitize_text_field( $params['font_id'] ) : '';
+		$nonce   = isset( $params['wpnonce'] ) ? sanitize_text_field( $params['wpnonce'] ) : '';
+
+		if ( ! $nonce || ! wp_verify_nonce( $nonce, 'prad-nonce' ) ) {
+			return new WP_REST_Response(
+				array(
+					'success' => false,
+					'message' => __( 'Invalid or missing nonce.', 'product-addons' ),
+				),
+				403
+			);
+		}
 
 		if ( empty( $font_id ) ) {
 			return new WP_REST_Response(
@@ -1854,6 +2014,17 @@ class RequestApi {
 		$font_id     = isset( $params['font_id'] ) ? sanitize_text_field( $params['font_id'] ) : '';
 		$font_title  = isset( $params['font_title'] ) ? sanitize_text_field( $params['font_title'] ) : '';
 		$font_family = isset( $params['font_family'] ) ? sanitize_text_field( $params['font_family'] ) : '';
+		$nonce       = isset( $params['wpnonce'] ) ? sanitize_text_field( $params['wpnonce'] ) : '';
+
+		if ( ! $nonce || ! wp_verify_nonce( $nonce, 'prad-nonce' ) ) {
+			return new WP_REST_Response(
+				array(
+					'success' => false,
+					'message' => __( 'Invalid or missing nonce.', 'product-addons' ),
+				),
+				403
+			);
+		}
 
 		if ( empty( $font_id ) ) {
 			return new WP_REST_Response(

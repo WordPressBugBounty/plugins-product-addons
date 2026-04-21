@@ -13,15 +13,37 @@ use PRAD\Includes\Common\Formula\Expression_Exception;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Represents a function call node in the expression AST.
+ *
+ * Handles evaluation of supported functions such as if, abs, ceil, floor, max, min, pow, and round.
+ *
+ * @package PRAD
+ * @since 1.5.8
+ */
 final class Expression_Function_Node implements Expression_Node {
-	/** @var string */
+	/**
+	 * Function name.
+	 *
+	 * @var string
+	 */
 	private $name;
-	/** @var Expression_Node[] */
+	/**
+	 * Argument nodes.
+	 *
+	 * @var Expression_Node[]
+	 */
 	private $args;
-	/** @var int */
+	/**
+	 * Token position.
+	 *
+	 * @var int
+	 */
 	private $pos;
 
 	/**
+	 * Constructs a new Expression_Function_Node instance.
+	 *
 	 * @param string            $name Function name.
 	 * @param Expression_Node[] $args Argument nodes.
 	 * @param int               $pos  Token position.
@@ -32,6 +54,14 @@ final class Expression_Function_Node implements Expression_Node {
 		$this->pos  = (int) $pos;
 	}
 
+	/**
+	 * Evaluates the function node using the provided expression engine and context.
+	 *
+	 * @param Abstract_Expression_Engine $engine  The expression engine to use for evaluation.
+	 * @param array                      $context Optional context for evaluation.
+	 * @return mixed                     The result of the function evaluation.
+	 * @throws Expression_Exception      If the function arguments are invalid or unknown function is called.
+	 */
 	public function evaluate( Abstract_Expression_Engine $engine, array $context = array() ) {
 		$name = $this->name;
 
@@ -98,6 +128,8 @@ final class Expression_Function_Node implements Expression_Node {
 			return max( $nums );
 		}
 
-		throw new Expression_Exception( 'Unknown function "' . $this->name . '" at position ' . $this->pos );
+		throw new Expression_Exception(
+			'Unknown function "' . esc_html( $this->name ) . '" at position ' . esc_html( $this->pos )
+		);
 	}
 }

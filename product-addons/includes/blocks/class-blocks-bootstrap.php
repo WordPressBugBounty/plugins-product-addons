@@ -35,7 +35,7 @@ class Blocks_Bootstrap {
 	 * @return self
 	 */
 	public static function get_instance(): self {
-		if ( self::$instance === null ) {
+		if ( null === self::$instance ) {
 			self::$instance = new self();
 		}
 
@@ -57,7 +57,7 @@ class Blocks_Bootstrap {
 			return;
 		}
 
-		// Initialize main render blocks class
+		// Initialize main render blocks class.
 		$this->init_render_blocks();
 
 		$this->initialized = true;
