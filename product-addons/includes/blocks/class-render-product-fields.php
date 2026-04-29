@@ -88,10 +88,10 @@ class Render_Product_Fields {
 	 * @return string HTML output.
 	 */
 	private function render_addon_wrapper( $product, array $blocks_data ): string {
-		$product_id = $product->get_id();
-
-		$html  = '<div class="prad-addons-wrapper prad-loading">';
-		$html .= '<div class="prad-loader"></div>';
+		$product_id             = $product->get_id();
+		$prad_new_style_enabled = get_option( 'prad_global_style_thematic_css', '' );
+		$html                   = '<div class="prad-addons-wrapper prad-loading' . ( $prad_new_style_enabled ? ' prad-thematic-style' : '' ) . '">';
+		$html                  .= '<div class="prad-loader"></div>';
 
 		// Hidden fields for price calculation.
 		$html .= $this->render_hidden_fields( $product, $blocks_data );

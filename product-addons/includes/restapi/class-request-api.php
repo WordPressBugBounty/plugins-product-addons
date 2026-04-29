@@ -155,6 +155,7 @@ class RequestApi {
 				'callback'            => array( $this, 'set_global_callback' ),
 				'permission_callback' => array( $this, 'prad_get_admin_permissions' ),
 			),
+
 			// Get Global Settings.
 			array(
 				'endpoint'            => 'get_settings',
@@ -1290,7 +1291,10 @@ class RequestApi {
 		return new WP_REST_Response(
 			array(
 				'success'  => true,
-				'response' => get_option( 'prad_global_style', '' ),
+				'response' => array(
+					'globalStyle'   => get_option( 'prad_global_style', '' ),
+					'thematicStyle' => get_option( 'prad_global_style_thematic', '' ),
+				),
 			),
 			200
 		);
@@ -1308,6 +1312,7 @@ class RequestApi {
 		$request_params = $request->get_params();
 		$style          = isset( $request_params['style'] ) ? product_addons()->sanitize_rest_params( $request_params['style'] ) : '';
 		$css            = isset( $request_params['css'] ) ? sanitize_textarea_field( $request_params['css'] ) : '';
+		$is_themetic    = isset( $request_params['isThemetic'] ) ? sanitize_textarea_field( $request_params['isThemetic'] ) : 'no';
 		$nonce          = isset( $request_params['wpnonce'] ) ? sanitize_text_field( $request_params['wpnonce'] ) : '';
 
 		if ( ! $nonce || ! wp_verify_nonce( $nonce, 'prad-nonce' ) ) {
@@ -1320,11 +1325,20 @@ class RequestApi {
 			);
 		}
 
-		if ( $style ) {
-			update_option( 'prad_global_style', $style );
-		}
-		if ( $css ) {
-			update_option( 'prad_global_style_css', $css );
+		if ( 'yes' === $is_themetic ) {
+			if ( $style ) {
+				update_option( 'prad_global_style_thematic', $style );
+			}
+			if ( $css ) {
+				update_option( 'prad_global_style_thematic_css', $css );
+			}
+		} else {
+			if ( $style ) {
+				update_option( 'prad_global_style', $style );
+			}
+			if ( $css ) {
+				update_option( 'prad_global_style_css', $css );
+			}
 		}
 
 		return new WP_REST_Response(

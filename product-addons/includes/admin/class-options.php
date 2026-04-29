@@ -137,7 +137,7 @@ class Options {
 			$menupage_cap,
 			'prad-dashboard',
 			array( self::class, 'tab_page_content' ),
-			PRAD_URL . '/assets/img/logo-menu.svg',
+			PRAD_URL . '/assets/img/wowaddons-icon-square.svg',
 			58.5
 		);
 

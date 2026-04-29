@@ -129,11 +129,17 @@ class Hooks {
 		product_addons()->enqueue_style( 'prad-frontend-css', 'wowaddons-frontend' );
 		product_addons()->enqueue_style( 'prad-blocks-css', 'wowaddons-blocks' );
 
-		$css = get_option( 'prad_global_style_css', '' );
-		if ( $css ) {
+		$css     = get_option( 'prad_global_style_css', '' );
+		$new_css = get_option( 'prad_global_style_thematic_css', '' );
+
+		if ( $new_css ) {
 			wp_register_style( 'prad-global-css', false ); // phpcs:ignore
 			wp_enqueue_style( 'prad-global-css' );
-			wp_add_inline_style( 'prad-global-css', $css );
+			wp_add_inline_style( 'prad-global-css', $new_css );
+		} elseif ( $css ) {
+				wp_register_style( 'prad-global-css', false ); // phpcs:ignore
+				wp_enqueue_style( 'prad-global-css' );
+				wp_add_inline_style( 'prad-global-css', $css );
 		}
 	}
 
