@@ -143,7 +143,7 @@ class CheckoutPage {
 			$item->add_meta_data( 'cart_item_prad_selection', $cart_item['prad_selection'] );
 		}
 
-		if ( ! empty( $cart_item['prad_selection']['extra_data_Depcrecated'] ) ) { // Depcrecated.
+		if ( ! empty( $cart_item['prad_selection']['extra_data'] ) ) {
 			$prad_uploads_path = array();
 
 			foreach ( $cart_item['prad_selection']['extra_data'] as $val ) {
@@ -166,7 +166,7 @@ class CheckoutPage {
 							}
 							$res .= '</span>';
 						}
-						$changed_value = $res;
+						$changed_value = isset( $val['prad_additional']['opt_price_with_html'] ) ? $res . $val['prad_additional']['opt_price_with_html'] : $res;
 					}
 					$item->add_meta_data( $val['name'], $changed_value );
 				} else {
@@ -227,7 +227,7 @@ class CheckoutPage {
 
 			// Add Order Item Meta & Handle Upload paths.
 			$cart_item_prad_selection = $item->get_meta( 'cart_item_prad_selection' );
-			if ( ! empty( $cart_item_prad_selection['extra_data'] ) ) {
+			if ( ! empty( $cart_item_prad_selection['extra_data_Depricated'] ) ) {
 				$prad_uploads_path = array();
 
 				foreach ( $cart_item_prad_selection['extra_data'] as $val ) {

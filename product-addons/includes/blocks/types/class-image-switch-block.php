@@ -54,6 +54,7 @@ class Image_Switch_Block extends Abstract_Block {
 		$html .= $this->render_title_description_noprice();
 		$html .= $this->render_swatch_wrapper( $options );
 		$html .= $this->render_description_below_field();
+		$html .= $this->render_tooltip();
 		$html .= '</div>';
 
 		return $html;
@@ -252,11 +253,12 @@ class Image_Switch_Block extends Abstract_Block {
 
 		$html  = sprintf( '<label class="prad-lh-0 prad-mb-0" for="%s">', esc_attr( $blockid . $index ) );
 		$html .= sprintf(
-			'<img class="prad-swatch-item" title="%s" src="%s" alt="swatch item" />',
+			'<img class="prad-swatch-item" title="%s" src="%s" alt="swatch item" data-tooltip-label="%s" />',
 			esc_attr( $price_info['price'] ),
-			esc_url( $img_url )
+			esc_url( $img_url ),
+			esc_attr( $item['value'] ?? '' ),
 		);
-		$html .= '</label>';
+		$html       .= '</label>';
 
 		return $html;
 	}
@@ -312,5 +314,18 @@ class Image_Switch_Block extends Abstract_Block {
 	 */
 	private function render_quantity_input( int $index ): string {
 		return sprintf( '<input %s />', $this->build_attributes( $this->get_quantity_input_attributes( $index ) ) );
+	}
+
+
+	private function render_tooltip(): string {
+		$enable_preview = $this->get_property( 'enableImagePreview', true );
+		if ( ! $enable_preview ) {
+			return '';
+		}
+		return '
+		<div class="prad-img-tooltip" role="tooltip" aria-hidden="true">
+			<img src="" alt="" />
+			<span class="prad-img-tooltip-label"></span>
+		</div>';
 	}
 }

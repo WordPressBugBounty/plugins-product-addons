@@ -4,7 +4,7 @@ Tags: product addons, woocommerce product addons, extra product options, product
 Requires at least: 6.8
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.6.7
+Stable tag: 1.6.8
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -199,6 +199,11 @@ No, for some product fields like Headings, Texts, advanced custom logic options 
 7. Strategic Cross-selling 
 
 == Changelog ==
+= 1.6.8 – 6th May 2026 =
+* New: Image preview support for addons fields.
+* New: Default active options for Froduct Field.
+* Fix: Minor bug fixes and improvements.
+
 = 1.6.7 – 29th April 2026 =
 * New: Unified Global Styling System.
 

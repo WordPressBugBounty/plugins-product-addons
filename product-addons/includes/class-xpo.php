@@ -233,7 +233,7 @@ class Xpo {
 			),
 			'content_notice'    => array(
 				'source'   => 'db-wowaddons-notice',
-				'medium'   => 'spring-sale',
+				'medium'   => 'summer-sale',
 				'campaign' => 'wowaddons-dashboard',
 			),
 			'img_banner_notice' => array(
@@ -269,6 +269,11 @@ class Xpo {
 			'final_hour_sale'   => array(
 				'source'   => 'db-wowaddons-notice',
 				'medium'   => 'final-hour-sale',
+				'campaign' => 'wowaddons-dashboard',
+			),
+			'surprise_sale'   => array(
+				'source'   => 'db-wowaddons-notice-logo',
+				'medium'   => 'surprise-sale',
 				'campaign' => 'wowaddons-dashboard',
 			),
 			'exclusive_deals'   => array(

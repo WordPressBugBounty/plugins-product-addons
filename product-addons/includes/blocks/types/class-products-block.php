@@ -54,6 +54,7 @@ class Products_Block extends Abstract_Block {
 		$html .= $this->render_title_description_noprice();
 		$html .= $this->render_products_wrapper( $options );
 		$html .= $this->render_description_below_field();
+		$html .= $this->render_tooltip();
 		$html .= '</div>';
 
 		return $html;
@@ -360,10 +361,11 @@ class Products_Block extends Abstract_Block {
 		$img_url = isset( $item->img ) ? $item->img : PRAD_URL . 'assets/img/default-product.svg';
 
 		return sprintf(
-			'<label class="prad-lh-0 prad-mb-0" for="%s"><img class="prad-swatch-item" title="%s" src="%s" alt="swatch item" /></label>',
+			'<label class="prad-lh-0 prad-mb-0" for="%s"><img class="prad-swatch-item" title="%s" src="%s" alt="swatch item" data-tooltip-label="%s" /></label>',
 			esc_attr( $blockid . $index ),
 			esc_attr( $item->value ),
-			esc_url( $img_url )
+			esc_url( $img_url ),
+			esc_attr( $item->value )
 		);
 	}
 
@@ -485,7 +487,7 @@ class Products_Block extends Abstract_Block {
 		$html  = '<div class="prad-block-content prad-d-flex prad-item-center">';
 
 		if ( isset( $item->img ) && $item->img && product_addons()->is_pro_feature_available() ) {
-			$html .= sprintf( '<img class="prad-block-item-img" src="%s" alt="Item" />', esc_url( $item->img ) );
+			$html .= sprintf( '<img class="prad-block-item-img" src="%s" alt="Item" data-tooltip-label="%s" />', esc_url( $item->img ), esc_attr( $item->value ) );
 		}
 
 		$class      = 'prad-ellipsis-2';
@@ -605,5 +607,17 @@ class Products_Block extends Abstract_Block {
 	 */
 	private function render_block_contents( $item, int $index, array $price_info, string $variation_html = '' ): string {
 		return parent::render_block_content( $item, $index, $price_info, $variation_html );
+	}
+
+	private function render_tooltip(): string {
+		$enable_preview = $this->get_property( 'enableImagePreview', true );
+		if ( ! $enable_preview ) {
+			return '';
+		}
+		return '
+		<div class="prad-img-tooltip" role="tooltip" aria-hidden="true">
+			<img src="" alt="" />
+			<span class="prad-img-tooltip-label"></span>
+		</div>';
 	}
 }

@@ -201,6 +201,7 @@ class Font_Picker_Block extends Abstract_Block {
 				'data-index'       => $index,
 				'data-font-family' => $font['family'],
 				'data-ptype'       => $item['type'] ?? 'no_cost',
+				'data-uid'         => $item['fontFamily'] ?? '',
 			);
 
 			$html .= sprintf( '<div %s  >', $this->build_attributes( $option_attributes ) );

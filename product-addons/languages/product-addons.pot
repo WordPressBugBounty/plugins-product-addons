@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv3.
 msgid ""
 msgstr ""
-"Project-Id-Version: WowAddons - Product Addons for WooCommerce 1.6.7\n"
+"Project-Id-Version: WowAddons - Product Addons for WooCommerce 1.6.8\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/build\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-04-29T09:18:26+00:00\n"
+"POT-Creation-Date: 2026-05-06T10:58:20+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: product-addons\n"
@@ -30,115 +30,150 @@ msgstr ""
 msgid "https://www.wpxpo.com/about"
 msgstr ""
 
-#: includes/admin/class-notice.php:104
+#: includes/admin/class-notice.php:105
 msgid "Hello Bar Action performed"
 msgstr ""
 
-#: includes/admin/class-notice.php:299
+#: includes/admin/class-notice.php:345
 msgid "Close Banner"
 msgstr ""
 
-#: includes/admin/class-notice.php:348
-#: includes/admin/class-notice.php:367
-msgid "Spring Sale:"
+#: includes/admin/class-notice.php:394
+#: includes/admin/class-notice.php:413
+msgid "Flash Sale:"
 msgstr ""
 
 #. translators: %s: discount percentage
-#: includes/admin/class-notice.php:350
-#: includes/admin/class-notice.php:369
+#: includes/admin/class-notice.php:396
+#: includes/admin/class-notice.php:415
+#: includes/admin/class-notice.php:436
+#: includes/admin/class-notice.php:455
+#: includes/admin/class-notice.php:476
+#: includes/admin/class-notice.php:495
+#: includes/admin/class-notice.php:516
+#: includes/admin/class-notice.php:535
 msgid "WowAddons offers are live - Enjoy %s off on WowAddons Pro."
 msgstr ""
 
-#: includes/admin/class-notice.php:354
-#: includes/admin/class-notice.php:373
+#: includes/admin/class-notice.php:400
+#: includes/admin/class-notice.php:419
+#: includes/admin/class-notice.php:440
+#: includes/admin/class-notice.php:459
+#: includes/admin/class-notice.php:480
+#: includes/admin/class-notice.php:499
+#: includes/admin/class-notice.php:520
+#: includes/admin/class-notice.php:539
 msgid "Claim Your Discount!"
 msgstr ""
 
-#: includes/admin/class-notice.php:780
+#: includes/admin/class-notice.php:434
+#: includes/admin/class-notice.php:453
+msgid "Surprise Sale:"
+msgstr ""
+
+#: includes/admin/class-notice.php:474
+#: includes/admin/class-notice.php:493
+msgid "Massive Sale:"
+msgstr ""
+
+#: includes/admin/class-notice.php:514
+#: includes/admin/class-notice.php:533
+msgid "Final Hour Sale:"
+msgstr ""
+
+#: includes/admin/class-notice.php:946
 msgid "Want to help make WowAddons even more awesome?"
 msgstr ""
 
-#: includes/admin/class-notice.php:782
+#: includes/admin/class-notice.php:948
 msgid "Allow us to collect diagnostic data and usage information. see "
 msgstr ""
 
-#: includes/admin/class-notice.php:783
+#: includes/admin/class-notice.php:949
 msgid "what we collect."
 msgstr ""
 
-#: includes/admin/class-notice.php:801
+#: includes/admin/class-notice.php:967
 msgid "Accept & Close"
 msgstr ""
 
 #: includes/admin/class-options.php:46
-msgid "Spring Sale - Up to 55% OFF"
+msgid "Flash Sale - Up to 50% OFF"
 msgstr ""
 
 #: includes/admin/class-options.php:55
-msgid "Final Hour Sale - Up to 55% OFF"
+msgid "Surprise Sale - Up to 55% OFF"
 msgstr ""
 
 #: includes/admin/class-options.php:64
-msgid "Create Options"
+msgid "Massive Sale - Up to 50% OFF"
 msgstr ""
 
 #: includes/admin/class-options.php:73
-#: includes/admin/class-options.php:204
+msgid "Final Hour Sale - Up to 55% OFF"
+msgstr ""
+
+#: includes/admin/class-options.php:82
+msgid "Create Options"
+msgstr ""
+
+#: includes/admin/class-options.php:91
+#: includes/admin/class-options.php:222
 #: assets/js/wowaddons.js:161
 msgid "Renew License"
 msgstr ""
 
-#: includes/admin/class-options.php:77
+#: includes/admin/class-options.php:95
 msgid "Upgrade to Pro"
 msgstr ""
 
-#: includes/admin/class-options.php:117
+#: includes/admin/class-options.php:135
 msgid "Docs"
 msgstr ""
 
-#: includes/admin/class-options.php:118
+#: includes/admin/class-options.php:136
 #: assets/js/wowaddons.js:161
 msgid "Support"
 msgstr ""
 
-#: includes/admin/class-options.php:135
-#: includes/admin/class-options.php:136
-#: includes/admin/class-options.php:159
-#: includes/admin/class-options.php:160
+#: includes/admin/class-options.php:153
+#: includes/admin/class-options.php:154
+#: includes/admin/class-options.php:177
+#: includes/admin/class-options.php:178
 msgid "WowAddons"
 msgstr ""
 
-#: includes/admin/class-options.php:146
+#: includes/admin/class-options.php:164
 msgid "WowAddons Dashboard"
 msgstr ""
 
-#: includes/admin/class-options.php:147
+#: includes/admin/class-options.php:165
 msgid "Dashboard"
 msgstr ""
 
-#: includes/admin/class-options.php:153
+#: includes/admin/class-options.php:171
 msgid "Option Lists"
 msgstr ""
 
-#: includes/admin/class-options.php:154
+#: includes/admin/class-options.php:172
 #: assets/js/wowaddons.js:1
 msgid "Analytics"
 msgstr ""
 
-#: includes/admin/class-options.php:155
+#: includes/admin/class-options.php:173
 #: assets/js/wowaddons.js:1
 msgid "Settings"
 msgstr ""
 
-#: includes/admin/class-options.php:167
+#: includes/admin/class-options.php:185
 msgid "License"
 msgstr ""
 
-#: includes/admin/class-options.php:188
+#: includes/admin/class-options.php:206
 msgid "Upgrade to Pro!"
 msgstr ""
 
-#: includes/admin/class-options.php:198
+#: includes/admin/class-options.php:216
 msgid "New Year Offer!"
 msgstr ""
 
@@ -448,17 +483,22 @@ msgstr ""
 
 #. translators: %d: Minimum number of options to select.
 #: assets/js/frontend-script.js:4
-#: assets/js/frontend-script.js:10
+#: assets/js/frontend-script.js:13
 msgid "Select at least %d options"
 msgstr ""
 
 #. translators: %d: Maximum number of options to select.
 #: assets/js/frontend-script.js:7
-#: assets/js/frontend-script.js:13
+#: assets/js/frontend-script.js:16
 msgid "Select at most %d options"
 msgstr ""
 
-#: assets/js/frontend-script.js:7
+#. translators: %d: Minimum number of files to upload.
+#: assets/js/frontend-script.js:10
+msgid "Upload at least %d files"
+msgstr ""
+
+#: assets/js/frontend-script.js:10
 msgid "Please check selection limits"
 msgstr ""
 
@@ -1510,6 +1550,10 @@ msgid "File Size Prefix Text"
 msgstr ""
 
 #: assets/js/wowaddons.js:161
+msgid "Minimum Number of Files"
+msgstr ""
+
+#: assets/js/wowaddons.js:161
 msgid "Maximum Number of Files"
 msgstr ""
 
@@ -1539,6 +1583,10 @@ msgstr ""
 
 #: assets/js/wowaddons.js:161
 msgid "Circle"
+msgstr ""
+
+#: assets/js/wowaddons.js:161
+msgid "Enable Image Preview"
 msgstr ""
 
 #: assets/js/wowaddons.js:161

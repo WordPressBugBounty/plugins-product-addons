@@ -46,6 +46,7 @@ class Radio_Block extends Abstract_Block {
 		$html .= $this->render_title_description_noprice();
 		$html .= $this->render_radio_group();
 		$html .= $this->render_description_below_field();
+		$html .= $this->render_tooltip();
 		$html .= '</div>';
 
 		return $html;
@@ -239,8 +240,9 @@ class Radio_Block extends Abstract_Block {
 
 		if ( isset( $item['img'] ) && $item['img'] && product_addons()->is_pro_feature_available() ) {
 			$html .= sprintf(
-				'<img class="prad-block-item-img" src="%s" alt="Item" />',
-				esc_url( $item['img'] )
+				'<img class="prad-block-item-img" src="%s" alt="Item" data-tooltip-label="%s" />',
+				esc_url( $item['img'] ),
+				esc_attr( $item['value'] ?? '' )
 			);
 		}
 
@@ -317,5 +319,17 @@ class Radio_Block extends Abstract_Block {
 	 */
 	private function render_quantity_input( int $index ): string {
 		return sprintf( '<input %s />', $this->build_attributes( $this->get_quantity_input_attributes( $index ) ) );
+	}
+
+	private function render_tooltip(): string {
+		$enable_preview = $this->get_property( 'enableImagePreview', true );
+		if ( ! $enable_preview ) {
+			return '';
+		}
+		return '
+		<div class="prad-img-tooltip" role="tooltip" aria-hidden="true">
+			<img src="" alt="" />
+			<span class="prad-img-tooltip-label"></span>
+		</div>';
 	}
 }

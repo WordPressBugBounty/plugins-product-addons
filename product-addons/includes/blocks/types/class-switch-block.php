@@ -51,6 +51,7 @@ class Switch_Block extends Abstract_Block {
 		$html .= $this->render_title_description_price_with_position( $price_info );
 		$html .= $this->render_switch_content( $item, $price_info, $enable_count );
 		$html .= $this->render_description_below_field();
+		$html .= $this->render_tooltip();
 		$html .= '</div>';
 
 		return $html;
@@ -155,8 +156,9 @@ class Switch_Block extends Abstract_Block {
 
 		if ( isset( $item['img'] ) && $item['img'] && product_addons()->is_pro_feature_available() ) {
 			$html .= sprintf(
-				'<img class="prad-block-item-img" src="%s" alt="Item" />',
-				esc_url( $item['img'] )
+				'<img class="prad-block-item-img" src="%s" alt="Item" data-tooltip-label="%s" />',
+				esc_url( $item['img'] ),
+				esc_attr( $item['value'] )
 			);
 		}
 
@@ -197,5 +199,17 @@ class Switch_Block extends Abstract_Block {
 		}
 
 		return sprintf( '<input %s />', $this->build_attributes( $input_attributes ) );
+	}
+
+	private function render_tooltip(): string {
+		$enable_preview = $this->get_property( 'enableImagePreview', true );
+		if ( ! $enable_preview ) {
+			return '';
+		}
+		return '
+		<div class="prad-img-tooltip" role="tooltip" aria-hidden="true">
+			<img src="" alt="" />
+			<span class="prad-img-tooltip-label"></span>
+		</div>';
 	}
 }

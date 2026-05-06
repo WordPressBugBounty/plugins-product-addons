@@ -91,6 +91,7 @@ class Upload_Block extends Abstract_Block {
 		$attributes['data-size_error']    = $this->get_property( 'sizeError', '' );
 		$attributes['data-number_prefix'] = $this->get_property( 'numberPrefix', '' );
 		$attributes['data-max_number']    = $this->get_property( 'maxNumber', '' );
+		$attributes['data-min_number']    = $this->get_property( 'minNumber', '' );
 		$attributes['data-number_error']  = $this->get_property( 'numberError', '' );
 		$attributes['data-allowed']       = wp_json_encode( $allowed );
 		$attributes['data-val']           = $price_info['price'];

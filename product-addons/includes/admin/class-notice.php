@@ -77,9 +77,10 @@ class Notice {
 	 */
 	public static function get_hellobar_config() {
 		return array(
-			'prad_helloBar_spring_sale_2026_1' => Xpo::get_transient_without_cache( 'prad_helloBar_spring_sale_2026_1' ),
-			'prad_helloBar_spring_sale_2026_2' => Xpo::get_transient_without_cache( 'prad_helloBar_spring_sale_2026_2' ),
-			'prad_helloBar_spring_sale_2026_3' => Xpo::get_transient_without_cache( 'prad_helloBar_spring_sale_2026_3' ),
+			'prad_helloBar_summer1_flash_sale_2026_1' => Xpo::get_transient_without_cache( 'prad_helloBar_summer1_flash_sale_2026_1' ),
+			'prad_helloBar_summer1_flash_sale_2026_2' => Xpo::get_transient_without_cache( 'prad_helloBar_summer1_flash_sale_2026_2' ),
+			'prad_helloBar_summer1_flash_sale_2026_3' => Xpo::get_transient_without_cache( 'prad_helloBar_summer1_flash_sale_2026_3' ),
+			'prad_helloBar_summer1_flash_sale_2026_4' => Xpo::get_transient_without_cache( 'prad_helloBar_summer1_flash_sale_2026_4' ),
 		);
 	}
 
@@ -136,39 +137,81 @@ class Notice {
 		$prad_db_nonce  = wp_create_nonce( 'prad-nonce' );
 		$banner_notices = array(
 			array(
-				'key'                => 'prad_banner_spring_sale_2026_1',
-				'start'              => '2026-04-05 00:00 Asia/Dhaka',
-				'end'                => '2026-04-14 23:59 Asia/Dhaka', // format YY-MM-DD always set time 23:59 and zone Asia/Dhaka.
+				'key'                => 'prad_banner_summer_flash_sale_2026_v1',
+				'start'              => '2026-05-18 00:00 Asia/Dhaka',
+				'end'                => '2026-05-21 23:59 Asia/Dhaka', // format YY-MM-DD always set time 23:59 and zone Asia/Dhaka.
 
 				'brand_color'        => '#86a62c',
 
-				'left_image'         => PRAD_URL . 'assets/img/dashboard_banner/spring_sale/left_image.png',
-				'right_image'        => PRAD_URL . 'assets/img/dashboard_banner/spring_sale/right_image.png',
-				'bg_image'           => PRAD_URL . 'assets/img/dashboard_banner/spring_sale/bg.png',
+				'left_image'         => PRAD_URL . 'assets/img/dashboard_banner/flash_sale/left_image.png',
+				'right_image'        => PRAD_URL . 'assets/img/dashboard_banner/flash_sale/right_image.png',
+				'bg_image'           => PRAD_URL . 'assets/img/dashboard_banner/flash_sale/bg.png',
 				'text'               => 'Hurry Before It Ends!',
 				'countdown_duration' => 259200, // Duration in seconds.
-				'countdown_color'    => '#FD284B',
+				'countdown_color'    => '#3CF357',
 				'url'                => Xpo::generate_utm_link(
 					array(
-						'utmKey' => 'spring_sale',
+						'utmKey' => 'flash_sale',
 					)
 				),
 
 				'visibility'         => ! Xpo::is_lc_active(),
 			),
 			array(
-				'key'                => 'prad_final_hour_sale_2026_1x',
-				'start'              => '2026-02-25 00:00 Asia/Dhaka',
-				'end'                => '2026-03-01 23:59 Asia/Dhaka', // format YY-MM-DD always set time 23:59 and zone Asia/Dhaka.
+				'key'                => 'prad_banner_summer_surprise_sale_2026_v1',
+				'start'              => '2026-05-29 00:00 Asia/Dhaka',
+				'end'                => '2026-06-01 23:59 Asia/Dhaka', // format YY-MM-DD always set time 23:59 and zone Asia/Dhaka.
 
 				'brand_color'        => '#86a62c',
 
-				'left_image'         => PRAD_URL . 'assets/img/dashboard_banner/final_hour/left_image.png',
-				'right_image'        => PRAD_URL . 'assets/img/dashboard_banner/final_hour/right_image.png',
-				'bg_image'           => PRAD_URL . 'assets/img/dashboard_banner/final_hour/bg.png',
+				'left_image'         => PRAD_URL . 'assets/img/dashboard_banner/surprise_sale/left_image.png',
+				'right_image'        => PRAD_URL . 'assets/img/dashboard_banner/surprise_sale/right_image.png',
+				'bg_image'           => PRAD_URL . 'assets/img/dashboard_banner/surprise_sale/bg.png',
 				'text'               => 'Hurry Before It Ends!',
-				'countdown_duration' => 172800, // Duration in seconds.
-				'countdown_color'    => '#FD284B',
+				'countdown_duration' => 259200, // Duration in seconds.
+				'countdown_color'    => '#3CF357',
+				'url'                => Xpo::generate_utm_link(
+					array(
+						'utmKey' => 'surprise_sale',
+					)
+				),
+
+				'visibility'         => ! Xpo::is_lc_active(),
+			),
+			array(
+				'key'                => 'prad_banner_summer_massive_sale_2026_v1',
+				'start'              => '2026-06-17 00:00 Asia/Dhaka',
+				'end'                => '2026-06-20 23:59 Asia/Dhaka', // format YY-MM-DD always set time 23:59 and zone Asia/Dhaka.
+
+				'brand_color'        => '#86a62c',
+
+				'left_image'         => PRAD_URL . 'assets/img/dashboard_banner/massive_sale/left_image.png',
+				'right_image'        => PRAD_URL . 'assets/img/dashboard_banner/massive_sale/right_image.png',
+				'bg_image'           => PRAD_URL . 'assets/img/dashboard_banner/massive_sale/bg.png',
+				'text'               => 'Hurry Before It Ends!',
+				'countdown_duration' => 259200, // Duration in seconds.
+				'countdown_color'    => '#3CF357',
+				'url'                => Xpo::generate_utm_link(
+					array(
+						'utmKey' => 'massive_sale',
+					)
+				),
+
+				'visibility'         => ! Xpo::is_lc_active(),
+			),
+			array(
+				'key'                => 'prad_summer_final_hours_sale_2026_v1',
+				'start'              => '2026-06-28 00:00 Asia/Dhaka',
+				'end'                => '2026-06-30 23:59 Asia/Dhaka', // format YY-MM-DD always set time 23:59 and zone Asia/Dhaka.
+
+				'brand_color'        => '#86a62c',
+
+				'left_image'         => PRAD_URL . 'assets/img/dashboard_banner/final_hours_sale/left_image.png',
+				'right_image'        => PRAD_URL . 'assets/img/dashboard_banner/final_hours_sale/right_image.png',
+				'bg_image'           => PRAD_URL . 'assets/img/dashboard_banner/final_hours_sale/bg.png',
+				'text'               => 'Hurry Before It Ends!',
+				'countdown_duration' => 259200, // Duration in seconds.
+				'countdown_color'    => '#3CF357',
 				'url'                => Xpo::generate_utm_link(
 					array(
 						'utmKey' => 'final_hour_sale',
@@ -238,6 +281,9 @@ class Notice {
 						max-width: 100%;
 						height: auto;
 					}
+					.prad-notice-wrapper.prad-banner-notice .prad-banner-main .prad-banner-main-text {
+						color: #ffffff;
+					}
 					.prad-notice-wrapper.prad-banner-notice .prad-banner-main {
 						display: flex;
 						flex-direction: column;
@@ -304,7 +350,7 @@ class Notice {
 						<div class="prad-banner-content">
 							<img class="prad-banner-side-image" loading="lazy" src="<?php echo esc_url( $notice['left_image'] ); ?>" />
 							<div class="prad-banner-main">
-								<span>
+								<span class="prad-banner-main-text">
 									<?php echo esc_html( $notice['text'] ); ?>
 								</span>	
 								<div 
@@ -336,16 +382,56 @@ class Notice {
 
 		$content_notices = array(
 			array(
-				'key'                => 'prad_dashboard_content_notice_spring_sale_v1',
-				'start'              => '2026-03-16 00:00 Asia/Dhaka',
-				'end'                => '2026-03-25 23:59 Asia/Dhaka',
+				'key'                => 'prad_dashboard_content_notice_summer_flash_sale_2026_v1',
+				'start'              => '2026-05-07 00:00 Asia/Dhaka',
+				'end'                => '2026-05-12 23:59 Asia/Dhaka',
 				'url'                => Xpo::generate_utm_link(
 					array(
 						'utmKey' => 'content_notice',
 					)
 				),
 				'visibility'         => ! Xpo::is_lc_active(),
-				'content_heading'    => __( 'Spring Sale:', 'product-addons' ),
+				'content_heading'    => __( 'Flash Sale:', 'product-addons' ),
+				/* translators: %s: discount percentage */
+				'content_subheading' => __( 'WowAddons offers are live - Enjoy %s off on WowAddons Pro.', 'product-addons' ),
+				'discount_content'   => ' up to 50% OFF',
+				'border_color'       => '#86a62c',
+				'icon'               => PRAD_URL . 'assets/img/dashboard_banner/logo.svg',
+				'button_text'        => __( 'Claim Your Discount!', 'product-addons' ),
+				'is_discount_logo'   => true,
+			),
+			array(
+				'key'                => 'prad_dashboard_content_notice_summer_flash_sale_2026_v2',
+				'start'              => '2026-05-13 00:00 Asia/Dhaka',
+				'end'                => '2026-05-17 23:59 Asia/Dhaka',
+				'url'                => Xpo::generate_utm_link(
+					array(
+						'utmKey' => 'content_notice',
+					)
+				),
+				'visibility'         => ! Xpo::is_lc_active(),
+				'content_heading'    => __( 'Flash Sale:', 'product-addons' ),
+				/* translators: %s: discount percentage */
+				'content_subheading' => __( 'WowAddons offers are live - Enjoy %s off on WowAddons Pro.', 'product-addons' ),
+				'discount_content'   => ' up to 50% OFF',
+				'border_color'       => '#86a62c',
+				'icon'               => PRAD_URL . 'assets/img/dashboard_banner/discount_50.svg',
+				'button_text'        => __( 'Claim Your Discount!', 'product-addons' ),
+				'is_discount_logo'   => true,
+			),
+
+			// Surprise Sale
+			array(
+				'key'                => 'prad_dashboard_content_notice_summer_surprise_sale_2026_v1',
+				'start'              => '2026-05-22 00:00 Asia/Dhaka',
+				'end'                => '2026-05-25 23:59 Asia/Dhaka',
+				'url'                => Xpo::generate_utm_link(
+					array(
+						'utmKey' => 'content_notice',
+					)
+				),
+				'visibility'         => ! Xpo::is_lc_active(),
+				'content_heading'    => __( 'Surprise Sale:', 'product-addons' ),
 				/* translators: %s: discount percentage */
 				'content_subheading' => __( 'WowAddons offers are live - Enjoy %s off on WowAddons Pro.', 'product-addons' ),
 				'discount_content'   => ' up to 55% OFF',
@@ -355,21 +441,101 @@ class Notice {
 				'is_discount_logo'   => true,
 			),
 			array(
-				'key'                => 'prad_dashboard_content_notice_spring_sale_v2',
-				'start'              => '2026-03-26 00:00 Asia/Dhaka',
-				'end'                => '2026-04-04 23:59 Asia/Dhaka',
+				'key'                => 'prad_dashboard_content_notice_summer_surprise_sale_2026_v2',
+				'start'              => '2026-05-26 00:00 Asia/Dhaka',
+				'end'                => '2026-05-28 23:59 Asia/Dhaka',
 				'url'                => Xpo::generate_utm_link(
 					array(
 						'utmKey' => 'content_notice',
 					)
 				),
 				'visibility'         => ! Xpo::is_lc_active(),
-				'content_heading'    => __( 'Spring Sale:', 'product-addons' ),
+				'content_heading'    => __( 'Surprise Sale:', 'product-addons' ),
 				/* translators: %s: discount percentage */
 				'content_subheading' => __( 'WowAddons offers are live - Enjoy %s off on WowAddons Pro.', 'product-addons' ),
 				'discount_content'   => ' up to 55% OFF',
 				'border_color'       => '#86a62c',
-				'icon'               => PRAD_URL . 'assets/img/dashboard_banner/discount.svg',
+				'icon'               => PRAD_URL . 'assets/img/dashboard_banner/discount_55.svg',
+				'button_text'        => __( 'Claim Your Discount!', 'product-addons' ),
+				'is_discount_logo'   => true,
+			),
+
+			// Massive Sale
+			array(
+				'key'                => 'prad_dashboard_content_notice_summer_massive_sale_2026_v1',
+				'start'              => '2026-06-02 00:00 Asia/Dhaka',
+				'end'                => '2026-06-10 23:59 Asia/Dhaka',
+				'url'                => Xpo::generate_utm_link(
+					array(
+						'utmKey' => 'content_notice',
+					)
+				),
+				'visibility'         => ! Xpo::is_lc_active(),
+				'content_heading'    => __( 'Massive Sale:', 'product-addons' ),
+				/* translators: %s: discount percentage */
+				'content_subheading' => __( 'WowAddons offers are live - Enjoy %s off on WowAddons Pro.', 'product-addons' ),
+				'discount_content'   => ' up to 50% OFF',
+				'border_color'       => '#86a62c',
+				'icon'               => PRAD_URL . 'assets/img/dashboard_banner/logo.svg',
+				'button_text'        => __( 'Claim Your Discount!', 'product-addons' ),
+				'is_discount_logo'   => true,
+			),
+			array(
+				'key'                => 'prad_dashboard_content_notice_summer_massive_sale_2026_v2',
+				'start'              => '2026-06-11 00:00 Asia/Dhaka',
+				'end'                => '2026-06-16 23:59 Asia/Dhaka',
+				'url'                => Xpo::generate_utm_link(
+					array(
+						'utmKey' => 'content_notice',
+					)
+				),
+				'visibility'         => ! Xpo::is_lc_active(),
+				'content_heading'    => __( 'Massive Sale:', 'product-addons' ),
+				/* translators: %s: discount percentage */
+				'content_subheading' => __( 'WowAddons offers are live - Enjoy %s off on WowAddons Pro.', 'product-addons' ),
+				'discount_content'   => ' up to 50% OFF',
+				'border_color'       => '#86a62c',
+				'icon'               => PRAD_URL . 'assets/img/dashboard_banner/discount_50.svg',
+				'button_text'        => __( 'Claim Your Discount!', 'product-addons' ),
+				'is_discount_logo'   => true,
+			),
+
+			// Final Hour Sale
+			array(
+				'key'                => 'prad_dashboard_content_notice_summer_final_hour_sale_2026_v1',
+				'start'              => '2026-06-21 00:00 Asia/Dhaka',
+				'end'                => '2026-06-24 23:59 Asia/Dhaka',
+				'url'                => Xpo::generate_utm_link(
+					array(
+						'utmKey' => 'content_notice',
+					)
+				),
+				'visibility'         => ! Xpo::is_lc_active(),
+				'content_heading'    => __( 'Final Hour Sale:', 'product-addons' ),
+				/* translators: %s: discount percentage */
+				'content_subheading' => __( 'WowAddons offers are live - Enjoy %s off on WowAddons Pro.', 'product-addons' ),
+				'discount_content'   => ' up to 55% OFF',
+				'border_color'       => '#86a62c',
+				'icon'               => PRAD_URL . 'assets/img/dashboard_banner/logo.svg',
+				'button_text'        => __( 'Claim Your Discount!', 'product-addons' ),
+				'is_discount_logo'   => true,
+			),
+			array(
+				'key'                => 'prad_dashboard_content_notice_summer_final_hour_sale_2026_v2',
+				'start'              => '2026-06-25 00:00 Asia/Dhaka',
+				'end'                => '2026-06-27 23:59 Asia/Dhaka',
+				'url'                => Xpo::generate_utm_link(
+					array(
+						'utmKey' => 'content_notice',
+					)
+				),
+				'visibility'         => ! Xpo::is_lc_active(),
+				'content_heading'    => __( 'Final Hour Sale:', 'product-addons' ),
+				/* translators: %s: discount percentage */
+				'content_subheading' => __( 'WowAddons offers are live - Enjoy %s off on WowAddons Pro.', 'product-addons' ),
+				'discount_content'   => ' up to 55% OFF',
+				'border_color'       => '#86a62c',
+				'icon'               => PRAD_URL . 'assets/img/dashboard_banner/discount_55.svg',
 				'button_text'        => __( 'Claim Your Discount!', 'product-addons' ),
 				'is_discount_logo'   => true,
 			),
