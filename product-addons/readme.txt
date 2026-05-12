@@ -4,7 +4,7 @@ Tags: product addons, woocommerce product addons, extra product options, product
 Requires at least: 6.8
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.6.8
+Stable tag: 1.6.9
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -17,7 +17,7 @@ Product addons for WooCommerce is the ultimate plugin that lets you add extra pr
 💞 A WPXPO Plugin **Trusted by 60K+** Businesses.
 🤝 Backed by a Dedicated Support Team with **4.9/5** [Trustpilot Rating](https://uk.trustpilot.com/review/wpxpo.com).
 
-😲[Free Demo](https://trywowaddons.wpxpo.com/) | 🔥[WowAddons Pro](https://www.wpxpo.com/product/wowaddons/) | 📃[Documentation](https://wpxpo.com/docs/wowaddons/)
+😲[Free Demo](https://wowaddons.wpxpo.com/) | 🔥[WowAddons Pro](https://www.wpxpo.com/product/wowaddons/) | 📃[Documentation](https://wpxpo.com/docs/wowaddons/)
 
 Simplify product customization with our WooCommerce Custom Fields plugin! Build extra product options, including swatches, radio buttons, file uploads, sliders, date, time, and more with our state-of-the-art product addons customizer.
 
@@ -199,9 +199,13 @@ No, for some product fields like Headings, Texts, advanced custom logic options 
 7. Strategic Cross-selling 
 
 == Changelog ==
+= 1.6.9 – 12th May 2026 =
+* Fix: Required fields are now strictly validated before the Add to Cart action, preventing incomplete submissions.
+* Fix: Advanced Formula field pricing now updates correctly for fields that are conditionally shown or hidden.
+
 = 1.6.8 – 6th May 2026 =
 * New: Image preview support for addons fields.
-* New: Default active options for Froduct Field.
+* New: Default active options for Product Field.
 * Fix: Minor bug fixes and improvements.
 
 = 1.6.7 – 29th April 2026 =

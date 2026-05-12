@@ -308,13 +308,14 @@ class RequestApi {
 	 */
 	public function set_option_callback( \WP_REST_Request $request ) {
 		// Retrieve and sanitize request parameters.
-		$params  = $request->get_params();
-		$id      = isset( $params['id'] ) ? sanitize_text_field( $params['id'] ) : '';
-		$title   = isset( $params['title'] ) ? sanitize_text_field( $params['title'] ) : 'Untitled';
-		$status  = isset( $params['status'] ) ? sanitize_text_field( $params['status'] ) : 'draft';
-		$content = isset( $params['content'] ) && is_array( $params['content'] ) ? product_addons()->sanitize_rest_params( $params['content'] ) : '';
-		$css     = isset( $params['css'] ) ? product_addons()->sanitize_rest_params( $params['css'] ) : '';
-		$nonce   = isset( $params['wpnonce'] ) ? sanitize_text_field( $params['wpnonce'] ) : '';
+		$params          = $request->get_params();
+		$id              = isset( $params['id'] ) ? sanitize_text_field( $params['id'] ) : '';
+		$title           = isset( $params['title'] ) ? sanitize_text_field( $params['title'] ) : 'Untitled';
+		$status          = isset( $params['status'] ) ? sanitize_text_field( $params['status'] ) : 'draft';
+		$content         = isset( $params['content'] ) && is_array( $params['content'] ) ? product_addons()->sanitize_rest_params( $params['content'] ) : '';
+		$required_fields = isset( $params['required_fields'] ) && is_array( $params['required_fields'] ) ? product_addons()->sanitize_rest_params( $params['required_fields'] ) : '';
+		$css             = isset( $params['css'] ) ? product_addons()->sanitize_rest_params( $params['css'] ) : '';
+		$nonce           = isset( $params['wpnonce'] ) ? sanitize_text_field( $params['wpnonce'] ) : '';
 
 		if ( ! $nonce || ! wp_verify_nonce( $nonce, 'prad-nonce' ) ) {
 			return new WP_REST_Response(
@@ -347,6 +348,8 @@ class RequestApi {
 			}
 
 			update_post_meta( $id, 'prad_addons_blocks', $content );
+			$required_options = $required_fields ? $required_fields : array();
+			update_post_meta( $id, 'prad_required_options', $required_options );
 			if ( $css ) {
 				update_post_meta( $id, 'prad_addons_css', $css );
 			}
@@ -379,7 +382,8 @@ class RequestApi {
 			}
 
 			update_post_meta( $id, 'prad_addons_blocks', $content );
-
+			$required_options = $required_fields ? $required_fields : array();
+			update_post_meta( $id, 'prad_required_options', $required_options );
 			do_action( 'prad_handle_cache_on_save' );
 
 			return new WP_REST_Response(

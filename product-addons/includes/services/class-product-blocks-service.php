@@ -81,6 +81,52 @@ class Product_Blocks_Service {
 	}
 
 	/**
+	 * Get blocks data for a product without css
+	 *
+	 * @param int $product_id Product ID to retrieve blocks for.
+	 * @return array
+	 */
+	public function get_product_blocks( int $product_id ): array {
+		$cache_key = 'raw_' . $product_id;
+
+		if ( isset( $this->blocks_cache[ $cache_key ] ) ) {
+			return $this->blocks_cache[ $cache_key ];
+		}
+
+		$result = array(
+			'blocks'        => array(),
+			'published_ids' => array(),
+		);
+
+		$option_ids = $this->get_product_option_ids( $product_id );
+
+		if ( empty( $option_ids ) ) {
+			return $result;
+		}
+
+		foreach ( $option_ids as $option_id ) {
+			$status = get_post_status( $option_id );
+
+			if ( 'publish' === $status ) {
+				$blocks_content = $this->get_addon_blocks_content( $option_id );
+
+				if ( ! empty( $blocks_content ) ) {
+					$result['blocks'][ $option_id ] = $blocks_content;
+					$result['published_ids'][]      = $option_id;
+				}
+			} elseif ( ! $status ) {
+				// Clean up deleted options.
+				do_action( 'prad_delete_option_product_meta', $option_id );
+			}
+		}
+
+		// Cache the result.
+		$this->blocks_cache[ $cache_key ] = $result;
+
+		return $result;
+	}
+
+	/**
 	 * Get option IDs assigned to a product
 	 *
 	 * @param int $product_id Product ID to retrieve assigned option IDs for.

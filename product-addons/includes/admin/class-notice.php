@@ -387,7 +387,7 @@ class Notice {
 				'end'                => '2026-05-12 23:59 Asia/Dhaka',
 				'url'                => Xpo::generate_utm_link(
 					array(
-						'utmKey' => 'content_notice',
+						'utmKey' => 'flash_sale',
 					)
 				),
 				'visibility'         => ! Xpo::is_lc_active(),
@@ -406,7 +406,7 @@ class Notice {
 				'end'                => '2026-05-17 23:59 Asia/Dhaka',
 				'url'                => Xpo::generate_utm_link(
 					array(
-						'utmKey' => 'content_notice',
+						'utmKey' => 'flash_sale',
 					)
 				),
 				'visibility'         => ! Xpo::is_lc_active(),
@@ -427,7 +427,7 @@ class Notice {
 				'end'                => '2026-05-25 23:59 Asia/Dhaka',
 				'url'                => Xpo::generate_utm_link(
 					array(
-						'utmKey' => 'content_notice',
+						'utmKey' => 'surprise_sale',
 					)
 				),
 				'visibility'         => ! Xpo::is_lc_active(),
@@ -446,7 +446,7 @@ class Notice {
 				'end'                => '2026-05-28 23:59 Asia/Dhaka',
 				'url'                => Xpo::generate_utm_link(
 					array(
-						'utmKey' => 'content_notice',
+						'utmKey' => 'surprise_sale',
 					)
 				),
 				'visibility'         => ! Xpo::is_lc_active(),
@@ -467,7 +467,7 @@ class Notice {
 				'end'                => '2026-06-10 23:59 Asia/Dhaka',
 				'url'                => Xpo::generate_utm_link(
 					array(
-						'utmKey' => 'content_notice',
+						'utmKey' => 'massive_sale',
 					)
 				),
 				'visibility'         => ! Xpo::is_lc_active(),
@@ -486,7 +486,7 @@ class Notice {
 				'end'                => '2026-06-16 23:59 Asia/Dhaka',
 				'url'                => Xpo::generate_utm_link(
 					array(
-						'utmKey' => 'content_notice',
+						'utmKey' => 'massive_sale',
 					)
 				),
 				'visibility'         => ! Xpo::is_lc_active(),
@@ -507,7 +507,7 @@ class Notice {
 				'end'                => '2026-06-24 23:59 Asia/Dhaka',
 				'url'                => Xpo::generate_utm_link(
 					array(
-						'utmKey' => 'content_notice',
+						'utmKey' => 'final_hour_sale',
 					)
 				),
 				'visibility'         => ! Xpo::is_lc_active(),
@@ -526,7 +526,7 @@ class Notice {
 				'end'                => '2026-06-27 23:59 Asia/Dhaka',
 				'url'                => Xpo::generate_utm_link(
 					array(
-						'utmKey' => 'content_notice',
+						'utmKey' => 'final_hour_sale',
 					)
 				),
 				'visibility'         => ! Xpo::is_lc_active(),

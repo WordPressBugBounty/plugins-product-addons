@@ -10,6 +10,7 @@ namespace PRAD\Includes\Order;
 use PRAD\Includes\Common\Formula\Array_Expression_Engine;
 use PRAD\Includes\Common\SafeMathEvaluator;
 use PRAD\Includes\Compatibility\BaseCurrency;
+use PRAD\Includes\Services\Product_Blocks_Service;
 use PRAD\Includes\Xpo;
 
 defined( 'ABSPATH' ) || exit;
@@ -19,9 +20,17 @@ defined( 'ABSPATH' ) || exit;
  */
 class CartPage {
 	/**
+	 * Product blocks service
+	 *
+	 * @var Product_Blocks_Service
+	 */
+	private Product_Blocks_Service $blocks_service;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
+		$this->blocks_service = new Product_Blocks_Service();
 		add_filter( 'woocommerce_add_cart_item_data', array( $this, 'save_custom_meta_to_cart' ), 10, 4 );
 		add_filter( 'woocommerce_get_item_data', array( $this, 'display_custom_meta_in_cart' ), 10, 2 );
 		// add_action( 'woocommerce_add_order_item_meta', array( $this, 'save_custom_meta_to_order' ), 10, 2 );.
@@ -29,6 +38,7 @@ class CartPage {
 		add_action( 'woocommerce_add_to_cart', array( $this, 'prad_add_option_product_to_cart' ), 10, 6 );
 
 		add_action( 'woocommerce_before_mini_cart', array( $this, 'prad_mini_cart_calculation' ), 1 );
+		add_filter( 'woocommerce_add_to_cart_validation', array( $this, 'prad_validate_before_add_to_cart' ), 10, 2 );
 	}
 
 	/**
@@ -176,7 +186,7 @@ class CartPage {
 	 */
 	public function display_custom_meta_in_cart( $item_data, $cart_item ) {
 		if ( ( is_cart() && Xpo::get_prad_settings_item( 'hideFieldsInCart', false ) ) ||
-			( is_checkout() && Xpo::get_prad_settings_item( 'hideFieldsInCheckout', false ) ) ) {
+		( is_checkout() && Xpo::get_prad_settings_item( 'hideFieldsInCheckout', false ) ) ) {
 			return $item_data;
 		}
 
@@ -205,19 +215,19 @@ class CartPage {
 		/*
 		$prad_products_selection = $cart_item['prad_products_selection'];
 		if ( is_array( $prad_products_selection ) ) {
-			foreach ( $prad_products_selection as $item ) {
-				$_id    = isset( $item['id'] ) ? (int) $item['id'] : '';
-				$_count = isset( $item['count'] ) ? (int) $item['count'] : 1;
-				if ( $_id ) {
-					WC()->cart->add_to_cart( $_id, $_count );
-				}
+		foreach ( $prad_products_selection as $item ) {
+			$_id    = isset( $item['id'] ) ? (int) $item['id'] : '';
+			$_count = isset( $item['count'] ) ? (int) $item['count'] : 1;
+			if ( $_id ) {
+				WC()->cart->add_to_cart( $_id, $_count );
 			}
+		}
 		}
 
 		if ( isset( $cart_item['prad_selection']['extra_data'] ) ) {
-			wp_enqueue_style( 'prad-cart-style', PRAD_URL . 'assets/css/wowcart.css', array(), PRAD_VER );
-			wp_enqueue_script( 'prad-cart-script', PRAD_URL . 'assets/js/wowcart.js', array( 'jquery' ), PRAD_VER, true );
-			$item_data = array_merge( $item_data, $cart_item['prad_selection']['extra_data'] );
+		wp_enqueue_style( 'prad-cart-style', PRAD_URL . 'assets/css/wowcart.css', array(), PRAD_VER );
+		wp_enqueue_script( 'prad-cart-script', PRAD_URL . 'assets/js/wowcart.js', array( 'jquery' ), PRAD_VER, true );
+		$item_data = array_merge( $item_data, $cart_item['prad_selection']['extra_data'] );
 		}
 		*/
 		return $item_data;
@@ -454,8 +464,8 @@ class CartPage {
 							$p_type = $option_data[0]->type;
 							$value  = $res;
 							if (
-								! $pro_active &&
-								( 'per_unit' === $p_type || 'per_word' === $p_type || 'per_char_no_space' === $p_type )
+							! $pro_active &&
+							( 'per_unit' === $p_type || 'per_word' === $p_type || 'per_char_no_space' === $p_type )
 							) {
 								$opt_price = floatval( $cost );
 							} elseif ( 'per_unit' === $p_type ) {
@@ -576,8 +586,8 @@ class CartPage {
 		try {
 			foreach ( $blocksarray as $field ) {
 				if (
-					isset( $field->blockid ) &&
-					$field->blockid === $blockid
+				isset( $field->blockid ) &&
+				$field->blockid === $blockid
 				) {
 					return $field->_options ?? null;
 				}
@@ -606,8 +616,8 @@ class CartPage {
 		try {
 			foreach ( $blocksarray as $field ) {
 				if (
-					isset( $field->blockid ) &&
-					$field->blockid === $blockid
+				isset( $field->blockid ) &&
+				$field->blockid === $blockid
 				) {
 					return $field ?? null;
 				}
@@ -634,5 +644,205 @@ class CartPage {
 	 */
 	public function evaluate_expression( $expression, $dynamic_variables = array() ) {
 		return SafeMathEvaluator::evaluate_expression( $expression, $dynamic_variables );
+	}
+
+	/**
+	 * Validates required fields before adding product to cart.
+	 *
+	 * @param bool $passed Whether validation passed.
+	 * @param int  $product_id The product ID.
+	 * @return bool The validation result.
+	 */
+	public function prad_validate_before_add_to_cart( $passed, $product_id ) {
+
+		$blocks_data = $this->blocks_service->get_product_blocks( $product_id );
+		if ( empty( $blocks_data['published_ids'] ) ) {
+			return $passed;
+		}
+
+		$required_fields = $this->collect_required_fields( $blocks_data );
+
+		if ( empty( $required_fields ) ) {
+			return $passed;
+		}
+
+		$prad_selection = $this->parse_prad_selection();
+
+		$validate = $this->validate_required_fields( $required_fields, $prad_selection, $passed );
+
+		if ( ! $validate ) {
+			wc_add_notice( __( 'Please fill in all required fields.', 'product-addons' ), 'error' );
+		}
+
+		return $validate;
+	}
+
+	/**
+	 * Collects required fields from blocks data.
+	 *
+	 * @param array $blocks_data The blocks data array.
+	 * @return array An array of required fields.
+	 */
+	private function collect_required_fields( $blocks_data ) {
+		$published_ids = $blocks_data['published_ids'] ?? array();
+
+		$db_ids    = array();
+		$block_ids = array();
+
+		foreach ( $published_ids as $option_id ) {
+			$meta = get_post_meta( $option_id, 'prad_required_options', true );
+			if ( ! is_array( $meta ) ) {
+				$block_ids[] = $option_id;
+			} elseif ( ! empty( $meta ) ) {
+				$db_ids[ $option_id ] = $meta;
+			}
+		}
+
+		$required = array();
+
+		if ( ! empty( $db_ids ) ) {
+			$required = array_merge(
+				$required,
+				$this->collect_required_fields_from_db_meta( $db_ids )
+			);
+		}
+
+		if ( ! empty( $block_ids ) ) {
+			$filtered_blocks = $this->filter_blocks_by_ids( $blocks_data['blocks'] ?? array(), $block_ids );
+			$required        = array_merge(
+				$required,
+				$this->collect_required_fields_from_blocks( $filtered_blocks )
+			);
+		}
+
+		return $required;
+	}
+
+	/**
+	 * Collects required fields from database.
+	 *
+	 * @param array $db_ids_with_meta The database IDs with their associated meta.
+	 * @return array An array of required fields.
+	 */
+	private function collect_required_fields_from_db_meta( $db_ids_with_meta ) {
+		$required = array();
+
+		foreach ( $db_ids_with_meta as $option_id => $meta ) {
+			foreach ( $meta as $field ) {
+				$block_id   = array_key_first( $field );
+				$required[] = array(
+					'block_id' => $block_id,
+					'type'     => $field[ $block_id ]['type'] ?? 'field',
+				);
+			}
+		}
+		return $required;
+	}
+
+	/**
+	 * Filters a blocks array to only include entries whose keys are in the given ID list.
+	 *
+	 * @param array $all_blocks Associative array of blocks keyed by option/addon ID.
+	 * @param array $block_ids  List of option IDs to keep.
+	 * @return array Filtered blocks array.
+	 */
+	private function filter_blocks_by_ids( $all_blocks, $block_ids ) {
+		$id_set = array_flip( $block_ids );
+
+		return array_filter(
+			$all_blocks,
+			function ( $key ) use ( $id_set ) {
+				return isset( $id_set[ $key ] );
+			},
+			ARRAY_FILTER_USE_KEY
+		);
+	}
+
+	/**
+	 * Collects required fields from blocks.
+	 *
+	 * @param array $blocks The blocks array.
+	 * @return array An array of required fields.
+	 */
+	private function collect_required_fields_from_blocks( $blocks ) {
+		$required = array();
+
+		foreach ( $blocks as $blocklist ) {
+			foreach ( $blocklist as $block ) {
+				$required = array_merge( $required, $this->get_required_blocks( $block ) );
+			}
+		}
+
+		return $required;
+	}
+
+	/**
+	 * Parses the prad_selection field from the POST request.
+	 *
+	 * Decodes the JSON string sent by the frontend into an associative array.
+	 * Returns an empty array when the field is absent or the JSON is invalid.
+	 *
+	 * @return array Decoded selection data, or an empty array on failure.
+	 */
+	private function parse_prad_selection() {
+		$raw = isset( $_POST['prad_selection'] )
+		? stripslashes( $_POST['prad_selection'] )
+		: '';
+
+		$decoded = json_decode( $raw, true );
+
+		return is_array( $decoded ) ? $decoded : array();
+	}
+
+	/**
+	 * Validates required fields.
+	 *
+	 * @param array $required_fields The array of required fields.
+	 * @param array $prad_selection The selected product addons.
+	 * @param bool  $passed Whether validation has passed so far.
+	 * @return bool True if all required fields are filled, false otherwise.
+	 */
+	private function validate_required_fields( $required_fields, $prad_selection, $passed ) {
+		if ( empty( $prad_selection ) ) {
+			return false;
+		}
+
+		$submitted_ids = array_keys( $prad_selection );
+
+		foreach ( $required_fields as $field ) {
+			if ( ! in_array( $field['block_id'], $submitted_ids, true ) ) {
+				return false;
+			}
+		}
+
+		return $passed;
+	}
+
+	/**
+	 * Gets required blocks from a block configuration.
+	 *
+	 * @param array $block The block configuration array.
+	 * @return array An array of required blocks.
+	 */
+	private function get_required_blocks( $block ) {
+		$required = array();
+
+		if ( $block['en_logic'] ?? false ) {
+			return $required;
+		} elseif ( ! empty( $block['innerBlocks'] ) && is_array( $block['innerBlocks'] ) ) {
+			foreach ( $block['innerBlocks'] as $inner_block ) {
+				$required = array_merge(
+					$required,
+					$this->get_required_blocks( $inner_block )
+				);
+			}
+		} elseif ( isset( $block['required'] ) && true === $block['required'] ) {
+			$required[] = array(
+				'block_id' => $block['blockid'] ?? '',
+				'type'     => $block['type'] ?? 'field',
+			);
+		}
+
+		return $required;
 	}
 }
