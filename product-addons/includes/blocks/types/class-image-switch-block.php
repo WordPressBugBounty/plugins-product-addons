@@ -318,7 +318,7 @@ class Image_Switch_Block extends Abstract_Block {
 
 
 	private function render_tooltip(): string {
-		$enable_preview = $this->get_property( 'enableImagePreview', true );
+		$enable_preview = $this->get_property( 'enableImagePreview', false );
 		if ( ! $enable_preview ) {
 			return '';
 		}
