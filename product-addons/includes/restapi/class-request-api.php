@@ -186,6 +186,15 @@ class RequestApi {
 				'callback'            => array( $this, 'product_image_callback' ),
 				'permission_callback' => array( $this, 'prad_get_admin_permissions' ),
 			),
+			// Sideload External Image to Media Library.
+			array(
+				'endpoint'            => 'sideload_image',
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'sideload_image_callback' ),
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			),
 
 			// Font Upload.
 			array(
@@ -1402,6 +1411,79 @@ class RequestApi {
 			array(
 				'success' => true,
 				'message' => __( 'Settings saved successfully.', 'product-addons' ),
+			),
+			200
+		);
+	}
+
+	/**
+	 * Upload image from URL and sideload it to the media library.
+	 *
+	 * @since 1.0.5
+	 *
+	 * @param \WP_REST_Request $request The request object containing the data.
+	 *
+	 * @return \WP_REST_Response The REST response with success or error message.
+	 */
+	public function sideload_image_callback( \WP_REST_Request $request ) {
+		$request_params = $request->get_params();
+		$nonce          = isset( $request_params['wpnonce'] ) ? sanitize_text_field( $request_params['wpnonce'] ) : '';
+
+		if ( ! $nonce || ! wp_verify_nonce( $nonce, 'prad-nonce' ) ) {
+			return new WP_REST_Response(
+				array(
+					'success' => false,
+					'message' => __( 'Invalid or missing nonce.', 'product-addons' ),
+				),
+				403
+			);
+		}
+
+		$images = isset( $request_params['images'] ) && is_array( $request_params['images'] ) ? $request_params['images'] : array();
+
+		if ( empty( $images ) ) {
+			return new WP_REST_Response(
+				array(
+					'success' => false,
+					'message' => 'No images provided.',
+				),
+				400
+			);
+		}
+
+		require_once ABSPATH . 'wp-admin/includes/media.php';
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+		require_once ABSPATH . 'wp-admin/includes/image.php';
+
+		$results = array();
+
+		foreach ( $images as $raw_url => $raw_desc ) {
+			$url = esc_url_raw( $raw_url );
+			if ( ! $url ) {
+				$results[ $raw_url ] = array( 'success' => false );
+				continue;
+			}
+
+			$desc          = sanitize_text_field( $raw_desc );
+			$attachment_id = media_sideload_image( $url, 0, $desc, 'id' );
+			if ( is_wp_error( $attachment_id ) ) {
+				$results[ $raw_url ] = array(
+					'success' => false,
+					'message' => $attachment_id->get_error_message(),
+				);
+			} else {
+				$results[ $raw_url ] = array(
+					'success'    => true,
+					'source_url' => wp_get_attachment_url( $attachment_id ),
+					'id'         => $attachment_id,
+				);
+			}
+		}
+
+		return new WP_REST_Response(
+			array(
+				'success' => true,
+				'results' => $results,
 			),
 			200
 		);

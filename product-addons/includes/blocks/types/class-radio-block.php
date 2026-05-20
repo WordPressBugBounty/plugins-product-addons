@@ -321,8 +321,13 @@ class Radio_Block extends Abstract_Block {
 		return sprintf( '<input %s />', $this->build_attributes( $this->get_quantity_input_attributes( $index ) ) );
 	}
 
+	/**
+	 * Render tooltip
+	 *
+	 * @return string
+	 */
 	private function render_tooltip(): string {
-		$enable_preview = $this->get_property( 'enableImagePreview', true );
+		$enable_preview = $this->get_property( 'enableImagePreview', false );
 		if ( ! $enable_preview ) {
 			return '';
 		}

@@ -609,8 +609,13 @@ class Products_Block extends Abstract_Block {
 		return parent::render_block_content( $item, $index, $price_info, $variation_html );
 	}
 
+	/**
+	 * Render tooltip
+	 *
+	 * @return string
+	 */
 	private function render_tooltip(): string {
-		$enable_preview = $this->get_property( 'enableImagePreview', true );
+		$enable_preview = $this->get_property( 'enableImagePreview', false );
 		if ( ! $enable_preview ) {
 			return '';
 		}

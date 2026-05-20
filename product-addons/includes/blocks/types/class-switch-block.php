@@ -201,8 +201,13 @@ class Switch_Block extends Abstract_Block {
 		return sprintf( '<input %s />', $this->build_attributes( $input_attributes ) );
 	}
 
+	/**
+	 * Render tooltip for image preview
+	 *
+	 * @return string
+	 */
 	private function render_tooltip(): string {
-		$enable_preview = $this->get_property( 'enableImagePreview', true );
+		$enable_preview = $this->get_property( 'enableImagePreview', false );
 		if ( ! $enable_preview ) {
 			return '';
 		}
