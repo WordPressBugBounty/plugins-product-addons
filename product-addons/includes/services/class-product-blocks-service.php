@@ -48,7 +48,7 @@ class Product_Blocks_Service {
 		);
 
 		// Get option IDs for this product.
-		$option_ids = $this->get_product_option_ids( $product_id );
+		$option_ids = product_addons()->get_product_option_ids( $product_id );
 
 		if ( empty( $option_ids ) ) {
 			return $result;
@@ -98,7 +98,7 @@ class Product_Blocks_Service {
 			'published_ids' => array(),
 		);
 
-		$option_ids = $this->get_product_option_ids( $product_id );
+		$option_ids = product_addons()->get_product_option_ids( $product_id );
 
 		if ( empty( $option_ids ) ) {
 			return $result;
@@ -124,62 +124,6 @@ class Product_Blocks_Service {
 		$this->blocks_cache[ $cache_key ] = $result;
 
 		return $result;
-	}
-
-	/**
-	 * Get option IDs assigned to a product
-	 *
-	 * @param int $product_id Product ID to retrieve assigned option IDs for.
-	 * @return array
-	 */
-	private function get_product_option_ids( int $product_id ): array {
-		// Get options assigned to all products.
-		$option_all = $this->get_json_option( 'prad_option_assign_all', array() );
-
-		// Get options assigned directly to this product.
-		$option_product = $this->get_json_meta( $product_id, 'prad_product_assigned_meta_inc', array() );
-
-		// Get options excluded from this product.
-		$option_exclude = $this->get_json_meta( $product_id, 'prad_product_assigned_meta_exc', array() );
-
-		// Get options from product terms (categories, tags, brands).
-		$option_terms = $this->get_product_term_options( $product_id );
-
-		// Merge and filter.
-		$merged     = array_unique( array_merge( $option_all, $option_terms, $option_product ) );
-		$option_ids = array_diff( $merged, $option_exclude );
-
-		// Sort for consistency.
-		sort( $option_ids );
-
-		return apply_filters( 'prad_product_option_ids', $option_ids, $product_id );
-	}
-
-	/**
-	 * Get options from product taxonomy terms
-	 *
-	 * @param int $product_id Product ID to retrieve options from taxonomy terms.
-	 * @return array
-	 */
-	private function get_product_term_options( int $product_id ): array {
-		$option_terms = array();
-		$taxonomies   = array( 'product_cat', 'product_tag', 'product_brand' );
-
-		foreach ( $taxonomies as $taxonomy ) {
-			$terms = get_the_terms( $product_id, $taxonomy );
-
-			if ( $terms && ! is_wp_error( $terms ) ) {
-				foreach ( $terms as $term ) {
-					$term_options = $this->get_json_term_meta( $term->term_id, 'prad_term_assigned_meta_inc', array() );
-
-					if ( is_array( $term_options ) ) {
-						$option_terms = array_unique( array_merge( $option_terms, $term_options ) );
-					}
-				}
-			}
-		}
-
-		return $option_terms;
 	}
 
 	/**
@@ -460,69 +404,5 @@ class Product_Blocks_Service {
 		$decoded = json_decode( product_addons()->safe_stripslashes( $value ), true );
 
 		return is_array( $decoded ) ? $decoded : $def;
-	}
-
-	/**
-	 * Get products that use a specific addon
-	 *
-	 * @param int $addon_id Addon ID to check.
-	 * @return array List of product IDs using the addon.
-	 */
-	public function get_products_using_addon( int $addon_id ): array {
-		global $wpdb;
-
-		$products = array();
-
-		// Check products with direct assignment.
-		$direct_products = $wpdb->get_col( //phpcs:ignore
-			$wpdb->prepare(
-				"SELECT post_id FROM {$wpdb->postmeta} 
-             WHERE meta_key = 'prad_product_assigned_meta_inc' 
-             AND meta_value LIKE %s",
-				'%"' . $addon_id . '"%'
-			)
-		);
-
-		$products = array_merge( $products, $direct_products );
-
-		// Check if addon is in global assignment.
-		$global_addons = $this->get_json_option( 'prad_option_assign_all', array() );
-		if ( in_array( $addon_id, $global_addons, true ) ) {
-			// Get all products (this might be expensive for large stores).
-			$all_products = $wpdb->get_col( //phpcs:ignore
-				"SELECT ID FROM {$wpdb->posts} 
-                 WHERE post_type = 'product' AND post_status = 'publish'"
-			);
-			$products     = array_merge( $products, $all_products );
-		}
-
-		// Remove duplicates and excluded products.
-		$products = array_unique( $products );
-
-		// Filter out products that explicitly exclude this addon.
-		$products = array_filter(
-			$products,
-			function ( $product_id ) use ( $addon_id ) {
-				$excluded = $this->get_json_meta( $product_id, 'prad_product_assigned_meta_exc', array() );
-				return ! in_array( $addon_id, $excluded, true );
-			}
-		);
-
-		return array_values( $products );
-	}
-
-	/**
-	 * Update product blocks cache when addon is updated
-	 *
-	 * @param int $addon_id Addon ID to invalidate cache for.
-	 */
-	public function invalidate_addon_cache( int $addon_id ): void {
-		$affected_products = $this->get_products_using_addon( $addon_id );
-
-		foreach ( $affected_products as $product_id ) {
-			$this->clear_product_cache( $product_id );
-		}
-
-		do_action( 'prad_addon_cache_invalidated', $addon_id, $affected_products );
 	}
 }

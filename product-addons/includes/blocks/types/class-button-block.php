@@ -39,11 +39,17 @@ class Button_Block extends Abstract_Block {
 
 		$attributes = array_merge(
 			$this->get_common_attributes(),
-			$this->get_selection_attributes()
+			$this->get_selection_attributes(),
+			$this->get_same_price_attributes()
 		);
 
-		$html  = sprintf( '<div %s>', $this->build_attributes( $attributes ) );
-		$html .= $this->render_title_description_noprice();
+		$html = sprintf( '<div %s>', $this->build_attributes( $attributes ) );
+
+		if ( ! empty( $this->same_price_info['enabled'] ) && product_addons()->is_pro_feature_available() ) {
+			$html .= $this->render_title_description_price_with_position( $this->same_price_info );
+		} else {
+			$html .= $this->render_title_description_noprice();
+		}
 		$html .= $this->render_buttons_group( $options );
 		$html .= $this->render_description_below_field();
 		$html .= '</div>';
@@ -191,7 +197,7 @@ class Button_Block extends Abstract_Block {
 		);
 
 		// Price
-		if ( $item['type'] != 'no_cost' ) {
+		if ( $item['type'] != 'no_cost' && ! ( ! empty( $this->same_price_info['enabled'] ) && product_addons()->is_pro_feature_available() ) ) {
 			$html .= sprintf(
 				'<div class="prad-block-price prad-text-upper">%s</div>',
 				wp_kses( $price_obj['html'], $allowed_tags )

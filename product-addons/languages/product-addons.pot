@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv3.
 msgid ""
 msgstr ""
-"Project-Id-Version: WowAddons - Product Addons for WooCommerce 1.6.11\n"
+"Project-Id-Version: WowAddons - Product Addons for WooCommerce 1.6.12\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/build\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-05-20T09:12:47+00:00\n"
+"POT-Creation-Date: 2026-06-08T10:01:02+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: product-addons\n"
@@ -181,9 +181,9 @@ msgstr ""
 msgid "Edit Addon"
 msgstr ""
 
-#: includes/blocks/types/class-font-picker-block.php:120
-#: includes/blocks/types/class-select-block.php:99
-#: includes/common/class-functions.php:891
+#: includes/blocks/types/class-font-picker-block.php:125
+#: includes/blocks/types/class-select-block.php:104
+#: includes/common/class-functions.php:902
 msgid "Select an option"
 msgstr ""
 
@@ -301,24 +301,24 @@ msgstr ""
 msgid "Dismiss this notice."
 msgstr ""
 
-#: includes/order/class-cart-page.php:338
+#: includes/order/class-cart-page.php:317
 #: assets/js/wowaddons.js:161
 msgid "Name"
 msgstr ""
 
-#: includes/order/class-cart-page.php:338
+#: includes/order/class-cart-page.php:317
 msgid "Path"
 msgstr ""
 
-#: includes/order/class-cart-page.php:346
+#: includes/order/class-cart-page.php:325
 msgid "Count"
 msgstr ""
 
-#: includes/order/class-cart-page.php:518
+#: includes/order/class-cart-page.php:517
 msgid "Addons Field"
 msgstr ""
 
-#: includes/order/class-cart-page.php:674
+#: includes/order/class-cart-page.php:673
 msgid "Please fill in all required fields."
 msgstr ""
 
@@ -334,11 +334,11 @@ msgstr ""
 #: includes/restapi/class-request-api.php:653
 #: includes/restapi/class-request-api.php:698
 #: includes/restapi/class-request-api.php:1148
-#: includes/restapi/class-request-api.php:1335
-#: includes/restapi/class-request-api.php:1400
-#: includes/restapi/class-request-api.php:1436
-#: includes/restapi/class-request-api.php:2043
-#: includes/restapi/class-request-api.php:2123
+#: includes/restapi/class-request-api.php:1359
+#: includes/restapi/class-request-api.php:1424
+#: includes/restapi/class-request-api.php:1460
+#: includes/restapi/class-request-api.php:2067
+#: includes/restapi/class-request-api.php:2147
 msgid "Invalid or missing nonce."
 msgstr ""
 
@@ -401,80 +401,80 @@ msgstr ""
 msgid "No ID found"
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1232
+#: includes/restapi/class-request-api.php:1245
 msgid "Option Assigned Updated successfully"
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1360
+#: includes/restapi/class-request-api.php:1384
 msgid "Style saved successfully."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1413
+#: includes/restapi/class-request-api.php:1437
 msgid "Settings saved successfully."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1545
-#: includes/restapi/class-request-api.php:1597
-#: includes/restapi/class-request-api.php:1687
+#: includes/restapi/class-request-api.php:1569
+#: includes/restapi/class-request-api.php:1621
+#: includes/restapi/class-request-api.php:1711
 msgid "Invalid nonce."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1551
+#: includes/restapi/class-request-api.php:1575
 msgid "No file found."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1561
+#: includes/restapi/class-request-api.php:1585
 msgid "File size exceeds the maximum allowed limit (25MB)."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1575
+#: includes/restapi/class-request-api.php:1599
 msgid "Invalid file type."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1702
+#: includes/restapi/class-request-api.php:1726
 msgid "Analytics data updated."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1710
+#: includes/restapi/class-request-api.php:1734
 msgid "Invalid Analytics data."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1857
+#: includes/restapi/class-request-api.php:1881
 msgid "No file found or invalid nonce."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1871
-#: includes/restapi/class-request-api.php:2143
+#: includes/restapi/class-request-api.php:1895
+#: includes/restapi/class-request-api.php:2167
 msgid "Font title is required."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1900
+#: includes/restapi/class-request-api.php:1924
 msgid "File size exceeds the maximum allowed limit (10MB)."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1906
+#: includes/restapi/class-request-api.php:1930
 msgid "Invalid file extension. Allowed types are: woff, woff2, ttf."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1996
+#: includes/restapi/class-request-api.php:2020
 msgid "Font uploaded successfully."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:2053
-#: includes/restapi/class-request-api.php:2133
+#: includes/restapi/class-request-api.php:2077
+#: includes/restapi/class-request-api.php:2157
 msgid "Font ID is required."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:2089
-#: includes/restapi/class-request-api.php:2169
+#: includes/restapi/class-request-api.php:2113
+#: includes/restapi/class-request-api.php:2193
 msgid "Font not found."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:2098
+#: includes/restapi/class-request-api.php:2122
 msgid "Font deleted successfully."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:2178
+#: includes/restapi/class-request-api.php:2202
 msgid "Font updated successfully."
 msgstr ""
 
@@ -746,6 +746,14 @@ msgid "Add New Font"
 msgstr ""
 
 #: assets/js/wowaddons.js:1
+msgid "Section"
+msgstr ""
+
+#: assets/js/wowaddons.js:1
+msgid "Radio"
+msgstr ""
+
+#: assets/js/wowaddons.js:1
 msgid "Checkbox"
 msgstr ""
 
@@ -759,14 +767,6 @@ msgstr ""
 
 #: assets/js/wowaddons.js:1
 msgid "Select Font"
-msgstr ""
-
-#: assets/js/wowaddons.js:1
-msgid "Radio"
-msgstr ""
-
-#: assets/js/wowaddons.js:1
-msgid "Section"
 msgstr ""
 
 #: assets/js/wowaddons.js:1
@@ -1158,6 +1158,34 @@ msgstr ""
 
 #: assets/js/wowaddons.js:160
 msgid "Maximum Quantity"
+msgstr ""
+
+#: assets/js/wowaddons.js:160
+msgid "Fixed"
+msgstr ""
+
+#: assets/js/wowaddons.js:160
+msgid "Percentage"
+msgstr ""
+
+#: assets/js/wowaddons.js:160
+msgid "No Cost"
+msgstr ""
+
+#: assets/js/wowaddons.js:160
+msgid "Enable Same Pricing"
+msgstr ""
+
+#: assets/js/wowaddons.js:160
+msgid "Price Type"
+msgstr ""
+
+#: assets/js/wowaddons.js:160
+msgid "Regular Price"
+msgstr ""
+
+#: assets/js/wowaddons.js:160
+msgid "Sale Price"
 msgstr ""
 
 #: assets/js/wowaddons.js:160
@@ -1604,11 +1632,11 @@ msgid "File Number Prefix Text"
 msgstr ""
 
 #: assets/js/wowaddons.js:161
-msgid "Allowed Type Prefix Text"
+msgid "Allowed File Types"
 msgstr ""
 
 #: assets/js/wowaddons.js:161
-msgid "Allowed File Types"
+msgid "Allowed Type Prefix Text"
 msgstr ""
 
 #: assets/js/wowaddons.js:161
@@ -1736,6 +1764,10 @@ msgid "Line through"
 msgstr ""
 
 #: assets/js/wowaddons.js:161
+msgid "Exclude Specific Categories"
+msgstr ""
+
+#: assets/js/wowaddons.js:161
 msgid "Preview"
 msgstr ""
 
@@ -1749,6 +1781,14 @@ msgstr ""
 
 #: assets/js/wowaddons.js:161
 msgid "Select Categories"
+msgstr ""
+
+#: assets/js/wowaddons.js:161
+msgid "Select Tags"
+msgstr ""
+
+#: assets/js/wowaddons.js:161
+msgid "Select Brands"
 msgstr ""
 
 #: assets/js/wowaddons.js:161
@@ -2245,6 +2285,10 @@ msgstr ""
 
 #: assets/js/wowaddons.js:161
 msgid "Hot"
+msgstr ""
+
+#: assets/js/wowaddons.js:161
+msgid "New"
 msgstr ""
 
 #: assets/js/wowaddons.js:161

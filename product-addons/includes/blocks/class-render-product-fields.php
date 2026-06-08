@@ -99,7 +99,7 @@ class Render_Product_Fields {
 		// Render blocks.
 		foreach ( $blocks_data['blocks'] as $addon_id => $addon_blocks ) {
 			$html .= sprintf(
-				'<div class="prad-blocks-container prad-relative" data-productid="%s" data-optionid="%s">',
+				'<div class="prad-blocks-container prad-relative prad-mb-24" data-productid="%s" data-optionid="%s">',
 				esc_attr( $product_id ),
 				esc_attr( $addon_id )
 			);

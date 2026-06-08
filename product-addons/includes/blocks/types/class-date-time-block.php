@@ -205,6 +205,7 @@ class Date_Time_Block extends Abstract_Block {
 			'data-disabled-date'      => wp_json_encode( $this->get_property( 'disableDates', array() ) ),
 			'data-disabled-specdates' => wp_json_encode( $this->get_property( 'disableSpecificDates', '[]' ) ),
 			'data-disable-today'      => wp_json_encode( $this->get_property( 'disableToday', false ) ),
+			'data-disable-next-days'  => product_addons()->is_pro_feature_available() ? intval( $this->get_property( 'disableNextDays', 0 ) ) : 0,
 			'data-val'                => $price_info['price'],
 			'data-initdate'           => 'no',
 		);

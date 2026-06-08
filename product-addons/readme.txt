@@ -2,9 +2,9 @@
 Contributors: wpxpo, anik4e, jakirhasan
 Tags: product addons, woocommerce product addons, extra product options, product fields, WooCommerce product fields
 Requires at least: 6.8
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.6.11
+Stable tag: 1.6.12
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -17,7 +17,7 @@ Product addons for WooCommerce is the ultimate plugin that lets you add extra pr
 💞 A WPXPO Plugin **Trusted by 60K+** Businesses.
 🤝 Backed by a Dedicated Support Team with **4.9/5** [Trustpilot Rating](https://uk.trustpilot.com/review/wpxpo.com).
 
-😲[Free Demo](https://wowaddons.wpxpo.com/) | 🔥[WowAddons Pro](https://www.wpxpo.com/product/wowaddons/) | 📃[Documentation](https://wpxpo.com/docs/wowaddons/)
+😲[View Demo](https://wowaddons.wpxpo.com/) | 🔥[WowAddons Pro](https://www.wpxpo.com/product/wowaddons/) | 📃[Documentation](https://wpxpo.com/docs/wowaddons/)
 
 Simplify product customization with our WooCommerce Custom Fields plugin! Build extra product options, including swatches, radio buttons, file uploads, sliders, date, time, and more with our state-of-the-art product addons customizer.
 
@@ -115,6 +115,8 @@ Thank you for choosing WowAddons, a leading WooCommerce Product Addons plugin. D
 
 Thank you for considering WowAddons. We have more plugins that can be beneficial for your business. So please have a look at our other plugins.
 
+📄 [**WowInvoice 🔥:**](https://wordpress.org/plugins/wow-pdf-invoices-packing-slips/) A comprehensive PDF invoices & packing slips plugin for WooCommerce that automates documents like invoices, packing slips, and picklists.
+
 🚚 [**WowShipping 🔥:**](https://wordpress.org/plugins/wow-table-rate-shipping/) Dynamically calculate shipping rates based on weight, quantity, product, categories, country, etc, allowing you to avoid undercharging and overcharging.
 
 💝 [**WowStore:**](https://wordpress.org/plugins/product-blocks/) The ultimate WooCommerce solution for building and managing eCommerce sites. Packed with features to enhance conversions and boost sales, it streamlines your store’s performance.
@@ -199,6 +201,14 @@ No, for some product fields like Headings, Texts, advanced custom logic options 
 7. Strategic Cross-selling 
 
 == Changelog ==
+= 1.6.12 – 08th June 2026 =
+* New: Added support for applying the same pricing across multiple selected fields.
+* New: Option to exclude specific product categories when assigning settings to all products.
+* New: Ability to disable options in Date & Time fields based on future dates (e.g., tomorrow).
+* Update: Compatibility with YayPricing - WooCommerce Dynamic Pricing & Discounts by YayCommerce.
+* Fix: Resolved popup opening issue.
+* Fix: Minor bug fixes and performance improvements.
+
 = 1.6.11 – 20th May 2026 =
 * New: Premade Template System.
 

@@ -42,11 +42,16 @@ class Select_Block extends Abstract_Block {
 
 		$attributes = array_merge(
 			$this->get_common_attributes(),
-			$this->get_select_attributes()
+			$this->get_select_attributes(),
+			$this->get_same_price_attributes()
 		);
 
-		$html  = sprintf( '<div %s>', $this->build_attributes( $attributes ) );
-		$html .= $this->render_title_description_noprice();
+		$html = sprintf( '<div %s>', $this->build_attributes( $attributes ) );
+		if ( ! empty( $this->same_price_info['enabled'] ) && product_addons()->is_pro_feature_available() ) {
+			$html .= $this->render_title_description_price_with_position( $this->same_price_info );
+		} else {
+			$html .= $this->render_title_description_noprice();
+		}
 		$html .= $this->render_select_container( $options );
 		$html .= $this->render_description_below_field();
 		$html .= '</div>';
@@ -77,7 +82,7 @@ class Select_Block extends Abstract_Block {
 	/**
 	 * Render select container with options
 	 *
-	 * @param array $options Select options
+	 * @param array $options Select options.
 	 * @return string
 	 */
 	private function render_select_container( array $options ): string {
@@ -110,7 +115,7 @@ class Select_Block extends Abstract_Block {
 	/**
 	 * Render options list
 	 *
-	 * @param array $options Select options
+	 * @param array $options Select options.
 	 * @return string
 	 */
 	private function render_options_list( array $options ): string {
@@ -144,7 +149,7 @@ class Select_Block extends Abstract_Block {
 			$html .= '</div>';
 
 			// Price if not free
-			if ( isset( $item['type'] ) && $item['type'] !== 'no_cost' ) {
+			if ( isset( $item['type'] ) && $item['type'] !== 'no_cost' && ! ( ! empty( $this->same_price_info['enabled'] ) && product_addons()->is_pro_feature_available() ) ) {
 				$html .= '<div class="prad-block-price prad-text-upper">';
 				$html .= wp_kses( $price_info['html'], $this->allowed_html_tags );
 				$html .= '</div>';

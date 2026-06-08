@@ -761,7 +761,7 @@ class RequestApi {
 		$params         = $request->get_params();
 		$trigger_type   = isset( $params['type'] ) ? sanitize_text_field( $params['type'] ) : 'products';
 		$search_keyword = isset( $params['term'] ) ? sanitize_text_field( $params['term'] ) : '';
-		$limit          = isset( $params['limit'] ) ? absint( $params['limit'] ) : 25;
+		$limit          = isset( $params['limit'] ) ? absint( $params['limit'] ) : 60;
 
 		$response_data = array();
 		switch ( $trigger_type ) {
@@ -1220,6 +1220,19 @@ class RequestApi {
 			}
 		}
 
+		// Update Meta for Exclude Categories.
+		if ( isset( $raw_data['excludeCategories'] ) && is_array( $raw_data['excludeCategories'] ) && count( $raw_data['excludeCategories'] ) > 0 ) {
+			foreach ( $raw_data['excludeCategories'] as $exclude_cat ) {
+				$meta_exc_cat = json_decode( product_addons()->safe_stripslashes( get_term_meta( $exclude_cat, 'prad_term_assigned_meta_exc', true ) ), true );
+				$meta_exc_cat = is_array( $meta_exc_cat ) ? $meta_exc_cat : array();
+
+				if ( ! in_array( $option_id, $meta_exc_cat, false ) ) {
+					$meta_exc_cat[] = $option_id;
+				}
+				update_term_meta( $exclude_cat, 'prad_term_assigned_meta_exc', wp_json_encode( $meta_exc_cat ) );
+			}
+		}
+
 		// Update the option meta with the assigned data.
 		update_post_meta( $option_id, 'prad_base_assigned_data', wp_json_encode( $raw_data ) );
 
@@ -1289,6 +1302,17 @@ class RequestApi {
 					$meta_exc = array_diff( $meta_exc, array( $option_id ) );
 				}
 				update_post_meta( $exclude, 'prad_product_assigned_meta_exc', wp_json_encode( $meta_exc ) );
+			}
+		}
+		if ( isset( $assigned_data['excludeCategories'] ) && is_array( $assigned_data['excludeCategories'] ) && count( $assigned_data['excludeCategories'] ) > 0 ) {
+			foreach ( $assigned_data['excludeCategories'] as $exclude_cat ) {
+				$meta_exc_cat = json_decode( product_addons()->safe_stripslashes( get_term_meta( $exclude_cat, 'prad_term_assigned_meta_exc', true ) ), true );
+				$meta_exc_cat = is_array( $meta_exc_cat ) ? $meta_exc_cat : array();
+
+				if ( in_array( $option_id, $meta_exc_cat, false ) ) {
+					$meta_exc_cat = array_diff( $meta_exc_cat, array( $option_id ) );
+				}
+				update_term_meta( $exclude_cat, 'prad_term_assigned_meta_exc', wp_json_encode( $meta_exc_cat ) );
 			}
 		}
 	}

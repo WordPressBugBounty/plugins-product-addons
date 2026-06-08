@@ -427,33 +427,10 @@ class Hooks {
 					$option_settings = array();
 				}
 				update_option( 'prad_option_assign_all', wp_json_encode( $option_settings ) );
-			} else {
-				if ( is_array( $assigned_data['includes'] ) && count( $assigned_data['includes'] ) > 0 ) {
-					foreach ( $assigned_data['includes'] as $key => $include ) {
-						$meta_inc = array();
-						if ( 'specific_product' === $assigned_data['aType'] ) {
-							$meta_inc = json_decode( product_addons()->safe_stripslashes( get_post_meta( $include, 'prad_product_assigned_meta_inc', true ) ), true );
-						} elseif ( 'specific_category' === $assigned_data['aType'] || 'specific_tag' === $assigned_data['aType'] || 'specific_brand' === $assigned_data['aType'] ) {
-							$meta_inc = json_decode( product_addons()->safe_stripslashes( get_term_meta( $include, 'prad_term_assigned_meta_inc', true ) ), true );
-						}
-						if ( is_array( $meta_inc ) ) {
-							if ( in_array( $option_id, $meta_inc, false ) ) { //phpcs:ignore
-								$meta_inc = array_values( array_diff( $meta_inc, array( $option_id ) ) );
-							}
-						} else {
-							$meta_inc = array();
-						}
-						if ( 'specific_product' === $assigned_data['aType'] ) {
-							update_post_meta( $include, 'prad_product_assigned_meta_inc', wp_json_encode( $meta_inc ) );
-						} elseif ( 'specific_category' === $assigned_data['aType'] || 'specific_tag' === $assigned_data['aType'] || 'specific_brand' === $assigned_data['aType'] ) {
-							update_term_meta( $include, 'prad_term_assigned_meta_inc', wp_json_encode( $meta_inc ) );
-						}
-					}
-				}
-				/* Handle excludes */
-				if ( is_array( $assigned_data['excludes'] ) && count( $assigned_data['excludes'] ) > 0 ) {
-					foreach ( $assigned_data['excludes'] as $key => $exclude ) {
-						$meta_exc = json_decode( product_addons()->safe_stripslashes( get_post_meta( $exclude, 'prad_product_assigned_meta_exc', true ) ), true );
+
+				if ( ! empty( $assigned_data['excludeCategories'] ) && is_array( $assigned_data['excludeCategories'] ) ) {
+					foreach ( $assigned_data['excludeCategories'] as $key => $exclude_cat ) {
+						$meta_exc = json_decode( product_addons()->safe_stripslashes( get_term_meta( $exclude_cat, 'prad_term_assigned_meta_exc', true ) ), true );
 						if ( is_array( $meta_exc ) ) {
 							if ( in_array( $option_id, $meta_exc, false ) ) { //phpcs:ignore
 								$meta_exc = array_values( array_diff( $meta_exc, array( $option_id ) ) );
@@ -461,8 +438,43 @@ class Hooks {
 						} else {
 							$meta_exc = array();
 						}
-						update_post_meta( $exclude, 'prad_product_assigned_meta_exc', wp_json_encode( $meta_exc ) );
+						update_term_meta( $exclude_cat, 'prad_term_assigned_meta_exc', wp_json_encode( $meta_exc ) );
 					}
+				}
+			} elseif ( is_array( $assigned_data['includes'] ) && count( $assigned_data['includes'] ) > 0 ) {
+				foreach ( $assigned_data['includes'] as $key => $include ) {
+					$meta_inc = array();
+					if ( 'specific_product' === $assigned_data['aType'] ) {
+						$meta_inc = json_decode( product_addons()->safe_stripslashes( get_post_meta( $include, 'prad_product_assigned_meta_inc', true ) ), true );
+					} elseif ( 'specific_category' === $assigned_data['aType'] || 'specific_tag' === $assigned_data['aType'] || 'specific_brand' === $assigned_data['aType'] ) {
+						$meta_inc = json_decode( product_addons()->safe_stripslashes( get_term_meta( $include, 'prad_term_assigned_meta_inc', true ) ), true );
+					}
+					if ( is_array( $meta_inc ) ) {
+						if ( in_array( $option_id, $meta_inc, false ) ) { //phpcs:ignore
+							$meta_inc = array_values( array_diff( $meta_inc, array( $option_id ) ) );
+						}
+					} else {
+						$meta_inc = array();
+					}
+					if ( 'specific_product' === $assigned_data['aType'] ) {
+						update_post_meta( $include, 'prad_product_assigned_meta_inc', wp_json_encode( $meta_inc ) );
+					} elseif ( 'specific_category' === $assigned_data['aType'] || 'specific_tag' === $assigned_data['aType'] || 'specific_brand' === $assigned_data['aType'] ) {
+						update_term_meta( $include, 'prad_term_assigned_meta_inc', wp_json_encode( $meta_inc ) );
+					}
+				}
+			}
+			/* Handle excludes */
+			if ( is_array( $assigned_data['excludes'] ) && count( $assigned_data['excludes'] ) > 0 ) {
+				foreach ( $assigned_data['excludes'] as $key => $exclude ) {
+					$meta_exc = json_decode( product_addons()->safe_stripslashes( get_post_meta( $exclude, 'prad_product_assigned_meta_exc', true ) ), true );
+					if ( is_array( $meta_exc ) ) {
+						if ( in_array( $option_id, $meta_exc, false ) ) { //phpcs:ignore
+							$meta_exc = array_values( array_diff( $meta_exc, array( $option_id ) ) );
+						}
+					} else {
+						$meta_exc = array();
+					}
+					update_post_meta( $exclude, 'prad_product_assigned_meta_exc', wp_json_encode( $meta_exc ) );
 				}
 			}
 		}

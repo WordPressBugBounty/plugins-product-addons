@@ -62,7 +62,7 @@ class Popup_Block extends Abstract_Block {
 	 */
 	private function render_header(): string {
 
-		$header_part  = '<div class="prad-block-popup-header">';
+		$header_part  = '<div class="prad-block-popup-header" data-popup-id="' . esc_attr( $this->get_block_id() ) . '">';
 		$header_part .= $this->get_property( 'label', '' );
 		$header_part .= '</div>';
 
@@ -88,7 +88,7 @@ class Popup_Block extends Abstract_Block {
 			/>
 		</svg>';
 
-		$content_part  = '<div class="prad-block-popup-content-wrapper ">';
+		$content_part  = '<div class="prad-block-popup-content-wrapper " data-popup-id="' . esc_attr( $this->get_block_id() ) . '">';
 		$content_part .= '<div class="prad-block-popup-content-close">' . $close_icons . '</div>';
 		$content_part .= '<div class="prad-block-popup-content prad-scrollbar prad-overflow-y-auto prad-overflow-x-hidden">';
 		$content_part .= do_shortcode( $this->get_property( 'popupContent', '' ) );

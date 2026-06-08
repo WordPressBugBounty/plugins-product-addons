@@ -17,7 +17,7 @@ class ProductEdit {
 	}
 
 	/**
-	 * WholesaleX Tab in Single Product Edit Page
+	 * WowAddons Tab in Single Product Edit Page
 	 *
 	 * @param array $tabs Single Product Page Tabs.
 	 * @return array Updated Tabs.
@@ -34,7 +34,7 @@ class ProductEdit {
 	}
 
 	/**
-	 * WholesaleX Custom Tab Data.
+	 * WowAddons Custom Tab Data.
 	 *
 	 * @return void
 	 */
@@ -42,32 +42,7 @@ class ProductEdit {
 		global $post;
 		$product_id = $post->ID;
 
-		$option_all = json_decode( product_addons()->safe_stripslashes( get_option( 'prad_option_assign_all', '[]' ) ), true );
-		$option_all = is_array( $option_all ) ? $option_all : array();
-
-		$option_product = json_decode( product_addons()->safe_stripslashes( get_post_meta( $product_id, 'prad_product_assigned_meta_inc', true ) ), true );
-		$option_product = is_array( $option_product ) ? $option_product : array();
-
-		$option_exclude = json_decode( product_addons()->safe_stripslashes( get_post_meta( $product_id, 'prad_product_assigned_meta_exc', true ) ), true );
-		$option_exclude = is_array( $option_exclude ) ? $option_exclude : array();
-
-		$option_term = array();
-		// Merge option IDs from product_cat, product_tag, and product_brand taxonomies.
-		$taxonomies = array( 'product_cat', 'product_tag', 'product_brand' );
-		foreach ( $taxonomies as $taxonomy ) {
-			$terms = get_the_terms( $product_id, $taxonomy );
-			if ( $terms && ! is_wp_error( $terms ) ) {
-				foreach ( $terms as $term ) {
-					$meta_inc = json_decode( product_addons()->safe_stripslashes( get_term_meta( $term->term_id, 'prad_term_assigned_meta_inc', true ) ), true );
-					if ( is_array( $meta_inc ) ) {
-						$option_term = array_unique( array_merge( $option_term, $meta_inc ) );
-					}
-				}
-			}
-		}
-
-		$merged            = array_unique( array_merge( $option_all, $option_term, $option_product ) );
-		$option_ids        = array_diff( $merged, $option_exclude );
+		$option_ids        = product_addons()->get_product_option_ids( $product_id );
 		$counter           = 1;
 		$published_options = array_filter(
 			$option_ids,

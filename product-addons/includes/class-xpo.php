@@ -271,7 +271,7 @@ class Xpo {
 				'medium'   => 'final-hour-sale',
 				'campaign' => 'wowaddons-dashboard',
 			),
-			'surprise_sale'   => array(
+			'surprise_sale'     => array(
 				'source'   => 'db-wowaddons-notice-logo',
 				'medium'   => 'surprise-sale',
 				'campaign' => 'wowaddons-dashboard',
@@ -344,15 +344,17 @@ class Xpo {
 	public static function get_wow_products_details() {
 		return array(
 			'products'        => array(
-				'wow_shipping'      => file_exists( WP_PLUGIN_DIR . '/wow-table-rate-shipping/wow-table-rate-shipping.php' ),
-				'post_x'      => file_exists( WP_PLUGIN_DIR . '/ultimate-post/ultimate-post.php' ),
-				'wow_store'   => file_exists( WP_PLUGIN_DIR . '/product-blocks/product-blocks.php' ),
-				'wow_optin'   => file_exists( WP_PLUGIN_DIR . '/optin/optin.php' ),
-				'wow_revenue' => file_exists( WP_PLUGIN_DIR . '/revenue/revenue.php' ),
-				'wholesale_x' => file_exists( WP_PLUGIN_DIR . '/wholesalex/wholesalex.php' ),
-				'wow_addon'   => file_exists( WP_PLUGIN_DIR . '/product-addons/product-addons.php' ),
+				'wow_invoice'  => file_exists( WP_PLUGIN_DIR . '/wow-pdf-invoices-packing-slips/wow-pdf-invoices-packing-slips.php' ),
+				'wow_shipping' => file_exists( WP_PLUGIN_DIR . '/wow-table-rate-shipping/wow-table-rate-shipping.php' ),
+				'post_x'       => file_exists( WP_PLUGIN_DIR . '/ultimate-post/ultimate-post.php' ),
+				'wow_store'    => file_exists( WP_PLUGIN_DIR . '/product-blocks/product-blocks.php' ),
+				'wow_optin'    => file_exists( WP_PLUGIN_DIR . '/optin/optin.php' ),
+				'wow_revenue'  => file_exists( WP_PLUGIN_DIR . '/revenue/revenue.php' ),
+				'wholesale_x'  => file_exists( WP_PLUGIN_DIR . '/wholesalex/wholesalex.php' ),
+				'wow_addon'    => file_exists( WP_PLUGIN_DIR . '/product-addons/product-addons.php' ),
 			),
 			'products_active' => array(
+				'wow_invoice'  => defined( 'WINV_VER' ),
 				'wow_shipping' => defined( 'WTRS_VER' ),
 				'post_x'       => defined( 'ULTP_VER' ),
 				'wow_store'    => defined( 'WOPB_VER' ),
@@ -374,6 +376,9 @@ class Xpo {
 		$to_r        = array( 'done' => true );
 		$plugin_slug = '';
 		switch ( $name ) {
+			case 'wow_invoice':
+				$plugin_slug = 'wow-pdf-invoices-packing-slips';
+				break;
 			case 'wow_shipping':
 				$plugin_slug = 'wow-table-rate-shipping';
 				break;

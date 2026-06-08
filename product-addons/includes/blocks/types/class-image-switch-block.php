@@ -47,11 +47,16 @@ class Image_Switch_Block extends Abstract_Block {
 
 		$attributes = array_merge(
 			$this->get_common_attributes(),
-			$this->get_switch_attributes()
+			$this->get_switch_attributes(),
+			$this->get_same_price_attributes()
 		);
 
-		$html  = sprintf( '<div %s>', $this->build_attributes( $attributes ) );
-		$html .= $this->render_title_description_noprice();
+		$html = sprintf( '<div %s>', $this->build_attributes( $attributes ) );
+		if ( ! empty( $this->same_price_info['enabled'] ) && product_addons()->is_pro_feature_available() ) {
+			$html .= $this->render_title_description_price_with_position( $this->same_price_info );
+		} else {
+			$html .= $this->render_title_description_noprice();
+		}
 		$html .= $this->render_swatch_wrapper( $options );
 		$html .= $this->render_description_below_field();
 		$html .= $this->render_tooltip();
@@ -73,6 +78,7 @@ class Image_Switch_Block extends Abstract_Block {
 		$css_classes = array(
 			'prad-parent',
 			'prad-block-img-swatches',
+			! empty( $this->same_price_info['enabled'] ) ? 'prad-block-same-price' : '',
 			'prad-type_swatches-input',
 			'prad-switcher-count',
 			'prad-switcher-count-' . $input_type,
@@ -163,12 +169,17 @@ class Image_Switch_Block extends Abstract_Block {
 		$price_info         = $this->get_price_info( $item );
 		$wrapper_attributes = $this->get_swatch_wrapper_attributes( $item );
 		$layout             = $this->get_property( 'layout', '_default' );
+		$display_item       = $item;
+		if ( ! empty( $this->same_price_info['enabled'] ) && product_addons()->is_pro_feature_available() ) {
+			$display_item         = $item;
+			$display_item['type'] = 'no_cost';
+		}
 
 		$html  = sprintf( '<div %s>', $this->build_attributes( $wrapper_attributes ) );
-		$html .= $this->render_swatch_container( $item, $index, $price_info );
+		$html .= $this->render_swatch_container( $display_item, $index, $price_info );
 
 		if ( $layout === '_default' ) {
-			$html .= $this->render_block_content( (object) $item, $index, $price_info );
+			$html .= $this->render_block_content( (object) $display_item, $index, $price_info );
 		}
 
 		if ( $this->should_render_quantity_input( $layout ) && product_addons()->is_pro_feature_available() ) {
@@ -258,7 +269,7 @@ class Image_Switch_Block extends Abstract_Block {
 			esc_url( $img_url ),
 			esc_attr( $item['value'] ?? '' ),
 		);
-		$html       .= '</label>';
+		$html .= '</label>';
 
 		return $html;
 	}

@@ -172,9 +172,10 @@ class Functions {
 		$assigned_data = json_decode( product_addons()->safe_stripslashes( get_post_meta( $option_id, 'prad_base_assigned_data', true ) ), true );
 		if ( empty( $assigned_data ) ) {
 			return (object) array(
-				'aType'    => 'specific_product',
-				'includes' => array(),
-				'excludes' => array(),
+				'aType'             => 'specific_product',
+				'includes'          => array(),
+				'excludes'          => array(),
+				'excludeCategories' => array(),
 			);
 		} else {
 			if ( isset( $assigned_data['includes'] ) && count( $assigned_data['includes'] ) > 0 ) {
@@ -198,10 +199,20 @@ class Functions {
 			}
 
 			return (object) array(
-				'aType'    => $assigned_data['aType'],
-				'includes' => $includes,
-				'excludes' => isset( $assigned_data['excludes'] ) && count( $assigned_data['excludes'] ) > 0
+				'aType'             => $assigned_data['aType'],
+				'includes'          => $includes,
+				'excludes'          => isset( $assigned_data['excludes'] ) && count( $assigned_data['excludes'] ) > 0
 					? $this->get_searched_products( '', false, '', $assigned_data['excludes'] )
+					: array(),
+				'excludeCategories' => isset( $assigned_data['excludeCategories'] ) && count( $assigned_data['excludeCategories'] ) > 0
+					? $this->get_searched_categories(
+						array(
+							'term'         => '',
+							'limit'        => '',
+							'includes'     => $assigned_data['excludeCategories'],
+							'trigger_type' => 'cat',
+						)
+					)
 					: array(),
 			);
 		}
@@ -832,7 +843,7 @@ class Functions {
 	 * @return string The generated HTML for the variation section.
 	 */
 	public function generate_products_block_variation_section_html( $args ) {
-		$item = $args['item'];
+		$item              = $args['item'];
 		$allowed_html_tags = apply_filters( 'get_prad_allowed_html_tags', array() );
 		ob_start();
 		if ( isset( $item->variation ) && $item->variation ) {
@@ -1060,19 +1071,19 @@ class Functions {
 		return array(
 			'products'        => array(
 				'wow_shipping' => file_exists( WP_PLUGIN_DIR . '/wow-table-rate-shipping/wow-table-rate-shipping.php' ),
-				'post_x'      => file_exists( WP_PLUGIN_DIR . '/ultimate-post/ultimate-post.php' ),
-				'wow_store'   => file_exists( WP_PLUGIN_DIR . '/product-blocks/product-blocks.php' ),
-				'wow_optin'   => file_exists( WP_PLUGIN_DIR . '/optin/optin.php' ),
-				'wow_revenue' => file_exists( WP_PLUGIN_DIR . '/revenue/revenue.php' ),
-				'wholesale_x' => file_exists( WP_PLUGIN_DIR . '/wholesalex/wholesalex.php' ),
+				'post_x'       => file_exists( WP_PLUGIN_DIR . '/ultimate-post/ultimate-post.php' ),
+				'wow_store'    => file_exists( WP_PLUGIN_DIR . '/product-blocks/product-blocks.php' ),
+				'wow_optin'    => file_exists( WP_PLUGIN_DIR . '/optin/optin.php' ),
+				'wow_revenue'  => file_exists( WP_PLUGIN_DIR . '/revenue/revenue.php' ),
+				'wholesale_x'  => file_exists( WP_PLUGIN_DIR . '/wholesalex/wholesalex.php' ),
 			),
 			'products_active' => array(
 				'wow_shipping' => defined( 'WTRS_VER' ),
-				'post_x'      => defined( 'ULTP_VER' ),
-				'wow_store'   => defined( 'WOPB_VER' ),
-				'wow_optin'   => defined( 'OPTN_VERSION' ),
-				'wow_revenue' => defined( 'REVENUE_VER' ),
-				'wholesale_x' => defined( 'WHOLESALEX_VER' ),
+				'post_x'       => defined( 'ULTP_VER' ),
+				'wow_store'    => defined( 'WOPB_VER' ),
+				'wow_optin'    => defined( 'OPTN_VERSION' ),
+				'wow_revenue'  => defined( 'REVENUE_VER' ),
+				'wholesale_x'  => defined( 'WHOLESALEX_VER' ),
 			),
 		);
 	}
@@ -1243,5 +1254,130 @@ class Functions {
 		}
 
 		return $attrs;
+	}
+
+	/**
+	 * Retrieves product option IDs based on global, product-specific, and term assignments.
+	 *
+	 * This function merges options assigned globally, per product, and by product terms,
+	 * then excludes any options marked as excluded.
+	 *
+	 * @param int $product_id The product ID.
+	 *
+	 * @return array An array of option IDs assigned to the product.
+	 */
+	public function get_product_option_ids( int $product_id ): array {
+		$option_all = $this->get_json_option( 'prad_option_assign_all', array() );
+
+		// Get options assigned directly to this product.
+		$option_product = $this->get_json_meta( $product_id, 'prad_product_assigned_meta_inc', array() );
+
+		// Get options excluded from this product.
+		$option_exclude = $this->get_json_meta( $product_id, 'prad_product_assigned_meta_exc', array() );
+
+		// Get options from product terms (categories, tags, brands).
+		$option_terms_inc = $this->get_product_term_options( $product_id, 'prad_term_assigned_meta_inc' );
+		$option_terms_exc = $this->get_product_term_options( $product_id, 'prad_term_assigned_meta_exc' );
+
+		// Merge and filter.
+		$merged     = array_unique( array_merge( $option_all, $option_terms_inc, $option_product ) );
+		$option_ids = array_diff( $merged, $option_exclude, $option_terms_exc );
+
+		// Sort for consistency.
+		sort( $option_ids );
+
+		return apply_filters( 'prad_product_option_ids', $option_ids, $product_id );
+	}
+
+	/**
+	 * Retrieves product options from terms (categories, tags, brands).
+	 *
+	 * @param int    $product_id The product ID.
+	 * @param string $meta_key   The meta key to retrieve ('prad_term_assigned_meta_inc' or 'prad_term_assigned_meta_exc').
+	 *
+	 * @return array An array of option IDs from product terms.
+	 */
+	private function get_product_term_options( int $product_id, string $meta_key ) {
+		$option_terms = array();
+		if ( 'prad_term_assigned_meta_exc' === $meta_key && ! $this->is_lc_active() ) {
+			return $option_terms;
+		}
+
+		$taxonomies = array( 'product_cat', 'product_tag', 'product_brand' );
+		if ( 'prad_term_assigned_meta_exc' === $meta_key ) {
+			$taxonomies = array( 'product_cat' );
+		}
+
+		foreach ( $taxonomies as $taxonomy ) {
+			$terms = get_the_terms( $product_id, $taxonomy );
+			if ( $terms && ! is_wp_error( $terms ) ) {
+				foreach ( $terms as $term ) {
+					$term_options = $this->get_json_term_meta( $term->term_id, $meta_key, array() );
+
+					if ( is_array( $term_options ) ) {
+						$option_terms = array_unique( array_merge( $option_terms, $term_options ) );
+					}
+				}
+			}
+		}
+
+		return $option_terms;
+	}
+
+	/**
+	 * Retrieves a JSON-encoded option and decodes it.
+	 *
+	 * @param string $option_name The option name.
+	 * @param array  $def         The default value if option is not found.
+	 *
+	 * @return array The decoded option value or default.
+	 */
+	private function get_json_option( string $option_name, array $def = array() ): array {
+		$value   = get_option( $option_name, '[]' );
+		$decoded = json_decode( product_addons()->safe_stripslashes( $value ), true );
+
+		return is_array( $decoded ) ? $decoded : $def;
+	}
+
+	/**
+	 * Retrieves a JSON-encoded post meta and decodes it.
+	 *
+	 * @param int    $post_id  The post ID.
+	 * @param string $meta_key The meta key.
+	 * @param array  $def      The default value if meta is not found.
+	 *
+	 * @return array The decoded meta value or default.
+	 */
+	private function get_json_meta( int $post_id, string $meta_key, array $def = array() ): array {
+		$value = get_post_meta( $post_id, $meta_key, true );
+
+		if ( empty( $value ) ) {
+			return $def;
+		}
+
+		$decoded = json_decode( product_addons()->safe_stripslashes( $value ), true );
+
+		return is_array( $decoded ) ? $decoded : $def;
+	}
+
+	/**
+	 * Retrieves a JSON-encoded term meta and decodes it.
+	 *
+	 * @param int    $term_id  The term ID.
+	 * @param string $meta_key The meta key.
+	 * @param array  $def      The default value if meta is not found.
+	 *
+	 * @return array The decoded meta value or default.
+	 */
+	private function get_json_term_meta( int $term_id, string $meta_key, array $def = array() ): array {
+		$value = get_term_meta( $term_id, $meta_key, true );
+
+		if ( empty( $value ) ) {
+			return $def;
+		}
+
+		$decoded = json_decode( product_addons()->safe_stripslashes( $value ), true );
+
+		return is_array( $decoded ) ? $decoded : $def;
 	}
 }

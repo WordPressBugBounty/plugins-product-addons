@@ -39,11 +39,18 @@ class Radio_Block extends Abstract_Block {
 
 		$attributes = array_merge(
 			$this->get_common_attributes(),
-			$this->get_radio_attributes()
+			$this->get_radio_attributes(),
+			$this->get_same_price_attributes()
 		);
 
-		$html  = sprintf( '<div %s>', $this->build_attributes( $attributes ) );
-		$html .= $this->render_title_description_noprice();
+		$html = sprintf( '<div %s>', $this->build_attributes( $attributes ) );
+
+		if ( ! empty( $this->same_price_info['enabled'] ) && product_addons()->is_pro_feature_available() ) {
+			$html .= $this->render_title_description_price_with_position( $this->same_price_info );
+		} else {
+			$html .= $this->render_title_description_noprice();
+		}
+
 		$html .= $this->render_radio_group();
 		$html .= $this->render_description_below_field();
 		$html .= $this->render_tooltip();
@@ -144,8 +151,8 @@ class Radio_Block extends Abstract_Block {
 	 * @return string
 	 */
 	private function get_radio_item_wrapper_class(): string {
-		$price_position = $this->get_property( 'pricePosition', '' );
-		$justify        = $price_position === 'with_option' ? 'left' : 'between';
+		// $price_position = $this->get_property( 'pricePosition', '' );
+		$justify = 'left';
 
 		return sprintf(
 			'prad-radio-item-wrapper prad-d-flex prad-item-center prad-gap-8 prad-justify-%s',
@@ -196,7 +203,7 @@ class Radio_Block extends Abstract_Block {
 		$html  = sprintf( '<div class="%s">', esc_attr( $wrapper_class ) );
 		$html .= $this->render_radio_input_group( $item, $index, $price_info );
 
-		if ( $item['type'] != 'no_cost' || $this->get_property( 'enableCount', false ) ) {
+		if ( ( $item['type'] != 'no_cost' || $this->get_property( 'enableCount', false ) ) ) {
 			$html .= $this->render_price_and_quantity( $item, $index, $price_info );
 		}
 
@@ -271,7 +278,7 @@ class Radio_Block extends Abstract_Block {
 
 		$html = '<div class="prad-d-flex prad-item-center prad-gap-12">';
 
-		if ( $item['type'] != 'no_cost' ) {
+		if ( ( $item['type'] != 'no_cost' ) && ! ( ! empty( $this->same_price_info['enabled'] ) && product_addons()->is_pro_feature_available() ) ) {
 			$html .= sprintf(
 				'<div class="prad-block-price prad-text-upper">%s</div>',
 				wp_kses( $price_info['html'], $allowed_tags )

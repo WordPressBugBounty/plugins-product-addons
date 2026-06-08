@@ -48,7 +48,7 @@ trait Price_Handler {
 	 * @return bool
 	 */
 	protected function should_show_price_with_title( array $price_info ): bool {
-		return 'with_title' === $this->get_property( 'pricePosition', 'with_title' ) &&
+		return ( 'with_title' === $this->get_property( 'pricePosition', 'with_title' ) || ( isset( $price_info['enabled'] ) && $price_info['enabled'] ) ) &&
 				'no_cost' !== $price_info['type'];
 	}
 

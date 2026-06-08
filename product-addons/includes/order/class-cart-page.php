@@ -126,6 +126,11 @@ class CartPage {
 					$product_price = $cart_item['fpd_data']['fpd_product_price'];
 				}
 
+				// Support for YayPricing Dynamic Pricing & Discounts.
+				if ( function_exists( 'YAYDP\\load_plugin' ) && ! empty( $cart_item['yaydp_custom_data']['price'] ) && ! empty( $cart_item['modifiers'] ) ) {
+					$product_price = $cart_item['yaydp_custom_data']['price'];
+				}
+
 				$option_price = $option_price + floatval( $product_price );
 
 				if ( ( function_exists( 'wcml_is_multi_currency_on' ) && wcml_is_multi_currency_on() ) || class_exists( 'WC_Product_Price_Based_Country' ) || class_exists( 'WC_Aelia_CurrencySwitcher' ) ) {
@@ -268,33 +273,7 @@ class CartPage {
 		try {
 			/* Fallback for option_ids if it is not set from cart  object   */
 			if ( ! ( is_array( $option_ids ) && ! empty( $option_ids ) ) ) {
-				$option_all = json_decode( product_addons()->safe_stripslashes( get_option( 'prad_option_assign_all', '[]' ) ), true );        // do for all cat , product.
-				$option_all = is_array( $option_all ) ? $option_all : array();
-
-				$option_product = json_decode( product_addons()->safe_stripslashes( get_post_meta( $product_id, 'prad_product_assigned_meta_inc', true ) ), true );
-				$option_product = is_array( $option_product ) ? $option_product : array();
-
-				$option_exclude = json_decode( product_addons()->safe_stripslashes( get_post_meta( $product_id, 'prad_product_assigned_meta_exc', true ) ), true );
-				$option_exclude = is_array( $option_exclude ) ? $option_exclude : array();
-
-				$option_term = array();
-
-				// Merge option IDs from product_cat, product_tag, and product_brand taxonomies.
-				$taxonomies = array( 'product_cat', 'product_tag', 'product_brand' );
-				foreach ( $taxonomies as $taxonomy ) {
-					$terms = get_the_terms( $product_id, $taxonomy );
-					if ( $terms && ! is_wp_error( $terms ) ) {
-						foreach ( $terms as $term ) {
-							$meta_inc = json_decode( product_addons()->safe_stripslashes( get_term_meta( $term->term_id, 'prad_term_assigned_meta_inc', true ) ), true );
-							if ( is_array( $meta_inc ) ) {
-								$option_term = array_unique( array_merge( $option_term, $meta_inc ) );
-							}
-						}
-					}
-				}
-
-				$merged     = array_unique( array_merge( $option_all, $option_term, $option_product ) );
-				$option_ids = array_diff( $merged, $option_exclude );
+				$option_ids = product_addons()->get_product_option_ids( $product_id );
 			}
 
 			$merged_content = array();
@@ -362,48 +341,68 @@ class CartPage {
 						}
 
 						$opt_price = 0;
+
 						if ( isset( $field['_vDatas'] ) ) {
-							foreach ( $field['_vDatas'] as $i => $index ) {
-								if ( isset( $option_data[ $index ] ) ) {
-									$cost   = ( isset( $option_data[ $index ]->sale ) && $option_data[ $index ]->sale && $pro_active ) ? $option_data[ $index ]->sale : $option_data[ $index ]->regular;
-									$p_type = $option_data[ $index ]->type;
-									$value  = $res ? $res : '';
-									if (
-									! $pro_active &&
-									( 'per_unit' === $p_type || 'per_word' === $p_type || 'per_char_no_space' === $p_type )
-									) {
-										$opt_price = $opt_price + floatval( $cost );
-									} elseif ( 'per_unit' === $p_type ) {
-										if ( isset( $field['type'] ) && in_array( $field['type'], array( 'radio', 'checkbox', 'switch', 'img_switch', 'color_switch' ), true ) ) {
-											$value = 1;
-											if ( isset( $field['value'] ) && isset( $field['value'][ $i ] ) ) {
-												if ( isset( $field['value'][ $i ]['count'] ) ) {
-													$value = $field['value'][ $i ]['count'];
+							$addon_field     = $this->get_addon_field_by_blockid( $merged_content, $key );
+							$same_price_data = ! empty( $addon_field->samePrice ) ? (array) $addon_field->samePrice : array();  //phpcs:ignore
+							if ( ! empty( $same_price_data['enabled'] ) && ! empty( $same_price_data ) ) {
+								$sp_cost   = ( isset( $same_price_data['sale'] ) && $same_price_data['sale'] && $pro_active ) ? $same_price_data['sale'] : ( $same_price_data['regular'] ?? 0 );  //phpcs:ignore
+								$sp_p_type = $same_price_data['type'] ?? 'fixed';  //phpcs:ignore
+
+								if ( 'no_cost' === $sp_p_type ) {
+										$opt_price = 0;
+								} elseif ( 'percentage' === $sp_p_type ) {
+									$price_product = apply_filters(
+										'prad_cart_checkout_page_percentage_price',
+										! empty( $variation_id ) ? $variation_id : $product_id
+									);
+									$opt_price     = ( ( floatval( $price_product ) * floatval( $sp_cost ) ) / 100 );
+								} else {
+									$opt_price = floatval( $sp_cost );
+								}
+							} else {
+								foreach ( $field['_vDatas'] as $i => $index ) {
+									if ( isset( $option_data[ $index ] ) ) {
+										$cost   = ( isset( $option_data[ $index ]->sale ) && $option_data[ $index ]->sale && $pro_active ) ? $option_data[ $index ]->sale : $option_data[ $index ]->regular;
+										$p_type = $option_data[ $index ]->type;
+										$value  = $res ? $res : '';
+										if (
+										! $pro_active &&
+										( 'per_unit' === $p_type || 'per_word' === $p_type || 'per_char_no_space' === $p_type )
+										) {
+											$opt_price = $opt_price + floatval( $cost );
+										} elseif ( 'per_unit' === $p_type ) {
+											if ( isset( $field['type'] ) && in_array( $field['type'], array( 'radio', 'checkbox', 'switch', 'img_switch', 'color_switch' ), true ) ) {
+												$value = 1;
+												if ( isset( $field['value'] ) && isset( $field['value'][ $i ] ) ) {
+													if ( isset( $field['value'][ $i ]['count'] ) ) {
+														$value = $field['value'][ $i ]['count'];
+													}
 												}
+												$opt_price = $opt_price + floatval( $value ) * floatval( $cost );
+											} else {
+												$opt_price = $opt_price + floatval( $value ) * floatval( $cost );
 											}
-											$opt_price = $opt_price + floatval( $value ) * floatval( $cost );
+										} elseif ( 'per_char' === $p_type ) {
+											$char_count = mb_strlen( $value ); // Get the number of characters in the string.
+											$opt_price  = $opt_price + ( $char_count * floatval( $cost ) );
+										} elseif ( 'per_char_no_space' === $p_type ) {
+											$char_count = mb_strlen( str_replace( ' ', '', $value ) ); // Get the number of characters in the string except space.
+											$opt_price  = $opt_price + ( $char_count * floatval( $cost ) );
+										} elseif ( 'per_word' === $p_type ) {
+											$word_count = str_word_count( $value ); // Get the number of words in the string.
+											$opt_price  = $opt_price + ( $word_count * floatval( $cost ) );
+										} elseif ( 'percentage' === $p_type ) {
+											$price_product = apply_filters(
+												'prad_cart_checkout_page_percentage_price',
+												! empty( $variation_id ) ? $variation_id : $product_id
+											);
+											$opt_price     = $opt_price + ( ( floatval( $price_product ) * floatval( $cost ) ) / 100 );
+										} elseif ( 'no_cost' === $p_type ) {
+											$opt_price = $opt_price + 0;
 										} else {
-											$opt_price = $opt_price + floatval( $value ) * floatval( $cost );
+											$opt_price = $opt_price + floatval( $cost );
 										}
-									} elseif ( 'per_char' === $p_type ) {
-										$char_count = mb_strlen( $value ); // Get the number of characters in the string.
-										$opt_price  = $opt_price + ( $char_count * floatval( $cost ) );
-									} elseif ( 'per_char_no_space' === $p_type ) {
-										$char_count = mb_strlen( str_replace( ' ', '', $value ) ); // Get the number of characters in the string except space.
-										$opt_price  = $opt_price + ( $char_count * floatval( $cost ) );
-									} elseif ( 'per_word' === $p_type ) {
-										$word_count = str_word_count( $value ); // Get the number of words in the string.
-										$opt_price  = $opt_price + ( $word_count * floatval( $cost ) );
-									} elseif ( 'percentage' === $p_type ) {
-										$price_product = apply_filters(
-											'prad_cart_checkout_page_percentage_price',
-											! empty( $variation_id ) ? $variation_id : $product_id
-										);
-										$opt_price     = $opt_price + ( ( floatval( $price_product ) * floatval( $cost ) ) / 100 );
-									} elseif ( 'no_cost' === $p_type ) {
-										$opt_price = $opt_price + 0;
-									} else {
-										$opt_price = $opt_price + floatval( $cost );
 									}
 								}
 							}

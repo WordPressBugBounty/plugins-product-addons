@@ -44,6 +44,13 @@ abstract class Abstract_Block implements Block_Interface {
 	protected array $allowed_html_tags;
 
 	/**
+	 * Cached same price info.
+	 *
+	 * @var array
+	 */
+	protected array $same_price_info = array();
+
+	/**
 	 * Constructor
 	 *
 	 * @param array $data Block configuration data.
@@ -557,5 +564,37 @@ abstract class Abstract_Block implements Block_Interface {
 		</div>
 		<?php
 		return ob_get_clean();
+	}
+
+	/**
+	 * Get same price information
+	 *
+	 * @return array
+	 */
+	public function get_same_price_info(): array {
+		$same_price_data = $this->get_property( 'samePrice', array() );
+		return array_merge(
+			$same_price_data,
+			$this->get_price_info( $same_price_data )
+		);
+	}
+
+	/**
+	 * Get same price attributes
+	 *
+	 * @return array
+	 */
+	protected function get_same_price_attributes(): array {
+		$this->same_price_info = $this->get_same_price_info();
+		$attr                  = array();
+		if ( ! empty( $this->same_price_info['enabled'] ) && product_addons()->is_pro_feature_available() ) {
+			$attr = array(
+				'data-same-price-enabled' => 'yes',
+				'data-same-price'         => $this->same_price_info['price'],
+				'data-same-price-ptype'   => $this->same_price_info['type'],
+			);
+		}
+
+		return $attr;
 	}
 }
