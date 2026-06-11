@@ -47,7 +47,7 @@ class Hooks {
 		add_action( 'prad_enqueue_block_css', array( $this, 'enqueue_block_css_callback' ), 10 );
 		add_action( 'prad_enqueue_block_js', array( $this, 'enqueue_block_js_callback' ), 10 );
 
-		add_filter( 'get_prad_allowed_html_tags', array( $this, 'prad_allowed_html_tags' ), 10, 1 );
+		add_filter( 'prad_allowed_html_tags', array( $this, 'handle_prad_allowed_html_tags' ), 10, 1 );
 
 		add_filter( 'prad_raw_tax_currency_compitable_price', array( $this, 'handle_prad_raw_tax_currency_compitable_price' ), 10, 1 );
 		add_filter( 'prad_raw_tax_compitable_price', array( $this, 'prad_get_price_including_tax' ), 10, 1 );
@@ -280,7 +280,7 @@ class Hooks {
 
 		return wp_kses(
 			$html,
-			$this->prad_allowed_html_tags()
+			$this->handle_prad_allowed_html_tags()
 		);
 	}
 
@@ -293,7 +293,7 @@ class Hooks {
 	 *
 	 * @return array
 	 */
-	public function prad_allowed_html_tags( $extras = array() ) {
+	public function handle_prad_allowed_html_tags( $extras = array() ) {
 		$allowed = array(
 			'del'      => array(),
 			'ins'      => array(),

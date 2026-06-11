@@ -4,7 +4,7 @@ Tags: product addons, woocommerce product addons, extra product options, product
 Requires at least: 6.8
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.6.12
+Stable tag: 1.6.13
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -201,6 +201,24 @@ No, for some product fields like Headings, Texts, advanced custom logic options 
 7. Strategic Cross-selling 
 
 == Changelog ==
+= 1.6.13 – 11th June 2026 =
+* Fix: Image gallery issue in XStore theme.
+* Fix: Image gallery issue in Phlox theme.
+* Fix: Image gallery issue in PopularFX theme.
+* Fix: Image gallery issue in Woostify theme.
+* Fix: Image gallery issue in Mr Tailor theme.
+* Fix: Image gallery issue in ShopKeeper theme.
+* Fix: Image gallery issue in The Retailer theme.
+* Fix: Image gallery issue in BeTheme theme.
+* Fix: Image gallery issue in Claue theme.
+* Fix: Image gallery issue in MartFury theme.
+* Fix: Image gallery issue in Basel theme.
+* Fix: Image gallery issue in Goya theme.
+* Fix: Image gallery issue in Konte theme.
+* Fix: Image gallery issue in Kalium theme.
+* Fix: Image gallery issue in WoodMart theme.
+* Fix: Compatibility with Tiered Pricing Table for WooCommerce plugin by Mykola Lukin.
+
 = 1.6.12 – 08th June 2026 =
 * New: Added support for applying the same pricing across multiple selected fields.
 * New: Option to exclude specific product categories when assigning settings to all products.

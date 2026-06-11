@@ -75,7 +75,7 @@ class CheckoutPage {
 										$changed_path = $moved_data[0]['updated_src']['curr_src'];
 										$changed_name = $moved_data[0]['updated_src']['curr_name'];
 									}
-									$res .= wp_kses( '<a href="' . esc_url( $changed_path ) . '">' . esc_html( $changed_name ) . '</a>&nbsp;&nbsp;', apply_filters( 'get_prad_allowed_html_tags', array() ) );// phpcs:ignore
+									$res .= wp_kses( '<a href="' . esc_url( $changed_path ) . '">' . esc_html( $changed_name ) . '</a>&nbsp;&nbsp;', apply_filters( 'prad_allowed_html_tags', array() ) );// phpcs:ignore
 
 								}
 								$res .= '</span>';
@@ -162,7 +162,7 @@ class CheckoutPage {
 									$changed_name        = $moved_data[0]['updated_src']['curr_name'];
 									$prad_uploads_path[] = $changed_path;
 								}
-								$res .= wp_kses( '<a href="' . esc_url( $changed_path ) . '">' . esc_html( $changed_name ) . '</a>&nbsp;&nbsp;', apply_filters( 'get_prad_allowed_html_tags', array() ) );// phpcs:ignore
+								$res .= wp_kses( '<a href="' . esc_url( $changed_path ) . '">' . esc_html( $changed_name ) . '</a>&nbsp;&nbsp;', apply_filters( 'prad_allowed_html_tags', array() ) );// phpcs:ignore
 							}
 							$res .= '</span>';
 						}
@@ -246,7 +246,7 @@ class CheckoutPage {
 										$changed_name        = $moved_data[0]['updated_src']['curr_name'];
 										$prad_uploads_path[] = $changed_path;
 									}
-									$res .= wp_kses( '<a href="' . esc_url( $changed_path ) . '">' . esc_html( $changed_name ) . '</a>&nbsp;&nbsp;', apply_filters( 'get_prad_allowed_html_tags', array() ) );// phpcs:ignore
+									$res .= wp_kses( '<a href="' . esc_url( $changed_path ) . '">' . esc_html( $changed_name ) . '</a>&nbsp;&nbsp;', apply_filters( 'prad_allowed_html_tags', array() ) );// phpcs:ignore
 
 								}
 								$res .= '</span>';

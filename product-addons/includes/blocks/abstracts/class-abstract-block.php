@@ -59,7 +59,7 @@ abstract class Abstract_Block implements Block_Interface {
 	public function __construct( array $data, int $product_id ) {
 		$this->data              = $data;
 		$this->product_id        = $product_id;
-		$this->allowed_html_tags = apply_filters( 'get_prad_allowed_html_tags', array() );// phpcs:ignore
+		$this->allowed_html_tags = apply_filters( 'prad_allowed_html_tags', array() );// phpcs:ignore
 
 		$this->init();
 	}

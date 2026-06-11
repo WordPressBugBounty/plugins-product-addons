@@ -33,6 +33,12 @@ class WowRevenuePromotion {
 	 */
 	public function run_promotions() {
 		if ( ! class_exists( '\WooCommerce' ) ||
+			defined( 'REVENUE_VER' ) || Xpo::is_lc_active()
+		) {
+			return;
+		}
+
+		if ( ! class_exists( '\WooCommerce' ) ||
 			defined( 'REVENUE_VER' )
 		) {
 			return;
@@ -42,11 +48,11 @@ class WowRevenuePromotion {
 			return;
 		}
 
-		$GLOBALS['revx_promo_promotion'] = array(
+		$GLOBALS['revx_promo_promotion'] = array( //phpcs:ignore
 			'init' => true,
 		);
 
-		$hooks = apply_filters( 'revx_promo_promotion_hooks', array() );
+		$hooks = apply_filters( 'revx_promo_promotion_hooks', array() ); //phpcs:ignore
 
 		if ( ! is_array( $hooks ) ) {
 			return;
@@ -870,7 +876,7 @@ class WowRevenuePromotion {
 	 * @return void
 	 */
 	private function render_promotion_notice( $id, $type, $message, $style = '', $inline = true, $button_labels = array(), $container_cls = '' ) {
-		$GLOBALS['revx_promo_promotion'][ $type ] = true;
+		$GLOBALS['revx_promo_promotion'][ $type ] = true; //phpcs:ignore
 
 		$button_labels = wp_parse_args(
 			is_array( $button_labels ) ? $button_labels : array(),

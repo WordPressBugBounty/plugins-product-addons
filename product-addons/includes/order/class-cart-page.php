@@ -34,11 +34,17 @@ class CartPage {
 		add_filter( 'woocommerce_add_cart_item_data', array( $this, 'save_custom_meta_to_cart' ), 10, 4 );
 		add_filter( 'woocommerce_get_item_data', array( $this, 'display_custom_meta_in_cart' ), 10, 2 );
 		// add_action( 'woocommerce_add_order_item_meta', array( $this, 'save_custom_meta_to_order' ), 10, 2 );.
-		add_action( 'woocommerce_before_calculate_totals', array( $this, 'woocommerce_before_calculate_totals' ), 999, 1 );
+		add_action( 'woocommerce_before_calculate_totals', array( $this, 'woocommerce_before_calculate_totals' ), 999999, 1 );
 		add_action( 'woocommerce_add_to_cart', array( $this, 'prad_add_option_product_to_cart' ), 10, 6 );
 
 		add_action( 'woocommerce_before_mini_cart', array( $this, 'prad_mini_cart_calculation' ), 1 );
 		add_filter( 'woocommerce_add_to_cart_validation', array( $this, 'prad_validate_before_add_to_cart' ), 10, 2 );
+		add_action(
+			'woocommerce_before_mini_cart_contents',
+			array( $this, 'prad_before_mini_cart_contents' ),
+			99999,
+			3
+		);
 	}
 
 	/**
@@ -55,6 +61,14 @@ class CartPage {
 		if ( is_cart() || is_checkout() || ! wp_doing_ajax() ) {
 			return;
 		}
+		WC()->cart->calculate_totals();
+	}
+
+	public function prad_before_mini_cart_contents() {
+		if ( is_cart() || is_checkout() || ! wp_doing_ajax() ) {
+			return;
+		}
+
 		WC()->cart->calculate_totals();
 	}
 
@@ -97,9 +111,10 @@ class CartPage {
 			return;
 		}
 
-		if ( did_action( 'woocommerce_before_calculate_totals' ) > 1 ) {
-			return;
-		}
+		// NOTE: Compatibilit issue with 'Tiered Pricing Table for WooCommerce' plugin. As this hook recalculating cart totals in mini cart, this condition is restricting recalculating the price.
+		// if ( did_action( 'woocommerce_before_calculate_totals' ) > 1 ) {
+		// 	return;
+		// }
 
 		foreach ( $cart->get_cart() as $cart_item ) {
 			if ( ! empty( $cart_item['prad_selection']['price'] ) ) {
@@ -129,6 +144,16 @@ class CartPage {
 				// Support for YayPricing Dynamic Pricing & Discounts.
 				if ( function_exists( 'YAYDP\\load_plugin' ) && ! empty( $cart_item['yaydp_custom_data']['price'] ) && ! empty( $cart_item['modifiers'] ) ) {
 					$product_price = $cart_item['yaydp_custom_data']['price'];
+				}
+
+				if ( function_exists( 'tpt_initFreemius' ) ) {
+					$pricing_rule = \TierPricingTable\PriceManager::getPricingRule( $cart_item['data']->get_id() );
+					if ( $pricing_rule ) {
+						$new_price = $pricing_rule->getTierPrice( $cart_item['quantity'], false, 'cart' );
+						if ( false !== $new_price ) {
+							$product_price = $new_price;
+						}
+					}
 				}
 
 				$option_price = $option_price + floatval( $product_price );
@@ -292,7 +317,7 @@ class CartPage {
 
 			$prad_cart_item_selection = json_decode( product_addons()->safe_stripslashes( $prad_selection ), true );
 			if ( is_array( $prad_cart_item_selection ) && ! empty( $prad_cart_item_selection ) ) {
-				$prad_allowed_html_tags = apply_filters( 'get_prad_allowed_html_tags', array() );// phpcs:ignore
+				$prad_allowed_html_tags = apply_filters( 'prad_allowed_html_tags', array() );// phpcs:ignore
 				foreach ( $prad_cart_item_selection as $key => $field ) {
 					$option_data    = $this->get_options_by_blockid( $merged_content, $key );
 					$custom_formula = ( isset( $field['type'] ) && 'custom_formula' === $field['type'] );
@@ -784,13 +809,9 @@ class CartPage {
 	 * @return array Decoded selection data, or an empty array on failure.
 	 */
 	private function parse_prad_selection() {
-		$raw = isset( $_POST['prad_selection'] )
-		? stripslashes( $_POST['prad_selection'] )
-		: '';
-
-		$decoded = json_decode( $raw, true );
-
-		return is_array( $decoded ) ? $decoded : array();
+		$raw = isset( $_POST['prad_selection'] ) ? product_addons()->sanitize_rest_params( $_POST['prad_selection'] ) : ''; //phpcs:ignore
+		$decoded = json_decode( product_addons()->safe_stripslashes( $raw ), true );
+		return is_array( $decoded ) && ! empty( $decoded ) ? $decoded : array();
 	}
 
 	/**

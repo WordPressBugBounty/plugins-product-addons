@@ -269,7 +269,7 @@ class Options {
 	 * @return void
 	 */
 	public static function tab_page_content() {
-		echo wp_kses( '<div id="prad-dashboard-wrap"></div>', apply_filters( 'get_prad_allowed_html_tags', array() ) );// phpcs:ignore
+		echo wp_kses( '<div id="prad-dashboard-wrap"></div>', apply_filters( 'prad_allowed_html_tags', array() ) );// phpcs:ignore
 	}
 
 	/**

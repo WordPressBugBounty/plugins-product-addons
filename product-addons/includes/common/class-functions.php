@@ -663,7 +663,7 @@ class Functions {
 	/**
 	 * Sanitizes the given content using wp_kses with allowed HTML tags.
 	 *
-	 * This method applies the 'get_prad_allowed_html_tags' filter to determine
+	 * This method applies the 'prad_allowed_html_tags' filter to determine
 	 * which HTML tags are permitted, and then sanitizes the $prad_blocks content
 	 * accordingly using wp_kses.
 	 *
@@ -844,7 +844,7 @@ class Functions {
 	 */
 	public function generate_products_block_variation_section_html( $args ) {
 		$item              = $args['item'];
-		$allowed_html_tags = apply_filters( 'get_prad_allowed_html_tags', array() );
+		$allowed_html_tags = apply_filters( 'prad_allowed_html_tags', array() );
 		ob_start();
 		if ( isset( $item->variation ) && $item->variation ) {
 			$select_options       = '';

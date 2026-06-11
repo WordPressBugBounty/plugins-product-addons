@@ -2,20 +2,20 @@
 # This file is distributed under the GPLv3.
 msgid ""
 msgstr ""
-"Project-Id-Version: WowAddons - Product Addons for WooCommerce 1.6.12\n"
+"Project-Id-Version: Product Addons and Product Options With Custom Fields – WowAddons 1.6.13\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/build\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-06-08T10:01:02+00:00\n"
+"POT-Creation-Date: 2026-06-11T10:31:16+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: product-addons\n"
 
 #. Plugin Name of the plugin
-msgid "WowAddons - Product Addons for WooCommerce"
+msgid "Product Addons and Product Options With Custom Fields – WowAddons"
 msgstr ""
 
 #. Description of the plugin
@@ -280,45 +280,45 @@ msgstr ""
 msgid "Not Option found in Trash"
 msgstr ""
 
-#: includes/class-wow-shipping-promotion.php:147
+#: includes/class-wow-shipping-promotion.php:153
 msgid "You are not allowed to install plugins."
 msgstr ""
 
-#: includes/class-wow-shipping-promotion.php:155
+#: includes/class-wow-shipping-promotion.php:161
 msgid "You are not allowed to activate plugins."
 msgstr ""
 
-#: includes/class-wow-shipping-promotion.php:165
-#: includes/class-wow-shipping-promotion.php:600
+#: includes/class-wow-shipping-promotion.php:171
+#: includes/class-wow-shipping-promotion.php:606
 msgid "Failed to install WowShipping."
 msgstr ""
 
-#: includes/class-wow-shipping-promotion.php:174
+#: includes/class-wow-shipping-promotion.php:180
 msgid "WowShipping installed successfully."
 msgstr ""
 
-#: includes/class-wow-shipping-promotion.php:539
+#: includes/class-wow-shipping-promotion.php:545
 msgid "Dismiss this notice."
 msgstr ""
 
-#: includes/order/class-cart-page.php:317
+#: includes/order/class-cart-page.php:342
 #: assets/js/wowaddons.js:161
 msgid "Name"
 msgstr ""
 
-#: includes/order/class-cart-page.php:317
+#: includes/order/class-cart-page.php:342
 msgid "Path"
 msgstr ""
 
-#: includes/order/class-cart-page.php:325
+#: includes/order/class-cart-page.php:350
 msgid "Count"
 msgstr ""
 
-#: includes/order/class-cart-page.php:517
+#: includes/order/class-cart-page.php:542
 msgid "Addons Field"
 msgstr ""
 
-#: includes/order/class-cart-page.php:673
+#: includes/order/class-cart-page.php:698
 msgid "Please fill in all required fields."
 msgstr ""
 
