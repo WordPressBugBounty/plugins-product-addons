@@ -113,6 +113,7 @@ class Initialization {
 							'ajax'            => admin_url( 'admin-ajax.php' ),
 							'version'         => PRAD_VER,
 							'isActive'        => product_addons()->is_lc_active(),
+							'isExpired'        => Xpo::is_lc_expired(),
 							'license'         => get_option( 'edd_prad_license_key' ),
 							'nonce'           => wp_create_nonce( 'prad-nonce' ),
 							'decimal_sep'     => get_option( 'woocommerce_price_decimal_sep', '.' ),

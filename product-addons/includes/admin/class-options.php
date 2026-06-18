@@ -197,7 +197,11 @@ class Options {
 
 		$pro_link      = '';
 		$pro_link_text = '';
-		if ( ! Xpo::is_lc_active() ) {
+		if ( Xpo::is_lc_expired() ) {
+			$license_key   = Xpo::get_lc_key();
+			$pro_link      = 'https://account.wpxpo.com/checkout/?edd_license_key=' . $license_key. '&renew=1';
+			$pro_link_text = __( 'Renew License', 'product-addons' );
+		} elseif ( ! Xpo::is_lc_active() ) {
 			$pro_link      = Xpo::generate_utm_link(
 				array(
 					'utmKey' => 'sub_menu',
@@ -216,11 +220,7 @@ class Options {
 					$pro_link_text = esc_html__( 'New Year Offer!', 'product-addons' );
 				}
 			}
-		} elseif ( Xpo::is_lc_expired() ) {
-			$license_key   = Xpo::get_lc_key();
-			$pro_link      = 'https://account.wpxpo.com/checkout/?edd_license_key=' . $license_key;
-			$pro_link_text = __( 'Renew License', 'product-addons' );
-		}
+		} 
 
 		if ( ! empty( $pro_link ) ) {
 			ob_start();
