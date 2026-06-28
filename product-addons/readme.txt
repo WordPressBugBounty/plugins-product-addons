@@ -4,7 +4,7 @@ Tags: product addons, woocommerce product addons, extra product options, product
 Requires at least: 6.8
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.6.14
+Stable tag: 1.6.15
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -201,6 +201,9 @@ No, for some product fields like Headings, Texts, advanced custom logic options 
 7. Strategic Cross-selling 
 
 == Changelog ==
+= 1.6.15 – 28th June 2026 =
+* Fix: File Upload issue stated by Security Researcher Haitam Lazaar.
+
 = 1.6.14 – 18th June 2026 =
 * Fix: Performance Improved.
 

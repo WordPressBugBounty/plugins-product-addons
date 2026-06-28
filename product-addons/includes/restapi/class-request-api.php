@@ -21,6 +21,9 @@ defined( 'ABSPATH' ) || exit;
  */
 class RequestApi {
 
+
+	private $extra_upload_field_mimes = array();
+
 	/**
 	 * Initialize the RequestAPI class
 	 *
@@ -1551,7 +1554,7 @@ class RequestApi {
 	 * @return array
 	 */
 	public function prad_handle_upload_field_mimes( $mimes ) {
-		$prad_mimes = product_addons()->prad_get_upload_allowed_file_types();
+		$prad_mimes = product_addons()->prad_get_upload_allowed_file_types( $this->extra_upload_field_mimes );
 
 		return array_merge( $mimes, $prad_mimes );
 	}
@@ -1585,8 +1588,22 @@ class RequestApi {
 				__( 'File size exceeds the maximum allowed limit (25MB).', 'product-addons' )
 			);
 		}
+		if ( 'cdr' === strtolower( pathinfo( $file['name'], PATHINFO_EXTENSION ) ) ) {
+			$finfo = finfo_open( FILEINFO_MIME_TYPE );
+			$mime  = finfo_file( $finfo, $file['tmp_name'] );
+			finfo_close( $finfo );
 
-		$allowed_types = product_addons()->prad_get_upload_allowed_file_types();
+			if ( 'application/x-vnd.corel.zcf.draw.document+zip' === $mime ) {
+				$this->extra_upload_field_mimes = array(
+					'cdr' => 'application/x-vnd.corel.zcf.draw.document+zip',
+				);
+			}
+		}
+
+		add_filter( 'upload_mimes', array( $this, 'prad_handle_upload_field_mimes' ) );
+
+		$allowed_types = product_addons()->prad_get_upload_allowed_file_types($this->extra_upload_field_mimes);
+				
 		$filetype      = wp_check_filetype_and_ext(
 			$file['tmp_name'],
 			$file['name'],
@@ -1624,11 +1641,20 @@ class RequestApi {
 			);
 		}
 
-		add_filter( 'upload_mimes', array( $this, 'prad_handle_upload_field_mimes' ) );
+		if ( ! $this->prad_check_upload_rate_limit() ) {
+			return new WP_REST_Response(
+				array(
+					'success' => false,
+					'message' => __( 'Upload limit exceeded. Please try again later.', 'product-addons' ),
+				),
+				429
+			);
+		}
 
 		$file = $this->get_uploaded_file();
 
 		if ( is_wp_error( $file ) ) {
+			remove_filter( 'upload_mimes', array( $this, 'prad_handle_upload_field_mimes' ) );
 			return new WP_REST_Response(
 				array(
 					'success' => false,
@@ -1642,7 +1668,21 @@ class RequestApi {
 			require_once ABSPATH . 'wp-admin/includes/file.php';
 		}
 
-		// ✅ Add required filters ONLY for this upload
+		// Validate and sanitize SVG content on the temp file before uploading.
+		$filetype = wp_check_filetype( $file['name'] );
+		if ( 'image/svg+xml' === $filetype['type'] ) {
+			if ( ! $this->prad_sanitize_svg_file( $file['tmp_name'] ) ) {
+				remove_filter( 'upload_mimes', array( $this, 'prad_handle_upload_field_mimes' ) );
+				return new WP_REST_Response(
+					array(
+						'success' => false,
+						'message' => __( 'SVG file could not be processed. Please check the file and try again.', 'product-addons' ),
+					),
+					400
+				);
+			}
+		}
+
 		add_filter( 'upload_dir', array( $this, 'prad_handle_upload_dir' ) );
 
 		$uploaded = wp_handle_upload(
@@ -1652,7 +1692,6 @@ class RequestApi {
 			)
 		);
 
-		// ✅ Remove filters immediately
 		remove_filter( 'upload_dir', array( $this, 'prad_handle_upload_dir' ) );
 		remove_filter( 'upload_mimes', array( $this, 'prad_handle_upload_field_mimes' ) );
 
@@ -1666,6 +1705,8 @@ class RequestApi {
 			);
 		}
 
+		$this->prad_ensure_upload_dir_security( dirname( $uploaded['file'] ) );
+
 		return new WP_REST_Response(
 			array(
 				'success' => true,
@@ -1675,6 +1716,265 @@ class RequestApi {
 			),
 			200
 		);
+	}
+
+	/**
+	 * Enforce a per-IP upload rate limit using a fixed hourly window.
+	 *
+	 * @return bool True if the request is within the allowed limit, false otherwise.
+	 */
+	private function prad_check_upload_rate_limit() {
+		$ip   = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : 'unknown'; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
+		$hour = gmdate( 'YmdH' );
+		$key  = 'prad_upload_' . md5( $ip . $hour );
+
+		$count = (int) get_transient( $key );
+		if ( $count >= 20 ) {
+			return false;
+		}
+
+		set_transient( $key, $count + 1, HOUR_IN_SECONDS );
+		return true;
+	}
+
+	/**
+	 * Sanitize an uploaded SVG file in-place, removing all executable content.
+	 *
+	 * Parses the SVG as XML, strips dangerous elements (script, foreignObject, …),
+	 * event-handler attributes (on*), javascript:/vbscript: URIs, and inline CSS
+	 * expressions, then writes the cleaned document back to disk.
+	 *
+	 * @param string $file_path Absolute path to the uploaded SVG file.
+	 * @return bool True on success, false if the file could not be parsed or written.
+	 */
+	private function prad_sanitize_svg_file( $file_path ) {
+		$content = @file_get_contents( $file_path ); // phpcs:ignore WordPress.WP.AlternativeFunctions
+
+		if ( false === $content ) {
+			return false;
+		}
+
+		$dom                     = new \DOMDocument();
+		$dom->formatOutput       = false;
+		$dom->preserveWhiteSpace = true;
+
+		// Prevent XXE on PHP < 8.0 (libxml 2.9+ disables external entities by default).
+		$prev_loader = null;
+
+		if ( version_compare( PHP_VERSION, '8.0.0', '<' ) && function_exists( 'libxml_disable_entity_loader' ) ) {
+			$prev_loader = libxml_disable_entity_loader( true ); // phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions
+		}
+
+		$loaded = @$dom->loadXML( $content, 2048 | 32 | 64 ); // LIBXML_NONET | LIBXML_NOERROR | LIBXML_NOWARNING
+
+		if ( null !== $prev_loader && function_exists( 'libxml_disable_entity_loader' ) ) {
+			libxml_disable_entity_loader( $prev_loader ); // phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions
+		}
+
+		if ( ! $loaded ) {
+			@unlink( $file_path ); // phpcs:ignore WordPress.WP.AlternativeFunctions
+			return false;
+		}
+
+		// Reject files that are not SVGs.
+		$root = $dom->documentElement;
+		if ( ! $root || 'svg' !== strtolower( $root->localName ) ) {
+			@unlink( $file_path ); // phpcs:ignore WordPress.WP.AlternativeFunctions
+			return false;
+		}
+
+		// Remove elements that can embed or execute code.
+		$blocked_tags = array(
+			'script',
+			'foreignObject',
+			'foreignobject',
+			'iframe',
+			'object',
+			'embed',
+			'video',
+			'audio',
+			'frame',
+			'frameset',
+			'applet',
+		);
+
+		foreach ( $blocked_tags as $tag ) {
+			$nodes = $dom->getElementsByTagName( $tag );
+
+			for ( $i = $nodes->length - 1; $i >= 0; $i-- ) {
+				$node = $nodes->item( $i );
+
+				if ( $node && $node->parentNode ) {
+					$node->parentNode->removeChild( $node );
+				}
+			}
+		}
+
+		// Remove processing instructions (e.g. xml-stylesheet declarations).
+		$xpath = new \DOMXPath( $dom );
+		$pis   = $xpath->query( '//processing-instruction()' );
+
+		if ( $pis ) {
+			for ( $i = $pis->length - 1; $i >= 0; $i-- ) {
+				$pi = $pis->item( $i );
+
+				if ( $pi && $pi->parentNode ) {
+					$pi->parentNode->removeChild( $pi );
+				}
+			}
+		}
+
+		// URL-bearing attributes that may carry javascript: or external URLs.
+		$url_attrs = array(
+			'href',
+			'xlink:href',
+			'src',
+			'action',
+			'formaction',
+			'data',
+			'poster',
+			'dynsrc',
+			'lowsrc',
+		);
+
+		$all_nodes = $dom->getElementsByTagName( '*' );
+
+		for ( $i = 0; $i < $all_nodes->length; $i++ ) {
+			$el = $all_nodes->item( $i );
+
+			if ( ! ( $el instanceof \DOMElement ) ) {
+				continue;
+			}
+
+			$tag_name     = strtolower( $el->localName );
+			$remove_attrs = array();
+			$attributes   = array();
+
+			foreach ( $el->attributes as $attr ) {
+				$attributes[] = $attr;
+			}
+
+			foreach ( $attributes as $attr ) {
+				$attr_name  = strtolower( $attr->name );
+				$attr_value = $attr->value;
+
+				// Remove all event-handler attributes (onclick, onload, onerror, etc.).
+				if ( 0 === strpos( $attr_name, 'on' ) ) {
+					$remove_attrs[] = $attr->name;
+					continue;
+				}
+
+				if ( in_array( $attr_name, $url_attrs, true ) ) {
+					// Collapse whitespace to catch tab/newline encoded variants.
+					$normalized = strtolower(
+						preg_replace( '/[\x00-\x20]+/', '', $attr_value )
+					);
+
+					if ( preg_match( '/^(javascript|vbscript|data):/i', $normalized ) ) {
+						$remove_attrs[] = $attr->name;
+						continue;
+					}
+
+					// <use> elements must only reference same-document fragments (#id).
+					if ( 'use' === $tag_name && '#' !== substr( ltrim( $attr_value ), 0, 1 ) ) {
+						$remove_attrs[] = $attr->name;
+						continue;
+					}
+				}
+
+				// Remove style attributes containing javascript: or CSS expression().
+				if ( 'style' === $attr_name ) {
+					$clean = preg_replace( '/\/\*.*?\*\//s', '', $attr_value );
+
+					if (
+						preg_match( '/javascript:/i', $clean ) ||
+						preg_match( '/expression\s*\(/i', $clean )
+					) {
+						$remove_attrs[] = $attr->name;
+						continue;
+					}
+				}
+
+				// xml:base can redirect relative references to an attacker-controlled URL.
+				if ( 'xml:base' === $attr_name ) {
+					$remove_attrs[] = $attr->name;
+				}
+			}
+
+			foreach ( $remove_attrs as $raw_name ) {
+				if ( false !== strpos( $raw_name, ':' ) ) {
+					$parts  = explode( ':', $raw_name, 2 );
+					$ns_uri = $el->lookupNamespaceURI( $parts[0] );
+
+					if ( $ns_uri ) {
+						$el->removeAttributeNS( $ns_uri, $parts[1] );
+					}
+				}
+
+				$el->removeAttribute( $raw_name );
+			}
+		}
+
+		// Strip dangerous constructs from inline <style> blocks.
+		$style_nodes = $dom->getElementsByTagName( 'style' );
+
+		for ( $i = 0; $i < $style_nodes->length; $i++ ) {
+			$style_node = $style_nodes->item( $i );
+
+			if ( ! $style_node ) {
+				continue;
+			}
+
+			$css = $style_node->textContent;
+
+			$css = preg_replace( '/@import\b[^;]*;?/i', '', $css );
+			$css = preg_replace( '/url\s*\(\s*["\']?\s*javascript:[^)]*\)/i', 'url()', $css );
+			$css = preg_replace( '/expression\s*\([^)]*\)/i', 'none', $css );
+			$css = preg_replace( '/\bbehavior\s*:[^;]+;?/i', '', $css );
+
+			while ( $style_node->firstChild ) {
+				$style_node->removeChild( $style_node->firstChild );
+			}
+
+			$style_node->appendChild( $dom->createTextNode( $css ) );
+		}
+
+		$sanitized = $dom->saveXML( $dom->documentElement );
+
+		if ( false === $sanitized ) {
+			@unlink( $file_path ); // phpcs:ignore WordPress.WP.AlternativeFunctions
+			return false;
+		}
+
+		$result = file_put_contents( $file_path, $sanitized ); // phpcs:ignore WordPress.WP.AlternativeFunctions
+
+		return false !== $result;
+	}
+
+	/**
+	 * Write a .htaccess to the upload directory that forces SVGs to download
+	 * rather than render inline, preventing stored XSS via SVG files.
+	 *
+	 * Only creates the file if it does not already exist; safe to call on every upload.
+	 *
+	 * @param string $dir_path Absolute filesystem path to the upload directory.
+	 */
+	private function prad_ensure_upload_dir_security( $dir_path ) {
+		$htaccess = trailingslashit( $dir_path ) . '.htaccess';
+		if ( file_exists( $htaccess ) ) {
+			return;
+		}
+
+		$rules  = "<IfModule mod_headers.c>\n";
+		$rules .= "  <FilesMatch \"\\.svgz?$\">\n";
+		$rules .= "    Header set Content-Disposition \"attachment\"\n";
+		$rules .= "    Header set X-Content-Type-Options \"nosniff\"\n";
+		$rules .= "    Header set Content-Security-Policy \"default-src 'none'\"\n";
+		$rules .= "  </FilesMatch>\n";
+		$rules .= "  Header set X-Content-Type-Options \"nosniff\"\n";
+		$rules .= "</IfModule>\n";
+
+		file_put_contents( $htaccess, $rules ); // phpcs:ignore WordPress.WP.AlternativeFunctions
 	}
 
 	/**

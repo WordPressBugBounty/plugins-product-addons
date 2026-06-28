@@ -1108,12 +1108,12 @@ class Functions {
 		$from_dir = $upload_dir['basedir'] . '/prad_option_files/' . $_from;
 		$to_dir   = $upload_dir['basedir'] . '/prad_option_files/' . $_to;
 
-		// ✅ Make sure destination folder exists
+		// Make sure destination folder exists
 		if ( ! file_exists( $to_dir ) ) {
 			wp_mkdir_p( $to_dir );
 		}
 
-		// ✅ Make sure temp folder exists
+		// Make sure temp folder exists
 		if ( ! file_exists( $from_dir ) ) {
 			wp_mkdir_p( $from_dir );
 		}
@@ -1195,7 +1195,7 @@ class Functions {
 	 *
 	 * @return array List of allowed file types for uploads.
 	 */
-	public function prad_get_upload_allowed_file_types() {
+	public function prad_get_upload_allowed_file_types( $extras = array() ) {
 
 		$allowed_types = array(
 			'png'  => 'image/png',
@@ -1214,6 +1214,10 @@ class Functions {
 			'cdr'  => 'application/vnd.corel-draw',
 			'gpx'  => 'text/xml',
 		);
+
+		if ( ! empty( $extras ) && is_array( $extras ) ) {
+			$allowed_types = array_merge( $allowed_types, $extras );
+		}
 
 		return apply_filters( 'prad_upload_field_allowed_file_types', $allowed_types );
 	}

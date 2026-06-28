@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv3.
 msgid ""
 msgstr ""
-"Project-Id-Version: Product Addons and Product Options With Custom Fields – WowAddons 1.6.14\n"
+"Project-Id-Version: Product Addons and Product Options With Custom Fields – WowAddons 1.6.15\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/build\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-06-18T08:24:58+00:00\n"
+"POT-Creation-Date: 2026-06-28T10:58:56+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: product-addons\n"
@@ -324,159 +324,167 @@ msgstr ""
 msgid "Please fill in all required fields."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:285
-#: includes/restapi/class-request-api.php:588
+#: includes/restapi/class-request-api.php:288
+#: includes/restapi/class-request-api.php:591
 msgid "Post not found."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:333
-#: includes/restapi/class-request-api.php:427
-#: includes/restapi/class-request-api.php:499
-#: includes/restapi/class-request-api.php:566
-#: includes/restapi/class-request-api.php:653
-#: includes/restapi/class-request-api.php:698
-#: includes/restapi/class-request-api.php:1148
-#: includes/restapi/class-request-api.php:1359
-#: includes/restapi/class-request-api.php:1424
-#: includes/restapi/class-request-api.php:1460
-#: includes/restapi/class-request-api.php:2067
-#: includes/restapi/class-request-api.php:2147
+#: includes/restapi/class-request-api.php:336
+#: includes/restapi/class-request-api.php:430
+#: includes/restapi/class-request-api.php:502
+#: includes/restapi/class-request-api.php:569
+#: includes/restapi/class-request-api.php:656
+#: includes/restapi/class-request-api.php:701
+#: includes/restapi/class-request-api.php:1151
+#: includes/restapi/class-request-api.php:1362
+#: includes/restapi/class-request-api.php:1427
+#: includes/restapi/class-request-api.php:1463
+#: includes/restapi/class-request-api.php:2367
+#: includes/restapi/class-request-api.php:2447
 msgid "Invalid or missing nonce."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:353
+#: includes/restapi/class-request-api.php:356
 msgid "Failed to create a new option."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:370
+#: includes/restapi/class-request-api.php:373
 msgid "New option added."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:383
+#: includes/restapi/class-request-api.php:386
 msgid "Failed to update the option."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:402
+#: includes/restapi/class-request-api.php:405
 msgid "Option updated."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:437
-#: includes/restapi/class-request-api.php:509
+#: includes/restapi/class-request-api.php:440
+#: includes/restapi/class-request-api.php:512
 msgid "No IDs provided."
 msgstr ""
 
 #. translators: %1s - Post Id, %2s - Error Message
-#: includes/restapi/class-request-api.php:459
+#: includes/restapi/class-request-api.php:462
 msgid "Failed to update post ID: %1$s. Error: %2$s"
 msgstr ""
 
-#: includes/restapi/class-request-api.php:475
+#: includes/restapi/class-request-api.php:478
 msgid "Items updated successfully."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:540
+#: includes/restapi/class-request-api.php:543
 msgid "Items deleted successfully."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:576
+#: includes/restapi/class-request-api.php:579
 msgid "No ID provided."
 msgstr ""
 
 #. translators: %1s - Post Id
-#: includes/restapi/class-request-api.php:613
+#: includes/restapi/class-request-api.php:616
 msgid "Failed to duplicate post ID: %s."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:629
+#: includes/restapi/class-request-api.php:632
 msgid "Item duplicated successfully."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:671
+#: includes/restapi/class-request-api.php:674
 msgid "Imported successfully."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:876
+#: includes/restapi/class-request-api.php:879
 msgid "Invalid assigned data."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1159
+#: includes/restapi/class-request-api.php:1162
 msgid "No ID found"
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1245
+#: includes/restapi/class-request-api.php:1248
 msgid "Option Assigned Updated successfully"
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1384
+#: includes/restapi/class-request-api.php:1387
 msgid "Style saved successfully."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1437
+#: includes/restapi/class-request-api.php:1440
 msgid "Settings saved successfully."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1569
-#: includes/restapi/class-request-api.php:1621
-#: includes/restapi/class-request-api.php:1711
+#: includes/restapi/class-request-api.php:1572
+#: includes/restapi/class-request-api.php:1638
+#: includes/restapi/class-request-api.php:2011
 msgid "Invalid nonce."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1575
+#: includes/restapi/class-request-api.php:1578
 msgid "No file found."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1585
+#: includes/restapi/class-request-api.php:1588
 msgid "File size exceeds the maximum allowed limit (25MB)."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1599
+#: includes/restapi/class-request-api.php:1616
 msgid "Invalid file type."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1726
+#: includes/restapi/class-request-api.php:1648
+msgid "Upload limit exceeded. Please try again later."
+msgstr ""
+
+#: includes/restapi/class-request-api.php:1679
+msgid "SVG file could not be processed. Please check the file and try again."
+msgstr ""
+
+#: includes/restapi/class-request-api.php:2026
 msgid "Analytics data updated."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1734
+#: includes/restapi/class-request-api.php:2034
 msgid "Invalid Analytics data."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1881
+#: includes/restapi/class-request-api.php:2181
 msgid "No file found or invalid nonce."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1895
-#: includes/restapi/class-request-api.php:2167
+#: includes/restapi/class-request-api.php:2195
+#: includes/restapi/class-request-api.php:2467
 msgid "Font title is required."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1924
+#: includes/restapi/class-request-api.php:2224
 msgid "File size exceeds the maximum allowed limit (10MB)."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1930
+#: includes/restapi/class-request-api.php:2230
 msgid "Invalid file extension. Allowed types are: woff, woff2, ttf."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:2020
+#: includes/restapi/class-request-api.php:2320
 msgid "Font uploaded successfully."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:2077
-#: includes/restapi/class-request-api.php:2157
+#: includes/restapi/class-request-api.php:2377
+#: includes/restapi/class-request-api.php:2457
 msgid "Font ID is required."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:2113
-#: includes/restapi/class-request-api.php:2193
+#: includes/restapi/class-request-api.php:2413
+#: includes/restapi/class-request-api.php:2493
 msgid "Font not found."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:2122
+#: includes/restapi/class-request-api.php:2422
 msgid "Font deleted successfully."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:2202
+#: includes/restapi/class-request-api.php:2502
 msgid "Font updated successfully."
 msgstr ""
 
