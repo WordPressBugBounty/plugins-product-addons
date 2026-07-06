@@ -61,30 +61,15 @@ class CheckoutPage {
 			if ( ! empty( $cart_item_prad_selection['extra_data'] ) ) {
 
 				foreach ( $cart_item_prad_selection['extra_data'] as $val ) {
-					if ( isset( $val['prad_additional'] ) && 'upload' === $val['prad_additional']['type'] ) {
-						$changed_value = $val['value'];
-						if ( isset( $val['prad_additional']['field_raw'] ) ) {
-							$field = $val['prad_additional']['field_raw'];
-							if ( ! empty( $field['value'] ) && is_array( $field['value'] ) ) {
-								$res = '<span>';
-								foreach ( $field['value'] as $prad_item ) {
-									$changed_path = $prad_item['path'];
-									$changed_name = $prad_item['name'];
-									$moved_data   = product_addons()->prad_move_uploadblock_files( array( $prad_item['path'] ), 'order_placed', true );
-									if ( ! empty( $moved_data[0]['updated_src'] ) ) {
-										$changed_path = $moved_data[0]['updated_src']['curr_src'];
-										$changed_name = $moved_data[0]['updated_src']['curr_name'];
-									}
-									$res .= wp_kses( '<a href="' . esc_url( $changed_path ) . '">' . esc_html( $changed_name ) . '</a>&nbsp;&nbsp;', apply_filters( 'prad_allowed_html_tags', array() ) );// phpcs:ignore
-
-								}
-								$res .= '</span>';
-							}
-							$changed_value = isset( $val['prad_additional']['opt_price_with_html'] ) ? $res . $val['prad_additional']['opt_price_with_html'] : $res;
-						}
-						$item->update_meta_data( $val['name'], $changed_value );
-					} else {
-						// $item->add_meta_data( $val['name'], $val['value'] );
+					if ( ! isset( $val['prad_additional'] ) ) {
+						continue;
+					}
+					if ( 'upload' === $val['prad_additional']['type'] ) {
+						$result = $this->process_upload_field_on_checkout( $val, 'order_placed' );
+						$item->update_meta_data( $val['name'], $result['value'] );
+					} elseif ( 'section' === $val['prad_additional']['type'] ) {
+						$result = $this->process_section_field_on_checkout( $val, 'order_placed' );
+						$item->update_meta_data( $val['name'], $result['value'] );
 					}
 				}
 			}
@@ -147,28 +132,18 @@ class CheckoutPage {
 			$prad_uploads_path = array();
 
 			foreach ( $cart_item['prad_selection']['extra_data'] as $val ) {
-				if ( isset( $val['prad_additional'] ) && 'upload' === $val['prad_additional']['type'] ) {
-					$changed_value = $val['value'];
-					if ( isset( $val['prad_additional']['field_raw'] ) ) {
-						$field = $val['prad_additional']['field_raw'];
-						if ( ! empty( $field['value'] ) && is_array( $field['value'] ) ) {
-							$res = '<span>';
-							foreach ( $field['value'] as $prad_item ) {
-								$changed_path = $prad_item['path'];
-								$changed_name = $prad_item['name'];
-								$moved_data   = product_addons()->prad_move_uploadblock_files( array( $prad_item['path'] ), 'temp' );
-								if ( ! empty( $moved_data[0]['updated_src'] ) ) {
-									$changed_path        = $moved_data[0]['updated_src']['curr_src'];
-									$changed_name        = $moved_data[0]['updated_src']['curr_name'];
-									$prad_uploads_path[] = $changed_path;
-								}
-								$res .= wp_kses( '<a href="' . esc_url( $changed_path ) . '">' . esc_html( $changed_name ) . '</a>&nbsp;&nbsp;', apply_filters( 'prad_allowed_html_tags', array() ) );// phpcs:ignore
-							}
-							$res .= '</span>';
-						}
-						$changed_value = isset( $val['prad_additional']['opt_price_with_html'] ) ? $res . $val['prad_additional']['opt_price_with_html'] : $res;
-					}
-					$item->add_meta_data( $val['name'], $changed_value );
+				if ( ! isset( $val['prad_additional'] ) ) {
+					$item->add_meta_data( $val['name'], $val['value'] );
+					continue;
+				}
+				if ( 'upload' === $val['prad_additional']['type'] ) {
+					$result            = $this->process_upload_field_on_checkout( $val, 'temp' );
+					$prad_uploads_path = array_merge( $prad_uploads_path, $result['paths'] );
+					$item->add_meta_data( $val['name'], $result['value'] );
+				} elseif ( 'section' === $val['prad_additional']['type'] ) {
+					$result            = $this->process_section_field_on_checkout( $val, 'temp' );
+					$prad_uploads_path = array_merge( $prad_uploads_path, $result['paths'] );
+					$item->add_meta_data( $val['name'], $result['value'] );
 				} else {
 					$item->add_meta_data( $val['name'], $val['value'] );
 				}
@@ -231,29 +206,18 @@ class CheckoutPage {
 				$prad_uploads_path = array();
 
 				foreach ( $cart_item_prad_selection['extra_data'] as $val ) {
-					if ( isset( $val['prad_additional'] ) && 'upload' === $val['prad_additional']['type'] ) {
-						$changed_value = $val['value'];
-						if ( isset( $val['prad_additional']['field_raw'] ) ) {
-							$field = $val['prad_additional']['field_raw'];
-							if ( ! empty( $field['value'] ) && is_array( $field['value'] ) ) {
-								$res = '<span>';
-								foreach ( $field['value'] as $prad_item ) {
-									$changed_path = $prad_item['path'];
-									$changed_name = $prad_item['name'];
-									$moved_data   = product_addons()->prad_move_uploadblock_files( array( $prad_item['path'] ), 'temp' );
-									if ( ! empty( $moved_data[0]['updated_src'] ) ) {
-										$changed_path        = $moved_data[0]['updated_src']['curr_src'];
-										$changed_name        = $moved_data[0]['updated_src']['curr_name'];
-										$prad_uploads_path[] = $changed_path;
-									}
-									$res .= wp_kses( '<a href="' . esc_url( $changed_path ) . '">' . esc_html( $changed_name ) . '</a>&nbsp;&nbsp;', apply_filters( 'prad_allowed_html_tags', array() ) );// phpcs:ignore
-
-								}
-								$res .= '</span>';
-							}
-							$changed_value = isset( $val['prad_additional']['opt_price_with_html'] ) ? $res . $val['prad_additional']['opt_price_with_html'] : $res;
-						}
-						$item->add_meta_data( $val['name'], $changed_value );
+					if ( ! isset( $val['prad_additional'] ) ) {
+						$item->add_meta_data( $val['name'], $val['value'] );
+						continue;
+					}
+					if ( 'upload' === $val['prad_additional']['type'] ) {
+						$result            = $this->process_upload_field_on_checkout( $val, 'temp' );
+						$prad_uploads_path = array_merge( $prad_uploads_path, $result['paths'] );
+						$item->add_meta_data( $val['name'], $result['value'] );
+					} elseif ( 'section' === $val['prad_additional']['type'] ) {
+						$result            = $this->process_section_field_on_checkout( $val, 'temp' );
+						$prad_uploads_path = array_merge( $prad_uploads_path, $result['paths'] );
+						$item->add_meta_data( $val['name'], $result['value'] );
 					} else {
 						$item->add_meta_data( $val['name'], $val['value'] );
 					}
@@ -275,5 +239,108 @@ class CheckoutPage {
 				// do_action( 'prad_update_stats_table_data', $campaign_id, 'sales', $order->get_total() );.
 			}
 		}
+	}
+
+	/**
+	 * Move upload field files and build their display HTML.
+	 *
+	 * @param array  $val        The extra_data entry for an upload field.
+	 * @param string $move_stage File move stage: 'temp' or 'order_placed'.
+	 * @return array { value: string, paths: string[] }
+	 */
+	private function process_upload_field_on_checkout( array $val, string $move_stage, bool $add_price = true ): array {
+		$is_order_placed = 'order_placed' === $move_stage;
+		$changed_value   = $val['value'];
+		$collected_paths = array();
+
+		if ( isset( $val['prad_additional']['field_raw'] ) ) {
+			$field = $val['prad_additional']['field_raw'];
+			$res   = '';
+			if ( ! empty( $field['value'] ) && is_array( $field['value'] ) ) {
+				$res = '<span>';
+				foreach ( $field['value'] as $prad_item ) {
+					$changed_path = $prad_item['path'];
+					$changed_name = $prad_item['name'];
+					$moved_data   = product_addons()->prad_move_uploadblock_files( array( $prad_item['path'] ), $move_stage, $is_order_placed );
+					if ( ! empty( $moved_data[0]['updated_src'] ) ) {
+						$changed_path = $moved_data[0]['updated_src']['curr_src'];
+						$changed_name = $moved_data[0]['updated_src']['curr_name'];
+						if ( ! $is_order_placed ) {
+							$collected_paths[] = $changed_path;
+						}
+					}
+					$res .= \wp_kses( '<a href="' . \esc_url( $changed_path ) . '">' . \esc_html( $changed_name ) . '</a>&nbsp;&nbsp;', \apply_filters( 'prad_allowed_html_tags', array() ) );// phpcs:ignore
+				}
+				$res .= '</span>';
+			}
+			$price_html    = $add_price && isset( $val['prad_additional']['opt_price_with_html'] ) ? $val['prad_additional']['opt_price_with_html'] : '';
+			$changed_value = $res . $price_html;
+		}
+
+		return array(
+			'value' => $changed_value,
+			'paths' => $collected_paths,
+		);
+	}
+
+	/**
+	 * Process upload fields nested inside a section/repeater entry.
+	 *
+	 * @param array  $val        The extra_data entry for a section field.
+	 * @param string $move_stage File move stage: 'temp' or 'order_placed'.
+	 * @return array { value: string, paths: string[] }
+	 */
+	private function process_section_field_on_checkout( array $val, string $move_stage ): array {
+		$collected_paths = array();
+		$changed_value   = $val['value'];
+
+		$extra_data = isset( $val['prad_additional']['field_raw']['extra_data'] )
+			? $val['prad_additional']['field_raw']['extra_data']
+			: array();
+
+		if ( empty( $extra_data ) ) {
+			return array( 'value' => $changed_value, 'paths' => $collected_paths );
+		}
+
+		$has_upload = false;
+		foreach ( $extra_data as $entry ) {
+			if ( isset( $entry['prad_additional']['type'] ) && 'upload' === $entry['prad_additional']['type'] ) {
+				$has_upload = true;
+				break;
+			}
+		}
+
+		if ( ! $has_upload ) {
+			return array( 'value' => $changed_value, 'paths' => $collected_paths );
+		}
+
+		$parts = array();
+		foreach ( $extra_data as $entry ) {
+			$prad_additional = isset( $entry['prad_additional'] ) && is_array( $entry['prad_additional'] ) ? $entry['prad_additional'] : array();
+			$entry_name      = isset( $entry['name'] ) ? $entry['name'] : '';
+			$entry_type      = isset( $prad_additional['type'] ) ? $prad_additional['type'] : '';
+
+			if ( 'upload' === $entry_type ) {
+				$result          = $this->process_upload_field_on_checkout( $entry, $move_stage, false );
+				$collected_paths = array_merge( $collected_paths, $result['paths'] );
+				$entry_value     = $result['value'];
+			} elseif ( 'custom_formula' === $entry_type || 'advanced_formula' === $entry_type ) {
+				$entry_value = isset( $prad_additional['opt_price_with_html'] ) ? $prad_additional['opt_price_with_html'] : '';
+			} else {
+				$entry_value = isset( $entry['value'] ) ? $entry['value'] : '';
+			}
+
+			if ( '' !== $entry_name && '' !== $entry_value ) {
+				$parts[] = $entry_name . ': ' . $entry_value;
+			}
+		}
+
+		$price_html    = isset( $val['prad_additional']['opt_price_with_html'] ) ? $val['prad_additional']['opt_price_with_html'] : '';
+		$changed_value = implode( ', ', $parts ) . ' ' . $price_html;
+
+		return array(
+			'value' => $changed_value,
+			'paths' => $collected_paths,
+		);
 	}
 }

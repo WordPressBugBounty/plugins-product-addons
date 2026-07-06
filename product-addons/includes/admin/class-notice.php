@@ -94,7 +94,7 @@ class Notice {
 	 */
 	public function handle_xpo_active_notice_lists( $active_lists ) {
 		
-		if ( $this->prad_dashboard_banner_notice(true) || $this->prad_dashboard_content_notice(true) ) {
+		if ( $this->prad_dashboard_banner_notice(true) || $this->prad_dashboard_content_notice(true)  || $this->prad_dashboard_image_banner_notice(true) ) {
 			$active_lists[$this->plugin_notice_priority_key] = $this->plugin_notice_priority;
 		}
 
@@ -174,6 +174,7 @@ class Notice {
 		if ( $this->is_available_for_notice() ) {
 			$this->prad_dashboard_banner_notice();
 			$this->prad_dashboard_content_notice();
+			$this->prad_dashboard_image_banner_notice();
 		}
 	}
 
@@ -443,161 +444,41 @@ class Notice {
 
 		$content_notices = array(
 			array(
-				'key'                => 'prad_dashboard_content_notice_summer_flash_sale_2026_v1',
-				'start'              => '2026-05-07 00:00 Asia/Dhaka',
-				'end'                => '2026-05-12 23:59 Asia/Dhaka',
+				'key'                => 'prad_dashboard_content_notice_summer_sale_2026_vv1',
+				'start'              => '2026-07-06 00:00 Asia/Dhaka',
+				'end'                => '2026-07-12 23:59 Asia/Dhaka',
 				'url'                => Xpo::generate_utm_link(
 					array(
-						'utmKey' => 'flash_sale',
+						'utmKey' => 'summer_db',
 					)
 				),
 				'visibility'         => ! Xpo::is_lc_active(),
-				'content_heading'    => __( 'Flash Sale:', 'product-addons' ),
+				'content_heading'    => __( '', 'product-addons' ),
 				/* translators: %s: discount percentage */
-				'content_subheading' => __( 'WowAddons offers are live - Enjoy %s off on WowAddons Pro.', 'product-addons' ),
-				'discount_content'   => ' up to 50% OFF',
+				'content_subheading' => __( 'WowAddons Summer Sale Offer is Live - Enjoy up to %s on WowAddons Pro.', 'product-addons' ),
+				'discount_content'   => '  50% OFF',
 				'border_color'       => '#86a62c',
 				'icon'               => PRAD_URL . 'assets/img/dashboard_banner/logo.svg',
-				'button_text'        => __( 'Claim Your Discount!', 'product-addons' ),
+				'button_text'        => __( 'Upgrade Now!', 'product-addons' ),
 				'is_discount_logo'   => true,
 			),
 			array(
-				'key'                => 'prad_dashboard_content_notice_summer_flash_sale_2026_v2',
-				'start'              => '2026-05-13 00:00 Asia/Dhaka',
-				'end'                => '2026-05-17 23:59 Asia/Dhaka',
+				'key'                => 'prad_dashboard_content_notice_summer_sale_2026_vv2',
+				'start'              => '2026-07-13 00:00 Asia/Dhaka',
+				'end'                => '2026-07-19 23:59 Asia/Dhaka',
 				'url'                => Xpo::generate_utm_link(
 					array(
-						'utmKey' => 'flash_sale',
+						'utmKey' => 'summer_db',
 					)
 				),
 				'visibility'         => ! Xpo::is_lc_active(),
-				'content_heading'    => __( 'Flash Sale:', 'product-addons' ),
+				'content_heading'    => __( '', 'product-addons' ),
 				/* translators: %s: discount percentage */
-				'content_subheading' => __( 'WowAddons offers are live - Enjoy %s off on WowAddons Pro.', 'product-addons' ),
-				'discount_content'   => ' up to 50% OFF',
+				'content_subheading' => __( 'WowAddons Summer Sale Offer is Live - Enjoy up to %s on WowAddons Pro.', 'product-addons' ),
+				'discount_content'   => '  50% OFF',
 				'border_color'       => '#86a62c',
 				'icon'               => PRAD_URL . 'assets/img/dashboard_banner/discount_50.svg',
-				'button_text'        => __( 'Claim Your Discount!', 'product-addons' ),
-				'is_discount_logo'   => true,
-			),
-
-			// Surprise Sale
-			array(
-				'key'                => 'prad_dashboard_content_notice_summer_surprise_sale_2026_v1',
-				'start'              => '2026-05-22 00:00 Asia/Dhaka',
-				'end'                => '2026-05-25 23:59 Asia/Dhaka',
-				'url'                => Xpo::generate_utm_link(
-					array(
-						'utmKey' => 'surprise_sale',
-					)
-				),
-				'visibility'         => ! Xpo::is_lc_active(),
-				'content_heading'    => __( 'Surprise Sale:', 'product-addons' ),
-				/* translators: %s: discount percentage */
-				'content_subheading' => __( 'WowAddons offers are live - Enjoy %s off on WowAddons Pro.', 'product-addons' ),
-				'discount_content'   => ' up to 55% OFF',
-				'border_color'       => '#86a62c',
-				'icon'               => PRAD_URL . 'assets/img/dashboard_banner/logo.svg',
-				'button_text'        => __( 'Claim Your Discount!', 'product-addons' ),
-				'is_discount_logo'   => true,
-			),
-			array(
-				'key'                => 'prad_dashboard_content_notice_summer_surprise_sale_2026_v2',
-				'start'              => '2026-05-26 00:00 Asia/Dhaka',
-				'end'                => '2026-05-28 23:59 Asia/Dhaka',
-				'url'                => Xpo::generate_utm_link(
-					array(
-						'utmKey' => 'surprise_sale',
-					)
-				),
-				'visibility'         => ! Xpo::is_lc_active(),
-				'content_heading'    => __( 'Surprise Sale:', 'product-addons' ),
-				/* translators: %s: discount percentage */
-				'content_subheading' => __( 'WowAddons offers are live - Enjoy %s off on WowAddons Pro.', 'product-addons' ),
-				'discount_content'   => ' up to 55% OFF',
-				'border_color'       => '#86a62c',
-				'icon'               => PRAD_URL . 'assets/img/dashboard_banner/discount_55.svg',
-				'button_text'        => __( 'Claim Your Discount!', 'product-addons' ),
-				'is_discount_logo'   => true,
-			),
-
-			// Massive Sale
-			array(
-				'key'                => 'prad_dashboard_content_notice_summer_massive_sale_2026_v1',
-				'start'              => '2026-06-02 00:00 Asia/Dhaka',
-				'end'                => '2026-06-10 23:59 Asia/Dhaka',
-				'url'                => Xpo::generate_utm_link(
-					array(
-						'utmKey' => 'massive_sale',
-					)
-				),
-				'visibility'         => ! Xpo::is_lc_active(),
-				'content_heading'    => __( 'Massive Sale:', 'product-addons' ),
-				/* translators: %s: discount percentage */
-				'content_subheading' => __( 'WowAddons offers are live - Enjoy %s off on WowAddons Pro.', 'product-addons' ),
-				'discount_content'   => ' up to 50% OFF',
-				'border_color'       => '#86a62c',
-				'icon'               => PRAD_URL . 'assets/img/dashboard_banner/logo.svg',
-				'button_text'        => __( 'Claim Your Discount!', 'product-addons' ),
-				'is_discount_logo'   => true,
-			),
-			array(
-				'key'                => 'prad_dashboard_content_notice_summer_massive_sale_2026_v2',
-				'start'              => '2026-06-11 00:00 Asia/Dhaka',
-				'end'                => '2026-06-16 23:59 Asia/Dhaka',
-				'url'                => Xpo::generate_utm_link(
-					array(
-						'utmKey' => 'massive_sale',
-					)
-				),
-				'visibility'         => ! Xpo::is_lc_active(),
-				'content_heading'    => __( 'Massive Sale:', 'product-addons' ),
-				/* translators: %s: discount percentage */
-				'content_subheading' => __( 'WowAddons offers are live - Enjoy %s off on WowAddons Pro.', 'product-addons' ),
-				'discount_content'   => ' up to 50% OFF',
-				'border_color'       => '#86a62c',
-				'icon'               => PRAD_URL . 'assets/img/dashboard_banner/discount_50.svg',
-				'button_text'        => __( 'Claim Your Discount!', 'product-addons' ),
-				'is_discount_logo'   => true,
-			),
-
-			// Final Hour Sale
-			array(
-				'key'                => 'prad_dashboard_content_notice_summer_final_hour_sale_2026_v1',
-				'start'              => '2026-06-21 00:00 Asia/Dhaka',
-				'end'                => '2026-06-24 23:59 Asia/Dhaka',
-				'url'                => Xpo::generate_utm_link(
-					array(
-						'utmKey' => 'final_hour_sale',
-					)
-				),
-				'visibility'         => ! Xpo::is_lc_active(),
-				'content_heading'    => __( 'Final Hour Sale:', 'product-addons' ),
-				/* translators: %s: discount percentage */
-				'content_subheading' => __( 'WowAddons offers are live - Enjoy %s off on WowAddons Pro.', 'product-addons' ),
-				'discount_content'   => ' up to 55% OFF',
-				'border_color'       => '#86a62c',
-				'icon'               => PRAD_URL . 'assets/img/dashboard_banner/logo.svg',
-				'button_text'        => __( 'Claim Your Discount!', 'product-addons' ),
-				'is_discount_logo'   => true,
-			),
-			array(
-				'key'                => 'prad_dashboard_content_notice_summer_final_hour_sale_2026_v2',
-				'start'              => '2026-06-25 00:00 Asia/Dhaka',
-				'end'                => '2026-06-27 23:59 Asia/Dhaka',
-				'url'                => Xpo::generate_utm_link(
-					array(
-						'utmKey' => 'final_hour_sale',
-					)
-				),
-				'visibility'         => ! Xpo::is_lc_active(),
-				'content_heading'    => __( 'Final Hour Sale:', 'product-addons' ),
-				/* translators: %s: discount percentage */
-				'content_subheading' => __( 'WowAddons offers are live - Enjoy %s off on WowAddons Pro.', 'product-addons' ),
-				'discount_content'   => ' up to 55% OFF',
-				'border_color'       => '#86a62c',
-				'icon'               => PRAD_URL . 'assets/img/dashboard_banner/discount_55.svg',
-				'button_text'        => __( 'Claim Your Discount!', 'product-addons' ),
+				'button_text'        => __( 'Upgrade Now!', 'product-addons' ),
 				'is_discount_logo'   => true,
 			),
 
@@ -786,6 +667,113 @@ class Notice {
 								<?php
 					}
 				}
+			}
+		}
+	}
+
+	public function prad_dashboard_image_banner_notice($return_bool=false) {
+		$prad_db_nonce  = wp_create_nonce( 'prad-nonce' );
+		$banner_notices = array(
+			array(
+				'key'        => 'prad_summer_sale_2612',
+				'start'      => '2026-07-20 00:00 Asia/Dhaka', // format YY-MM-DD always set time 00:00 and zone Asia/Dhaka
+				'end'        => '2026-08-01 23:59 Asia/Dhaka', // format YY-MM-DD always set time 23:59 and zone Asia/Dhaka
+				'banner_src' => PRAD_URL . 'assets/img/dashboard_banner/summer_sale/summer_sale_26.png',
+				'url'        => Xpo::generate_utm_link(
+					array(
+						'utmKey' => 'summer_db',
+					)
+				),
+				'close_color' => '#000000',
+				'visibility' => ! Xpo::is_lc_active(),
+			),
+		);
+
+		foreach ( $banner_notices as $notice ) {
+			$notice_key = isset( $notice['key'] ) ? $notice['key'] : $this->notice_version;
+			if ( isset( $_GET['disable_prad_notice'] ) && $notice_key === sanitize_text_field(wp_unslash($_GET['disable_prad_notice'])) ) { // phpcs:ignore
+				continue;
+			}
+
+			$current_time = gmdate( 'U' );
+			$notice_start = gmdate( 'U', strtotime( $notice['start'] ) );
+			$notice_end   = gmdate( 'U', strtotime( $notice['end'] ) );
+			if ( $current_time >= $notice_start && $current_time <= $notice_end && $notice['visibility'] ) {
+
+				$notice_transient = Xpo::get_transient_without_cache( 'prad_get_pro_notice_' . $notice_key );
+
+				if ( 'off' === $notice_transient ) {
+					continue;
+				}
+
+				if ( $return_bool ) { // Early return for Other plugin notice.
+					return true;
+				}
+
+				if ( ! $this->notice_js_css_applied ) {
+					$this->prad_banner_notice_js();
+					$this->notice_js_css_applied = true;
+				}
+				$query_args = array(
+					'disable_prad_notice' => $notice_key,
+					'prad_db_nonce'       => $prad_db_nonce,
+				);
+				if ( isset( $notice['repeat_interval'] ) && $notice['repeat_interval'] ) {
+					$query_args['prad_interval'] = $notice['repeat_interval'];
+				}
+				?>
+				<style type="text/css">
+					.prad-notice-wrapper.prad-image-notice-wrapper {
+						padding: 0 !important;
+						position: relative;
+						box-sizing: border-box;
+						overflow: hidden;
+						border-radius: 0px;
+						border: none !important;
+					}
+					.prad-notice-wrapper.prad-image-notice-wrapper .prad-image-banner {
+						position: relative;
+						line-height: 0;
+					}
+					.prad-notice-wrapper.prad-image-notice-wrapper .prad-btn-image {
+						display: block;
+					}
+					.prad-notice-wrapper.prad-image-notice-wrapper .prad-btn-image img {
+						display: block;
+						width: 100%;
+						height: auto;
+						border-radius: 0;
+					}
+					.prad-notice-wrapper.prad-image-notice-wrapper .prad-content-notice-close {
+						top: 4px;
+						right: 4px;
+						position: absolute;
+						z-index: 999;
+					}
+					@media screen and (max-width: 650px) {
+						.prad-image-notice-wrapper {
+							display: none;
+						}
+					}
+				</style>
+				<div class="prad-notice-wrapper prad-image-notice-wrapper notice wc-install prad-free-notice">
+					<div class="wc-install-body prad-image-banner">
+						<a class="wc-dismiss-notice prad-content-notice-close"  href="
+						<?php
+						echo esc_url(
+							add_query_arg(
+								$query_args
+							)
+						);
+						?>
+						"><span class="prad-content-notice-close-icon dashicons dashicons-dismiss" style="color: <?php echo esc_attr( $notice['close_color'] ); ?>;"> </span></a>
+						<a class="prad-btn-image" target="_blank" href="<?php echo esc_url( $notice['url'] ); ?>">
+							<img loading="lazy" src="<?php echo esc_url( $notice['banner_src'] ); ?>" alt="Discount Banner"/>
+						</a>
+					</div>
+				</div>
+				
+				<?php
 			}
 		}
 	}

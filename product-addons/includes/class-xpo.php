@@ -261,6 +261,11 @@ class Xpo {
 				'medium'   => 'flash-sale',
 				'campaign' => 'wowaddons-dashboard',
 			),
+			'summer_db'        => array(
+				'source'   => 'db-wowaddons-notice',
+				'medium'   => 'summer-sale',
+				'campaign' => 'wowaddons-dashboard',
+			),
 			'spring_sale'       => array(
 				'source'   => 'db-wowaddons-notice',
 				'medium'   => 'spring-sale',

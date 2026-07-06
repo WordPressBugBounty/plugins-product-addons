@@ -68,13 +68,13 @@ class Options {
 				'utmKey' => 'plugin_meta',
 			),
 			array(
-				'start'  => '2026-06-21 00:00 Asia/Dhaka',
-				'end'    => '2026-06-30 23:59 Asia/Dhaka',
+				'start'  => '2026-07-06 00:00 Asia/Dhaka',
+				'end'    => '2026-08-01 23:59 Asia/Dhaka',
 				'text'   => __(
-					'Final Hour Sale - Up to 55% OFF',
+					'Summer Sale - Up to 50% OFF',
 					'product-addons'
 				),
-				'utmKey' => 'plugin_meta',
+				'utmKey' => 'summer_db',
 			),
 		);
 

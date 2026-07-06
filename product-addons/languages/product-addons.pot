@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv3.
 msgid ""
 msgstr ""
-"Project-Id-Version: Product Addons and Product Options With Custom Fields – WowAddons 1.6.15\n"
+"Project-Id-Version: Product Addons and Product Options With Custom Fields – WowAddons 1.6.16\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/build\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-06-28T10:58:56+00:00\n"
+"POT-Creation-Date: 2026-07-06T11:32:08+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: product-addons\n"
@@ -34,66 +34,34 @@ msgstr ""
 msgid "Hello Bar Action performed"
 msgstr ""
 
-#: includes/admin/class-notice.php:406
+#: includes/admin/class-notice.php:407
 msgid "Close Banner"
 msgstr ""
 
-#: includes/admin/class-notice.php:455
-#: includes/admin/class-notice.php:474
-msgid "Flash Sale:"
-msgstr ""
-
 #. translators: %s: discount percentage
-#: includes/admin/class-notice.php:457
-#: includes/admin/class-notice.php:476
-#: includes/admin/class-notice.php:497
-#: includes/admin/class-notice.php:516
-#: includes/admin/class-notice.php:537
-#: includes/admin/class-notice.php:556
-#: includes/admin/class-notice.php:577
-#: includes/admin/class-notice.php:596
-msgid "WowAddons offers are live - Enjoy %s off on WowAddons Pro."
+#: includes/admin/class-notice.php:458
+#: includes/admin/class-notice.php:477
+msgid "WowAddons Summer Sale Offer is Live - Enjoy up to %s on WowAddons Pro."
 msgstr ""
 
-#: includes/admin/class-notice.php:461
-#: includes/admin/class-notice.php:480
-#: includes/admin/class-notice.php:501
-#: includes/admin/class-notice.php:520
-#: includes/admin/class-notice.php:541
-#: includes/admin/class-notice.php:560
-#: includes/admin/class-notice.php:581
-#: includes/admin/class-notice.php:600
-msgid "Claim Your Discount!"
+#: includes/admin/class-notice.php:462
+#: includes/admin/class-notice.php:481
+msgid "Upgrade Now!"
 msgstr ""
 
-#: includes/admin/class-notice.php:495
-#: includes/admin/class-notice.php:514
-msgid "Surprise Sale:"
-msgstr ""
-
-#: includes/admin/class-notice.php:535
-#: includes/admin/class-notice.php:554
-msgid "Massive Sale:"
-msgstr ""
-
-#: includes/admin/class-notice.php:575
-#: includes/admin/class-notice.php:594
-msgid "Final Hour Sale:"
-msgstr ""
-
-#: includes/admin/class-notice.php:1011
+#: includes/admin/class-notice.php:999
 msgid "Want to help make WowAddons even more awesome?"
 msgstr ""
 
-#: includes/admin/class-notice.php:1013
+#: includes/admin/class-notice.php:1001
 msgid "Allow us to collect diagnostic data and usage information. see "
 msgstr ""
 
-#: includes/admin/class-notice.php:1014
+#: includes/admin/class-notice.php:1002
 msgid "what we collect."
 msgstr ""
 
-#: includes/admin/class-notice.php:1032
+#: includes/admin/class-notice.php:1020
 msgid "Accept & Close"
 msgstr ""
 
@@ -110,7 +78,7 @@ msgid "Massive Sale - Up to 50% OFF"
 msgstr ""
 
 #: includes/admin/class-options.php:73
-msgid "Final Hour Sale - Up to 55% OFF"
+msgid "Summer Sale - Up to 50% OFF"
 msgstr ""
 
 #: includes/admin/class-options.php:82
@@ -303,25 +271,30 @@ msgstr ""
 msgid "Dismiss this notice."
 msgstr ""
 
-#: includes/order/class-cart-page.php:342
+#: includes/order/class-cart-page.php:322
+msgid "Please fill in all required fields."
+msgstr ""
+
+#: includes/order/class-price-handler.php:104
+#: includes/order/class-price-handler.php:490
 #: assets/js/wowaddons.js:161
 msgid "Name"
 msgstr ""
 
-#: includes/order/class-cart-page.php:342
+#: includes/order/class-price-handler.php:104
+#: includes/order/class-price-handler.php:490
 msgid "Path"
 msgstr ""
 
-#: includes/order/class-cart-page.php:350
+#: includes/order/class-price-handler.php:112
+#: includes/order/class-price-handler.php:514
 msgid "Count"
 msgstr ""
 
-#: includes/order/class-cart-page.php:542
+#: includes/order/class-price-handler.php:304
+#: includes/order/class-price-handler.php:599
+#: includes/order/class-price-handler.php:988
 msgid "Addons Field"
-msgstr ""
-
-#: includes/order/class-cart-page.php:698
-msgid "Please fill in all required fields."
 msgstr ""
 
 #: includes/restapi/class-request-api.php:288
@@ -772,7 +745,7 @@ msgid "Add New Font"
 msgstr ""
 
 #: assets/js/wowaddons.js:1
-msgid "Section"
+msgid "Section / Repeater"
 msgstr ""
 
 #: assets/js/wowaddons.js:1
