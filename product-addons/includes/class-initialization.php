@@ -120,6 +120,8 @@ class Initialization {
 							'num_decimals'    => get_option( 'woocommerce_price_num_decimals', '2' ),
 							'currency_pos'    => get_option( 'woocommerce_currency_pos', 'left' ),
 							'currencySymbol'  => function_exists( 'get_woocommerce_currency_symbol' ) ? get_woocommerce_currency_symbol() : '$',
+							'characterText'   => Xpo::get_prad_settings_item( 'characterText', 'Character' ),
+							'wordText'        => Xpo::get_prad_settings_item( 'wordText', 'Word' ),
 							'userInfo'        => array(
 								'name'  => $user_info->first_name ? $user_info->first_name . ( $user_info->last_name ? ' ' . $user_info->last_name : '' ) : $user_info->user_login,
 								'email' => $user_info->user_email,
@@ -127,12 +129,41 @@ class Initialization {
 							'helloBar'        => Notice::get_hellobar_config(),
 							'uploadFileTypes' => product_addons()->prad_get_upload_allowed_file_types(),
 							'pradAttributes'  => product_addons()->prad_get_attributes(),
+							'date_format'     => get_option( 'date_format' ),
 						),
 						Xpo::get_wow_products_details()
 					)
 				);
 				wp_set_script_translations( 'prad-editor-script', 'product-addons', PRAD_PATH . 'languages/' );
 			}
+		}
+
+		if ( in_array( $pagenow, array( 'post.php', 'post-new.php' ), true ) && 'product' === get_post_type() ) {
+			product_addons()->enqueue_style( 'prad-product-edit-style', 'style-prad-product-edit' );
+			product_addons()->enqueue_script( 'prad-product-edit-script', 'prad-product-edit' );
+
+			wp_localize_script(
+				'prad-product-edit-script',
+				'pradProductEditData',
+				array(
+					'productId' => get_the_ID(),
+				)
+			);
+
+			wp_localize_script(
+				'prad-product-edit-script',
+				'pradBackendData',
+				array(
+					'url'          => PRAD_URL,
+					'db_url'       => admin_url( 'admin.php?page=prad-dashboard#' ),
+					'ajax'         => admin_url( 'admin-ajax.php' ),
+					'version'      => PRAD_VER,
+					'nonce'        => wp_create_nonce( 'prad-nonce' ),
+					'decimal_sep'  => get_option( 'woocommerce_price_decimal_sep', '.' ),
+					'num_decimals' => get_option( 'woocommerce_price_num_decimals', '2' ),
+					'currency_pos' => get_option( 'woocommerce_currency_pos', 'left' ),
+				)
+			);
 		}
 	}
 

@@ -74,7 +74,16 @@ class Options {
 					'Summer Sale - Up to 50% OFF',
 					'product-addons'
 				),
-				'utmKey' => 'summer_db',
+				'utmKey' => 'plugin_meta_summer_db',
+			),
+			array(
+				'start'  => '2026-08-02 00:00 Asia/Dhaka',
+				'end'    => '2026-08-16 23:59 Asia/Dhaka',
+				'text'   => __(
+					'Summer Sale - Up to 50% OFF',
+					'product-addons'
+				),
+				'utmKey' => 'plugin_meta_summer_db',
 			),
 		);
 
@@ -168,7 +177,7 @@ class Options {
 		);
 
 		$menu_lists              = array();
-		$menu_lists['lists']     = esc_html__( 'Option Lists', 'product-addons' );
+		$menu_lists['lists']     = esc_html__( 'Option Set', 'product-addons' );
 		$menu_lists['analytics'] = esc_html__( 'Analytics', 'product-addons' );
 		$menu_lists['settings']  = esc_html__( 'Settings', 'product-addons' );
 
@@ -199,7 +208,7 @@ class Options {
 		$pro_link_text = '';
 		if ( Xpo::is_lc_expired() ) {
 			$license_key   = Xpo::get_lc_key();
-			$pro_link      = 'https://account.wpxpo.com/checkout/?edd_license_key=' . $license_key. '&renew=1';
+			$pro_link      = 'https://account.wpxpo.com/checkout/?edd_license_key=' . $license_key . '&renew=1';
 			$pro_link_text = __( 'Renew License', 'product-addons' );
 		} elseif ( ! Xpo::is_lc_active() ) {
 			$pro_link      = Xpo::generate_utm_link(
@@ -220,7 +229,7 @@ class Options {
 					$pro_link_text = esc_html__( 'New Year Offer!', 'product-addons' );
 				}
 			}
-		} 
+		}
 
 		if ( ! empty( $pro_link ) ) {
 			ob_start();

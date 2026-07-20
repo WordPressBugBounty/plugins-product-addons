@@ -112,7 +112,7 @@ class Checkbox_Block extends Abstract_Block {
 		}
 
 		return array(
-			'class' => ' prad-overflow-x-hidden prad-overflow-y-auto prad-scrollbar prad-pb-8 prad-pt-8',
+			'class' => ' prad-overflow-x-hidden prad-overflow-y-auto prad-scrollbar prad-pb-8 prad-pt-8 prad-p-8 prad-fixed-height',
 			'style' => sprintf( 'style="max-height: %spx;"', esc_attr( $fixed_height ) ),
 		);
 	}

@@ -125,11 +125,23 @@ class Textarea_Block extends Abstract_Block {
 
 		$html = '<div class="prad-d-flex prad-item-start prad-gap-12 prad-mb-12">';
 
+		$html .= '<div class="prad-relative prad-w-full">';
+
 		$html .= sprintf(
 			'<textarea %s>%s</textarea>',
 			$this->build_attributes( $textarea_attributes ),
 			esc_textarea( $value )
 		);
+
+		if ( $max ) {
+			$html .= sprintf(
+				'<span class="prad-absolute prad-textarea-char-count">%d/%d</span>',
+				mb_strlen( $value ),
+				(int) $max
+			);
+		}
+
+		$html .= '</div>';
 
 		// Price beside textarea
 		if ( $this->should_show_price_beside_field( $price_info ) ) {

@@ -36,7 +36,7 @@ class Notice {
 	 * @var string $plugin_notice_priority
 	 */
 	private $plugin_notice_priority = 2;
-	
+
 	/**
 	 * Notice Priority
 	 *
@@ -51,7 +51,7 @@ class Notice {
 		// REST API routes.
 		add_action( 'rest_api_init', array( $this, 'register_rest_route' ) );
 
-		add_filter('xpo_active_notice_lists', array( $this, 'handle_xpo_active_notice_lists' ), 99, 1 );
+		add_filter( 'xpo_active_notice_lists', array( $this, 'handle_xpo_active_notice_lists' ), 99, 1 );
 	}
 
 	/**
@@ -89,13 +89,14 @@ class Notice {
 
 	/**
 	 * Handle Plugin Notice for all plugins
+	 *
 	 * @param array $active_lists Lists of all active plugin notice.
 	 * @return array
 	 */
 	public function handle_xpo_active_notice_lists( $active_lists ) {
-		
-		if ( $this->prad_dashboard_banner_notice(true) || $this->prad_dashboard_content_notice(true)  || $this->prad_dashboard_image_banner_notice(true) ) {
-			$active_lists[$this->plugin_notice_priority_key] = $this->plugin_notice_priority;
+
+		if ( $this->prad_dashboard_banner_notice( true ) || $this->prad_dashboard_content_notice( true ) || $this->prad_dashboard_image_banner_notice( true ) ) {
+			$active_lists[ $this->plugin_notice_priority_key ] = $this->plugin_notice_priority;
 		}
 
 		return $active_lists;
@@ -103,6 +104,7 @@ class Notice {
 
 	/**
 	 * Handle Plugin Notice for all plugins
+	 *
 	 * @return bool
 	 */
 	public function is_available_for_notice() {
@@ -124,10 +126,9 @@ class Notice {
 	 */
 	public static function get_hellobar_config() {
 		return array(
-			'prad_helloBar_summer1_flash_sale_2026_1' => Xpo::get_transient_without_cache( 'prad_helloBar_summer1_flash_sale_2026_1' ),
+			'prad_helloBar_summer_sale_2026_vv1'      => Xpo::get_transient_without_cache( 'prad_helloBar_summer_sale_2026_vv1' ),
+			'prad_helloBar_summer_sale_2026_vv1_x1'   => Xpo::get_transient_without_cache( 'prad_helloBar_summer_sale_2026_vv1_x1' ),
 			'prad_helloBar_summer1_flash_sale_2026_2' => Xpo::get_transient_without_cache( 'prad_helloBar_summer1_flash_sale_2026_2' ),
-			'prad_helloBar_summer1_flash_sale_2026_3' => Xpo::get_transient_without_cache( 'prad_helloBar_summer1_flash_sale_2026_3' ),
-			'prad_helloBar_summer1_flash_sale_2026_4' => Xpo::get_transient_without_cache( 'prad_helloBar_summer1_flash_sale_2026_4' ),
 		);
 	}
 
@@ -183,7 +184,7 @@ class Notice {
 	 *
 	 * @return void
 	 */
-	public function prad_dashboard_banner_notice($return_bool=false) {
+	public function prad_dashboard_banner_notice( $return_bool = false ) {
 		$prad_db_nonce  = wp_create_nonce( 'prad-nonce' );
 		$banner_notices = array(
 			array(
@@ -437,10 +438,11 @@ class Notice {
 
 	/**
 	 * Dashboard Content Notice
-	 * @param boolean $return_bool 
+	 *
+	 * @param boolean $return_bool
 	 * @return void
 	 */
-	public function prad_dashboard_content_notice($return_bool=false) {
+	public function prad_dashboard_content_notice( $return_bool = false ) {
 
 		$content_notices = array(
 			array(
@@ -463,9 +465,9 @@ class Notice {
 				'is_discount_logo'   => true,
 			),
 			array(
-				'key'                => 'prad_dashboard_content_notice_summer_sale_2026_vv2',
-				'start'              => '2026-07-13 00:00 Asia/Dhaka',
-				'end'                => '2026-07-19 23:59 Asia/Dhaka',
+				'key'                => 'prad_dashboard_content_notice_summer_sale_2026_vv2_1',
+				'start'              => '2026-08-02 00:00 Asia/Dhaka',
+				'end'                => '2026-08-08 23:59 Asia/Dhaka',
 				'url'                => Xpo::generate_utm_link(
 					array(
 						'utmKey' => 'summer_db',
@@ -671,21 +673,34 @@ class Notice {
 		}
 	}
 
-	public function prad_dashboard_image_banner_notice($return_bool=false) {
+	public function prad_dashboard_image_banner_notice( $return_bool = false ) {
 		$prad_db_nonce  = wp_create_nonce( 'prad-nonce' );
 		$banner_notices = array(
 			array(
-				'key'        => 'prad_summer_sale_2612',
-				'start'      => '2026-07-20 00:00 Asia/Dhaka', // format YY-MM-DD always set time 00:00 and zone Asia/Dhaka
-				'end'        => '2026-08-01 23:59 Asia/Dhaka', // format YY-MM-DD always set time 23:59 and zone Asia/Dhaka
-				'banner_src' => PRAD_URL . 'assets/img/dashboard_banner/summer_sale/summer_sale_26.png',
-				'url'        => Xpo::generate_utm_link(
+				'key'         => 'prad_summer_sale_2612',
+				'start'       => '2026-07-20 00:00 Asia/Dhaka', // format YY-MM-DD always set time 00:00 and zone Asia/Dhaka
+				'end'         => '2026-08-01 23:59 Asia/Dhaka', // format YY-MM-DD always set time 23:59 and zone Asia/Dhaka
+				'banner_src'  => PRAD_URL . 'assets/img/dashboard_banner/summer_sale/summer_sale_26.png',
+				'url'         => Xpo::generate_utm_link(
 					array(
 						'utmKey' => 'summer_db',
 					)
 				),
 				'close_color' => '#000000',
-				'visibility' => ! Xpo::is_lc_active(),
+				'visibility'  => ! Xpo::is_lc_active(),
+			),
+			array(
+				'key'         => 'prad_summer_sale_2613',
+				'start'       => '2026-08-09 00:00 Asia/Dhaka', // format YY-MM-DD always set time 00:00 and zone Asia/Dhaka
+				'end'         => '2026-08-16 23:59 Asia/Dhaka', // format YY-MM-DD always set time 23:59 and zone Asia/Dhaka
+				'banner_src'  => PRAD_URL . 'assets/img/dashboard_banner/summer_sale/summer_sale_26.png',
+				'url'         => Xpo::generate_utm_link(
+					array(
+						'utmKey' => 'summer_db',
+					)
+				),
+				'close_color' => '#000000',
+				'visibility'  => ! Xpo::is_lc_active(),
 			),
 		);
 

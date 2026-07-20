@@ -75,7 +75,7 @@ trait Price_Handler {
 			return '';
 		}
 
-		$css_classes = array( 'prad-block-price', 'prad-text-upper' );
+		$css_classes = array( 'prad-block-price' );
 
 		if ( 'with_title' === $position ) {
 			$css_classes[] = 'prad-price-with-title';

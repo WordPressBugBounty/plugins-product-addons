@@ -227,16 +227,25 @@ class Functions {
 	 * @param bool   $include_variations Whether to include product variations in the search. Default is false.
 	 * @param int    $limit              The number of products to return. Defaults to all.
 	 * @param array  $include_ids        Array of product IDs to include in the search.
+	 * @param array  $tax_filter         Optional. Restrict results to products in the given taxonomy terms,
+	 *                                   e.g. array( 'taxonomy' => 'product_cat', 'term_ids' => array( 1, 2 ) ).
 	 *
 	 * @return array An array of product details, including item ID, URL, name, and thumbnail URL.
 	 */
-	public function get_searched_products( $term, $include_variations = false, $limit = '', $include_ids = array() ) {
-		// Load the product data store.
-		$data_store = WC_Data_Store::load( 'product' );
+	public function get_searched_products( $term, $include_variations = false, $limit = '', $include_ids = array(), $tax_filter = array() ) {
+		$taxonomy = isset( $tax_filter['taxonomy'] ) ? $tax_filter['taxonomy'] : '';
+		$term_ids = isset( $tax_filter['term_ids'] ) && is_array( $tax_filter['term_ids'] ) ? array_map( 'absint', $tax_filter['term_ids'] ) : array();
 
-		$exclude_ids = array();
-		$ids         = $data_store->search_products( $term, '', (bool) $include_variations, false, $limit, $include_ids, $exclude_ids );
-		$products    = array();
+		if ( $taxonomy && $term_ids ) {
+			$ids = $this->get_searched_product_ids_by_taxonomy( $term, $taxonomy, $term_ids, $limit );
+		} else {
+			// Load the product data store.
+			$data_store  = WC_Data_Store::load( 'product' );
+			$exclude_ids = array();
+			$ids         = $data_store->search_products( $term, '', (bool) $include_variations, false, $limit, $include_ids, $exclude_ids );
+		}
+
+		$products = array();
 
 		foreach ( $ids as $product_id ) {
 			$product = wc_get_product( $product_id );
@@ -252,6 +261,43 @@ class Functions {
 		}
 
 		return $products;
+	}
+
+	/**
+	 * Finds product IDs matching a keyword and belonging to the given taxonomy terms.
+	 *
+	 * WC_Data_Store::search_products() has no taxonomy support, so a scoped
+	 * product-picker search (e.g. excluding products from a chosen category)
+	 * is run through WP_Query with a tax_query instead.
+	 *
+	 * @since 1.6.17
+	 *
+	 * @param string $term     The search term.
+	 * @param string $taxonomy The taxonomy to filter by (product_cat, product_tag, product_brand).
+	 * @param array  $term_ids Term IDs within that taxonomy to restrict results to.
+	 * @param int    $limit    The number of products to return.
+	 *
+	 * @return array Product IDs.
+	 */
+	private function get_searched_product_ids_by_taxonomy( $term, $taxonomy, $term_ids, $limit = '' ) {
+		$query_args = array(
+			'post_type'      => 'product',
+			'post_status'    => 'publish',
+			'fields'         => 'ids',
+			'posts_per_page' => $limit ? (int) $limit : -1,
+			's'              => $term,
+			'tax_query'      => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+				array(
+					'taxonomy' => $taxonomy,
+					'field'    => 'term_id',
+					'terms'    => $term_ids,
+				),
+			),
+		);
+
+		$query = new \WP_Query( $query_args );
+
+		return $query->posts;
 	}
 
 	/**
@@ -925,12 +971,14 @@ class Functions {
 	public function get_product_block_product_attr( $p_id, $var_p = false ) {
 		$product = wc_get_product( $p_id );
 		if ( $product ) {
-			$data = array(
+			$formatted_variation = wc_get_formatted_variation( $product, true, false, true );
+			$product_value       = $product->get_name() . ( $formatted_variation ? ' - ' . $formatted_variation : '' );
+			$data                = array(
 				'id'             => $p_id,
 				'type'           => 'per_unit',
 				'variation'      => $var_p,
 				'url'            => get_permalink( $p_id ),
-				'value'          => rawurldecode( wp_strip_all_tags( $product->get_name() ) ),
+				'value'          => rawurldecode( wp_strip_all_tags( $product_value ) ),
 				'img'            => wp_get_attachment_url( $product->get_image_id() ),
 				'regular'        => apply_filters(
 					'prad_raw_tax_compitable_price',

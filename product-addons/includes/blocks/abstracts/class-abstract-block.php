@@ -519,11 +519,12 @@ abstract class Abstract_Block implements Block_Interface {
 	 * @param integer $index Item index.
 	 * @param array   $price_info Price information.
 	 * @param string  $variation_html Optional variation HTML.
+	 * @param boolean $suppress_count Suppress the quantity input even when enabled.
 	 * @return string Rendered content
 	 */
-	protected function render_block_content( $item, int $index, array $price_info, string $variation_html = '' ): string {
+	protected function render_block_content( $item, int $index, array $price_info, string $variation_html = '', bool $suppress_count = false ): string {
 		$blockid      = $this->get_block_id();
-		$enable_count = $this->get_property( 'enableCount', false );
+		$enable_count = $this->get_property( 'enableCount', false ) && ! $suppress_count;
 		$min          = $this->get_property( 'min', 1 );
 		$max          = $this->get_property( 'max', 100 );
 		$allowed_tags = $this->allowed_html_tags;

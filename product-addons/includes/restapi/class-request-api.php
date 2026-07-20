@@ -687,12 +687,13 @@ class RequestApi {
 	 * @return WP_REST_Response Response containing the list of options and pagination info.
 	 */
 	public function option_listing_callback( \WP_REST_Request $request ) {
-		$params   = $request->get_params();
-		$search   = isset( $params['search'] ) ? sanitize_text_field( $params['search'] ) : '';
-		$paged    = isset( $params['page'] ) ? sanitize_text_field( $params['page'] ) : 1;
-		$per_page = isset( $params['per_page'] ) ? sanitize_text_field( $params['per_page'] ) : 3;
-		$order    = isset( $params['order'] ) ? sanitize_text_field( $params['order'] ) : 'DESC';
-		$nonce    = isset( $params['wpnonce'] ) ? sanitize_text_field( $params['wpnonce'] ) : '';
+		$params     = $request->get_params();
+		$search     = isset( $params['search'] ) ? sanitize_text_field( $params['search'] ) : '';
+		$paged      = isset( $params['page'] ) ? sanitize_text_field( $params['page'] ) : 1;
+		$per_page   = isset( $params['per_page'] ) ? sanitize_text_field( $params['per_page'] ) : 3;
+		$order      = isset( $params['order'] ) ? sanitize_text_field( $params['order'] ) : 'DESC';
+		$product_id = isset( $params['product_id'] ) ? absint( $params['product_id'] ) : 0;
+		$nonce      = isset( $params['wpnonce'] ) ? sanitize_text_field( $params['wpnonce'] ) : '';
 
 		if ( ! $nonce || ! wp_verify_nonce( $nonce, 'prad-nonce' ) ) {
 			return new WP_REST_Response(
@@ -713,11 +714,30 @@ class RequestApi {
 			'paged'          => $paged,
 		);
 
-		if ( ! empty( $search ) ) {
-			$args['s'] = $search;
+		if ( $product_id ) {
+			$args['post__in'] = product_addons()->get_product_option_ids( $product_id );
+			$args['post__in'] = ! empty( $args['post__in'] ) ? $args['post__in'] : array( 0 );
 		}
 
-		$query      = new \WP_Query( $args );
+		$id_search_filter = null;
+
+		if ( ! empty( $search ) ) {
+			if ( ctype_digit( $search ) ) {
+				$id_search_filter = function ( $where ) use ( $search ) {
+					global $wpdb;
+					return $where . $wpdb->prepare( " AND {$wpdb->posts}.ID LIKE %s", '%' . $wpdb->esc_like( $search ) . '%' );
+				};
+				add_filter( 'posts_where', $id_search_filter );
+			} else {
+				$args['s'] = $search;
+			}
+		}
+
+		$query = new \WP_Query( $args );
+
+		if ( $id_search_filter ) {
+			remove_filter( 'posts_where', $id_search_filter );
+		}
 		$data       = array();
 		$all_blocks = array();
 		$page_num   = 0;
@@ -761,15 +781,30 @@ class RequestApi {
 	 * @return WP_REST_Response Response containing the search results.
 	 */
 	public function assign_search_callback( \WP_REST_Request $request ) {
-		$params         = $request->get_params();
-		$trigger_type   = isset( $params['type'] ) ? sanitize_text_field( $params['type'] ) : 'products';
-		$search_keyword = isset( $params['term'] ) ? sanitize_text_field( $params['term'] ) : '';
-		$limit          = isset( $params['limit'] ) ? absint( $params['limit'] ) : 60;
+		$params           = $request->get_params();
+		$trigger_type     = isset( $params['type'] ) ? sanitize_text_field( $params['type'] ) : 'products';
+		$search_keyword   = isset( $params['term'] ) ? sanitize_text_field( $params['term'] ) : '';
+		$limit            = isset( $params['limit'] ) ? absint( $params['limit'] ) : 60;
+		$tax_type         = isset( $params['tax_type'] ) ? sanitize_text_field( $params['tax_type'] ) : '';
+		$tax_term_ids_raw = isset( $params['tax_term_ids'] ) && is_array( $params['tax_term_ids'] ) ? $params['tax_term_ids'] : array();
+		$tax_term_ids     = array_map( 'absint', $tax_term_ids_raw );
+		$taxonomy_map     = array(
+			'cat'   => 'product_cat',
+			'tag'   => 'product_tag',
+			'brand' => 'product_brand',
+		);
 
 		$response_data = array();
 		switch ( $trigger_type ) {
 			case 'products':
-				$response_data = product_addons()->get_searched_products( $search_keyword, false, $limit );
+				$tax_filter = array();
+				if ( $tax_term_ids && isset( $taxonomy_map[ $tax_type ] ) ) {
+					$tax_filter = array(
+						'taxonomy' => $taxonomy_map[ $tax_type ],
+						'term_ids' => $tax_term_ids,
+					);
+				}
+				$response_data = product_addons()->get_searched_products( $search_keyword, false, $limit, array(), $tax_filter );
 				break;
 			case 'cat':
 			case 'tag':
@@ -839,10 +874,11 @@ class RequestApi {
 						$variation    = wc_get_product( $variation_id );
 
 						if ( $variation && $variation->is_purchasable() && $variation->is_in_stock() ) {
-							$variations_data[] = array(
+							$variation_formatted = wc_get_formatted_variation( $variation, true, false, true );
+							$variations_data[]   = array(
 								'id'         => $variation_id,
 								'url'        => get_permalink( $variation_id ),
-								'value'      => rawurldecode( wp_strip_all_tags( $variation->get_name() ) ),
+								'value'      => rawurldecode( wp_strip_all_tags( $variation_formatted ? $variation->get_name() . ' - ' . $variation_formatted : $variation->get_name() ) ),
 								'img'        => wp_get_attachment_url( $variation->get_image_id() ),
 								'attributes' => wc_get_product_variation_attributes( $variation_id ),
 								'regular'    => $variation->get_regular_price( 'edit' ),
@@ -1054,11 +1090,14 @@ class RequestApi {
 				continue;
 			}
 
+			$formatted_variation = $product->is_type( 'variable' ) ? '' : wc_get_formatted_variation( $product, true, false, true );
+			$product_value       = $product->get_name() . ( $formatted_variation ? ' - ' . $formatted_variation : '' );
+
 			$data = array(
 				'id'       => $product_id,
 				'editLink' => html_entity_decode( get_edit_post_link( $product_id ) ),
 				'url'      => get_permalink( $product_id ),
-				'value'    => rawurldecode( wp_strip_all_tags( $product->get_name() ) ),
+				'value'    => rawurldecode( wp_strip_all_tags( $product_value ) ),
 				'img'      => wp_get_attachment_url( $product->get_image_id() ),
 				'regular'  => $product->get_regular_price( 'edit' ),
 				'sale'     => $product->get_sale_price( 'edit' ),
@@ -1074,10 +1113,11 @@ class RequestApi {
 					$variation    = wc_get_product( $variation_id );
 
 					if ( $variation && $variation->is_purchasable() && $variation->is_in_stock() ) {
-						$variations_data[] = array(
+						$variation_formatted = wc_get_formatted_variation( $variation, true, false, true );
+						$variations_data[]   = array(
 							'id'         => $variation_id,
 							'url'        => get_permalink( $variation_id ),
-							'value'      => rawurldecode( wp_strip_all_tags( $variation->get_name() ) ),
+							'value'      => rawurldecode( wp_strip_all_tags( $variation_formatted ? $variation->get_name() . ' - ' . $variation_formatted : $variation->get_name() ) ),
 							'img'        => wp_get_attachment_url( $variation->get_image_id() ),
 							'attributes' => wc_get_product_variation_attributes( $variation_id ),
 							'regular'    => $variation->get_regular_price( 'edit' ),
@@ -1602,9 +1642,9 @@ class RequestApi {
 
 		add_filter( 'upload_mimes', array( $this, 'prad_handle_upload_field_mimes' ) );
 
-		$allowed_types = product_addons()->prad_get_upload_allowed_file_types($this->extra_upload_field_mimes);
-				
-		$filetype      = wp_check_filetype_and_ext(
+		$allowed_types = product_addons()->prad_get_upload_allowed_file_types( $this->extra_upload_field_mimes );
+
+		$filetype = wp_check_filetype_and_ext(
 			$file['tmp_name'],
 			$file['name'],
 			$allowed_types
@@ -1796,6 +1836,12 @@ class RequestApi {
 			'frame',
 			'frameset',
 			'applet',
+			'animate',
+			'animateMotion',
+			'animatemotion',
+			'animateTransform',
+			'animatetransform',
+			'set',
 		);
 
 		foreach ( $blocked_tags as $tag ) {
@@ -1855,12 +1901,27 @@ class RequestApi {
 			}
 
 			foreach ( $attributes as $attr ) {
-				$attr_name  = strtolower( $attr->name );
+				$node_local_name = $attr->localName; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+				$node_ns_uri     = $attr->namespaceURI; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+				$node_qname      = $attr->name;
+
+				// Use the local name (namespace prefix stripped) for matching so
+				// namespaced attributes like xlink:href are not missed, but keep
+				// the namespace URI so removal can target the correct node.
+				$attr_name  = strtolower( $node_local_name ? $node_local_name : $node_qname );
 				$attr_value = $attr->value;
+
+				$mark_for_removal = static function () use ( &$remove_attrs, $node_qname, $node_ns_uri, $attr_name ) {
+					$remove_attrs[] = array(
+						'name'  => $node_qname,
+						'ns'    => $node_ns_uri,
+						'local' => $attr_name,
+					);
+				};
 
 				// Remove all event-handler attributes (onclick, onload, onerror, etc.).
 				if ( 0 === strpos( $attr_name, 'on' ) ) {
-					$remove_attrs[] = $attr->name;
+					$mark_for_removal();
 					continue;
 				}
 
@@ -1871,13 +1932,13 @@ class RequestApi {
 					);
 
 					if ( preg_match( '/^(javascript|vbscript|data):/i', $normalized ) ) {
-						$remove_attrs[] = $attr->name;
+						$mark_for_removal();
 						continue;
 					}
 
 					// <use> elements must only reference same-document fragments (#id).
 					if ( 'use' === $tag_name && '#' !== substr( ltrim( $attr_value ), 0, 1 ) ) {
-						$remove_attrs[] = $attr->name;
+						$mark_for_removal();
 						continue;
 					}
 				}
@@ -1890,28 +1951,24 @@ class RequestApi {
 						preg_match( '/javascript:/i', $clean ) ||
 						preg_match( '/expression\s*\(/i', $clean )
 					) {
-						$remove_attrs[] = $attr->name;
+						$mark_for_removal();
 						continue;
 					}
 				}
 
 				// xml:base can redirect relative references to an attacker-controlled URL.
-				if ( 'xml:base' === $attr_name ) {
-					$remove_attrs[] = $attr->name;
+				if ( 'base' === $attr_name && 'http://www.w3.org/XML/1998/namespace' === $node_ns_uri ) {
+					$mark_for_removal();
 				}
 			}
 
-			foreach ( $remove_attrs as $raw_name ) {
-				if ( false !== strpos( $raw_name, ':' ) ) {
-					$parts  = explode( ':', $raw_name, 2 );
-					$ns_uri = $el->lookupNamespaceURI( $parts[0] );
-
-					if ( $ns_uri ) {
-						$el->removeAttributeNS( $ns_uri, $parts[1] );
-					}
+			foreach ( $remove_attrs as $target ) {
+				if ( $target['ns'] ) {
+					$el->removeAttributeNS( $target['ns'], $target['local'] );
 				}
 
-				$el->removeAttribute( $raw_name );
+				// Also remove any non-namespaced attribute sharing the qualified name.
+				$el->removeAttribute( $target['name'] );
 			}
 		}
 

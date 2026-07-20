@@ -8,6 +8,7 @@
 namespace PRAD\Includes\Common;
 
 use PRAD\Includes\Compatibility\BaseCurrency;
+use PRAD\Includes\Xpo;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -183,7 +184,10 @@ class Hooks {
 				$sale_c        = $sale ? ( ( $price_product * $sale ) / 100 ) : null;
 				return $this->get_price_html( $regular_c, $sale_c, $product_id );
 			case 'per_char':
-				return $this->get_price_html( $regular, $sale, $product_id );
+			case 'per_char_no_space':
+				return $this->get_per_unit_price_html( $regular, $sale, $product_id, Xpo::get_prad_settings_item( 'characterText', 'Character' ) );
+			case 'per_word':
+				return $this->get_per_unit_price_html( $regular, $sale, $product_id, Xpo::get_prad_settings_item( 'wordText', 'Word' ) );
 			case 'per_unit':
 				return $this->get_price_html( $regular, $sale, $product_id );
 			case 'no_cost':
@@ -277,6 +281,60 @@ class Hooks {
 				$html = '<span class="pricex">' . wc_price( $sale ) . '</span>';
 			}
 		}
+
+		return wp_kses(
+			$html,
+			$this->handle_prad_allowed_html_tags()
+		);
+	}
+
+	/**
+	 * Generate HTML for a count-based price type (per_char/per_word), rendered
+	 * as "rate/unit * count = total". Count starts at 0 on initial page load;
+	 * the frontend script updates this live as the customer types.
+	 *
+	 * @param float      $regular    Regular price (rate).
+	 * @param float|null $sale       Sale price (rate), if any.
+	 * @param int        $product_id Product ID.
+	 * @param string     $unit       Unit label (e.g. 'Character', 'Word').
+	 *
+	 * @return string HTML representation of the pricing breakdown.
+	 */
+	private function get_per_unit_price_html( $regular, $sale, $product_id, $unit ) {
+		$regular = $regular ? $this->handle_prad_raw_tax_currency_compitable_price(
+			array(
+				'price'      => $regular,
+				'product_id' => $product_id,
+				'source'     => 'product_page',
+			)
+		) : 0;
+
+		$rate = $regular;
+
+		if ( $sale ) {
+			$sale = $this->handle_prad_raw_tax_currency_compitable_price(
+				array(
+					'price'      => $sale,
+					'product_id' => $product_id,
+					'source'     => 'product_page',
+				)
+			);
+			$rate = $sale;
+		}
+
+		$count = 0;
+		$total = $rate * $count;
+
+		$rate_html = $sale
+			? '<del>' . wc_price( $regular ) . '</del> <ins>' . wc_price( $sale ) . '</ins>'
+			: wc_price( $regular );
+
+		$breakdown_hidden = $count > 0 ? '' : ' prad-d-none';
+
+		$html = '<span class="pricex prad-per-unit-price" data-unit-rate="' . esc_attr( $rate ) . '">'
+			. $rate_html . '/' . esc_html( $unit )
+			. '<span class="prad-per-unit-breakdown' . esc_attr( $breakdown_hidden ) . '"> * <span class="prad-per-unit-count">' . esc_html( $count ) . '</span> = <span class="prad-per-unit-total">' . wc_price( $total ) . '</span></span>'
+			. '</span>';
 
 		return wp_kses(
 			$html,
@@ -553,6 +611,9 @@ class Hooks {
 				'num_decimals'   => get_option( 'woocommerce_price_num_decimals', '2' ),
 				'currency_pos'   => get_option( 'woocommerce_currency_pos', 'left' ),
 				'currencySymbol' => function_exists( 'get_woocommerce_currency_symbol' ) ? get_woocommerce_currency_symbol() : '$',
+				'characterText'  => \PRAD\Includes\Xpo::get_prad_settings_item( 'characterText', 'Character' ),
+				'wordText'       => \PRAD\Includes\Xpo::get_prad_settings_item( 'wordText', 'Word' ),
+				'date_format'    => get_option( 'date_format' ),
 			),
 			product_addons()->get_currency_converted_data(),
 		);

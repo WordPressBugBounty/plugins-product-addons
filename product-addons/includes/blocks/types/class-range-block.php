@@ -127,6 +127,10 @@ class Range_Block extends Abstract_Block {
 			}
 		}
 
+		if ( $this->should_show_price_beside_field( $price_info ) ) {
+			$html .= $this->render_price_html( $price_info, 'beside' );
+		}
+
 		$html .= '</div>';
 
 		return $html;

@@ -251,6 +251,11 @@ class Xpo {
 				'medium'   => 'plugin-meta',
 				'campaign' => 'wowaddons-dashboard',
 			),
+			'plugin_meta_summer_db'        => array(
+				'source'   => 'db-wowaddons-plugin-meta',
+				'medium'   => 'summer-sale',
+				'campaign' => 'wowaddons-dashboard',
+			),
 			'massive_sale'      => array(
 				'source'   => 'db-wowaddons-notice-logo',
 				'medium'   => 'massive-sale',

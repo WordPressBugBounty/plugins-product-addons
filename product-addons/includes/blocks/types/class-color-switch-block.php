@@ -146,12 +146,43 @@ class Color_Switch_Block extends Abstract_Block {
 			$html .= $this->render_block_content( (object) $display_item, $index, $price_info );
 		}
 
+		if ( $layout === '_img' && empty( $this->same_price_info['enabled'] ) ) {
+			$html .= sprintf(
+				'<div class="prad-text-center">%s</div>',
+				$this->render_price_html( $price_info, 'beside' )
+			);
+		}
+
 		if ( $this->should_render_quantity_input( $layout ) && product_addons()->is_pro_feature_available() ) {
+			$html .= $this->render_quantity_input( $index );
+		}
+
+		if ( $this->get_property( 'enableCount', false ) && $this->is_overlay_count_hidden() && product_addons()->is_pro_feature_available() ) {
 			$html .= $this->render_quantity_input( $index );
 		}
 
 		$html .= '</div>';
 		return $html;
+	}
+
+	/**
+	 * Whether the swatch is a small overlay where the quantity input has no room and
+	 * should instead render outside the overlay.
+	 *
+	 * @return boolean
+	 */
+	private function is_overlay_count_hidden(): bool {
+		$layout = $this->get_property( 'layout', '_default' );
+		if ( '_overlay' !== $layout ) {
+			return false;
+		}
+
+		$styles = $this->get_property( '_styles', array() );
+		$height = $styles['height']['val'] ?? null;
+		$width  = $styles['width']['val'] ?? null;
+		$radius = $styles['radius']['val'] ?? null;
+
+		return is_numeric( $height ) && is_numeric( $width ) && ( (float) $height < 100 || (float) $width < 100 ) && (float) $radius > 30;
 	}
 
 	/**
@@ -175,7 +206,7 @@ class Color_Switch_Block extends Abstract_Block {
 		$html .= $this->render_swatch_mark();
 
 		if ( $layout === '_overlay' ) {
-			$html .= $this->render_block_content( (object) $item, $index, $price_info );
+			$html .= $this->render_block_content( (object) $item, $index, $price_info, '', $this->is_overlay_count_hidden() );
 		}
 
 		$html .= '</div>';
