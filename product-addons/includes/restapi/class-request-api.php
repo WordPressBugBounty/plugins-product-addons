@@ -234,6 +234,14 @@ class RequestApi {
 				'callback'            => array( $this, 'get_product_link_callback' ),
 				'permission_callback' => array( $this, 'prad_get_view_only_permissions' ),
 			),
+
+			// Dismiss the builder onboarding tour.
+			array(
+				'endpoint'            => 'dismiss_tour',
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'dismiss_tour_callback' ),
+				'permission_callback' => array( $this, 'prad_get_admin_permissions' ),
+			),
 		);
 
 		foreach ( $routes as $route ) {
@@ -359,6 +367,7 @@ class RequestApi {
 				);
 			}
 
+			update_option( 'prad_first_option_created', 'yes' );
 			update_post_meta( $id, 'prad_addons_blocks', $content );
 			$required_options = $required_fields ? $required_fields : array();
 			update_post_meta( $id, 'prad_required_options', $required_options );
@@ -622,6 +631,7 @@ class RequestApi {
 		}
 
 		// Copy the custom meta data.
+		update_option( 'prad_first_option_created', 'yes' );
 		$blocks = $content ? $content : get_post_meta( $id, 'prad_addons_blocks', true );
 		update_post_meta( $new_id, 'prad_addons_blocks', $blocks );
 
@@ -666,6 +676,7 @@ class RequestApi {
 		);
 
 		$new_id = wp_insert_post( $args );
+		update_option( 'prad_first_option_created', 'yes' );
 		update_post_meta( $new_id, 'prad_addons_blocks', $content );
 
 		return new WP_REST_Response(
@@ -2557,6 +2568,28 @@ class RequestApi {
 			array(
 				'success' => true,
 				'message' => __( 'Font updated successfully.', 'product-addons' ),
+			),
+			200
+		);
+	}
+
+	/**
+	 * Dismiss the builder onboarding tour.
+	 *
+	 * Sets the same flag that creating a first option list sets, so the site
+	 * stops counting as a fresh install. Skipping the tour never creates an
+	 * add-on, so without this the tour would reappear on every page load.
+	 *
+	 * @since v.1.6.17
+	 *
+	 * @return WP_REST_Response
+	 */
+	public function dismiss_tour_callback() {
+		update_option( 'prad_first_option_created', 'yes' );
+
+		return new WP_REST_Response(
+			array(
+				'success' => true,
 			),
 			200
 		);

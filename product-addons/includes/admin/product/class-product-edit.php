@@ -53,7 +53,7 @@ class ProductEdit {
 		?>
 		<div class="panel woocommerce_options_panel" id="prad_tab_data" style="padding: 20px !important;">
 		<div id="prad-product-edit-wrap" data-product-id="<?php echo esc_attr( $product_id ); ?>"></div>
-		
+		</div>
 		<?php
 	}
 }

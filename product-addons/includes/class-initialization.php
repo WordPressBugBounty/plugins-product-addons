@@ -113,7 +113,7 @@ class Initialization {
 							'ajax'            => admin_url( 'admin-ajax.php' ),
 							'version'         => PRAD_VER,
 							'isActive'        => product_addons()->is_lc_active(),
-							'isExpired'        => Xpo::is_lc_expired(),
+							'isExpired'       => Xpo::is_lc_expired(),
 							'license'         => get_option( 'edd_prad_license_key' ),
 							'nonce'           => wp_create_nonce( 'prad-nonce' ),
 							'decimal_sep'     => get_option( 'woocommerce_price_decimal_sep', '.' ),
@@ -126,6 +126,7 @@ class Initialization {
 								'name'  => $user_info->first_name ? $user_info->first_name . ( $user_info->last_name ? ' ' . $user_info->last_name : '' ) : $user_info->user_login,
 								'email' => $user_info->user_email,
 							),
+							'isFreshInstall'  => self::is_fresh_install(),
 							'helloBar'        => Notice::get_hellobar_config(),
 							'uploadFileTypes' => product_addons()->prad_get_upload_allowed_file_types(),
 							'pradAttributes'  => product_addons()->prad_get_attributes(),
@@ -144,27 +145,50 @@ class Initialization {
 
 			wp_localize_script(
 				'prad-product-edit-script',
-				'pradProductEditData',
-				array(
-					'productId' => get_the_ID(),
-				)
-			);
-
-			wp_localize_script(
-				'prad-product-edit-script',
 				'pradBackendData',
 				array(
-					'url'          => PRAD_URL,
-					'db_url'       => admin_url( 'admin.php?page=prad-dashboard#' ),
-					'ajax'         => admin_url( 'admin-ajax.php' ),
-					'version'      => PRAD_VER,
-					'nonce'        => wp_create_nonce( 'prad-nonce' ),
-					'decimal_sep'  => get_option( 'woocommerce_price_decimal_sep', '.' ),
-					'num_decimals' => get_option( 'woocommerce_price_num_decimals', '2' ),
-					'currency_pos' => get_option( 'woocommerce_currency_pos', 'left' ),
+					'url'        => PRAD_URL,
+					'db_url'     => admin_url( 'admin.php?page=prad-dashboard#' ),
+					'ajax'       => admin_url( 'admin-ajax.php' ),
+					'version'    => PRAD_VER,
+					'nonce'      => wp_create_nonce( 'prad-nonce' ),
+					'product_id' => get_the_ID(),
 				)
 			);
 		}
+	}
+
+	/**
+	 * Check if the user has never created an option list.
+	 *
+	 * Used to show the onboarding get-started screen and trimmed
+	 * header on the dashboard for brand-new users.
+	 *
+	 * @since v.1.6.17
+	 *
+	 * @return bool
+	 */
+	public static function is_fresh_install() {
+		if ( 'yes' === get_option( 'prad_first_option_created', '' ) ) {
+			return false;
+		}
+
+		$existing = get_posts(
+			array(
+				'post_type'      => 'prad_option',
+				'post_status'    => 'any',
+				'posts_per_page' => 1,
+				'fields'         => 'ids',
+			)
+		);
+
+		if ( ! empty( $existing ) ) {
+			// Existing users from before the flag existed: backfill it.
+			update_option( 'prad_first_option_created', 'yes' );
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
@@ -181,7 +205,8 @@ class Initialization {
 			if ( wp_doing_ajax() || is_network_admin() || isset( $_GET['activate-multi'] ) || isset( $_POST['action'] ) && 'activate-selected' == $_POST['action'] ) { // phpcs:ignore
 				return;
 			}
-			exit( wp_safe_redirect( admin_url( 'admin.php?page=prad-dashboard#dashboard' ) ) ); // phpcs:ignore
+			$tab = self::is_fresh_install() ? 'lists' : 'dashboard';
+			exit( wp_safe_redirect( admin_url( 'admin.php?page=prad-dashboard#' . $tab ) ) ); // phpcs:ignore
 		}
 	}
 }
