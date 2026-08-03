@@ -155,7 +155,7 @@ class Radio_Block extends Abstract_Block {
 		$justify = 'left';
 
 		return sprintf(
-			'prad-radio-item-wrapper prad-d-flex prad-item-center prad-gap-8 prad-justify-%s',
+			'prad-radio-item-wrapper prad-d-flex prad-item-start prad-gap-8 prad-justify-%s',
 			esc_attr( $justify )
 		);
 	}
@@ -226,7 +226,7 @@ class Radio_Block extends Abstract_Block {
 
 		$html  = '<div class="prad-radio-item prad-d-flex prad-item-center prad-gap-10">';
 		$html .= sprintf( '<input %s />', $this->build_attributes( $this->get_radio_input_attributes( $item, $index, $price_info ) ) );
-		$html .= sprintf( '<label for="%s" class="prad-d-flex prad-item-center prad-gap-10">', esc_attr( $blockid . $index ) );
+		$html .= sprintf( '<label for="%s" class="prad-d-flex prad-item-start prad-gap-10">', esc_attr( $blockid . $index ) );
 		$html .= '<div class="prad-radio-mark prad-realtive prad-br-round prad-selection-none"></div>';
 		$html .= $this->render_radio_content( $item, $allowed_tags );
 		$html .= '</label>';
@@ -247,16 +247,20 @@ class Radio_Block extends Abstract_Block {
 
 		if ( isset( $item['img'] ) && $item['img'] && product_addons()->is_pro_feature_available() ) {
 			$html .= sprintf(
-				'<img class="prad-block-item-img" src="%s" alt="Item" data-tooltip-label="%s" />',
+				'<img class="prad-block-item-img" src="%s" alt="Item" data-tooltip-label="%s" data-tooltip-description="%s" />',
 				esc_url( $item['img'] ),
-				esc_attr( $item['value'] ?? '' )
+				esc_attr( $item['value'] ?? '' ),
+				esc_attr( $this->get_option_tooltip_description( $item ) )
 			);
 		}
 
+		$html .= '<div class="prad-option-content">';
 		$html .= sprintf(
 			'<div title="%1$s" class="prad-ellipsis-2">%1$s</div>',
 			wp_kses( $item['value'], $allowed_tags )
 		);
+		$html .= $this->render_option_description( $item );
+		$html .= '</div>';
 
 		$html .= '</div>';
 
@@ -276,7 +280,7 @@ class Radio_Block extends Abstract_Block {
 		$columns      = $this->get_property( 'columns', 1 );
 		$allowed_tags = $this->allowed_html_tags;
 
-		$html = '<div class="prad-d-flex prad-item-center prad-gap-12">';
+		$html = '<div class="prad-d-flex prad-item-start prad-gap-12">';
 
 		if ( ( $item['type'] != 'no_cost' ) && ! ( ! empty( $this->same_price_info['enabled'] ) && product_addons()->is_pro_feature_available() ) ) {
 			$html .= sprintf(
@@ -342,6 +346,7 @@ class Radio_Block extends Abstract_Block {
 		<div class="prad-img-tooltip" role="tooltip" aria-hidden="true">
 			<img src="" alt="" />
 			<span class="prad-img-tooltip-label"></span>
+			<span class="prad-img-tooltip-description"></span>
 		</div>';
 	}
 }

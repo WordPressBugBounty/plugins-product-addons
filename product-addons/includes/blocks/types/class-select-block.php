@@ -141,11 +141,14 @@ class Select_Block extends Abstract_Block {
 			// Option content
 			$html .= '<div class="prad-block-content prad-d-flex prad-item-center">';
 			$html .= $this->maybe_render_option_image( $item );
+			$html .= '<div class="prad-option-content">';
 			$html .= sprintf(
 				'<div class="prad-ellipsis-2" title="%1$s">%2$s</div>',
 				esc_attr( $item['value'] ),
 				wp_kses( $item['value'], $this->allowed_html_tags )
 			);
+			$html .= $this->render_option_description( $item );
+			$html .= '</div>';
 			$html .= '</div>';
 
 			// Price if not free

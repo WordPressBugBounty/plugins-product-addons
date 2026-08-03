@@ -514,7 +514,7 @@ class Xpo {
 	 * @param string $def Default capability (usually 'manage_options').
 	 * @return string The resolved capability.
 	 */
-	public static function prad_old_view_permisson_handler( $def = 'manage_options' ) {
+	public static function prad_old_view_permisson_handler( $def = 'manage_woocommerce' ) {
 		$view_capability = apply_filters( 'prad_handle_capability_admin_only', $def );  // check for admin hook first.
 		$view_capability = apply_filters( 'prad_handle_capability_view_only', $view_capability );   // then check for view only hook.
 		$view_capability = apply_filters( 'prad_demo_capability_check', $view_capability ); // finally check for old demo hook for backward compatibility.
@@ -530,7 +530,7 @@ class Xpo {
 	 * @param string $def Default capability (usually 'manage_options').
 	 * @return string The resolved capability.
 	 */
-	public static function prad_manage_admin_permisson_handler( $def = 'manage_options' ) {
+	public static function prad_manage_admin_permisson_handler( $def = 'manage_woocommerce' ) {
 		$admin_capability = apply_filters( 'prad_handle_capability_admin_only', $def );  // check for admin hook.
 
 		return $admin_capability;

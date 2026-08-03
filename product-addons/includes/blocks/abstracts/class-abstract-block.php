@@ -213,6 +213,19 @@ abstract class Abstract_Block implements Block_Interface {
 	}
 
 	/**
+	 * Get the URL query key used to pre-select this block's options.
+	 *
+	 * When set, the frontend looks this key up in the product page query
+	 * string (e.g. `?color=green`) and pre-selects the matching option(s),
+	 * overriding `defval`. An empty key opts the field out entirely.
+	 *
+	 * @return string
+	 */
+	protected function get_url_key(): string {
+		return trim( (string) $this->get_property( 'urlKey', '' ) );
+	}
+
+	/**
 	 * Get common HTML attributes for the block
 	 *
 	 * @return array
@@ -235,6 +248,7 @@ abstract class Abstract_Block implements Block_Interface {
 			'required'        => $this->is_required() ? 'yes' : 'no',
 			'fieldconditions' => $this->get_field_conditions(),
 			'defval'          => $this->get_property( 'defval', null ),
+			'urlkey'          => $this->get_url_key(),
 		);
 
 		return array_merge(
@@ -302,6 +316,115 @@ abstract class Abstract_Block implements Block_Interface {
 		);
 
 		return $html;
+	}
+
+	/**
+	 * Field types able to show the option description inside the image preview tooltip.
+	 *
+	 * @var array
+	 */
+	const OPTION_DESC_TOOLTIP_TYPES = array( 'img_switch' );
+
+	/**
+	 * Get the option description settings of the block.
+	 *
+	 * @return array
+	 */
+	protected function get_option_desc_settings(): array {
+		$settings = $this->get_property( 'optionDesc', array() );
+		return is_array( $settings ) ? $settings : array();
+	}
+
+	/**
+	 * Whether option descriptions are enabled for this block.
+	 *
+	 * @return boolean
+	 */
+	protected function is_option_desc_enabled(): bool {
+		$settings = $this->get_option_desc_settings();
+		return ! empty( $settings['enabled'] );
+	}
+
+	/**
+	 * Resolve the effective option description position.
+	 *
+	 * Tooltip is only available on fields rendering an image preview, so every
+	 * other field falls back to rendering below the option title.
+	 *
+	 * @return string Either `tooltip` or `belowTitle`.
+	 */
+	protected function get_option_desc_position(): string {
+		$settings = $this->get_option_desc_settings();
+
+		if ( in_array( $this->get_type(), self::OPTION_DESC_TOOLTIP_TYPES, true )
+			&& isset( $settings['position'] ) && 'tooltip' === $settings['position'] ) {
+			return 'tooltip';
+		}
+
+		return 'belowTitle';
+	}
+
+	/**
+	 * Whether the option description renders inside the image preview tooltip.
+	 *
+	 * The tooltip only exists while the image preview is enabled, so nothing is
+	 * rendered when that setting is turned off.
+	 *
+	 * @return boolean
+	 */
+	protected function is_option_desc_in_tooltip(): bool {
+		return $this->is_option_desc_enabled()
+			&& $this->get_property( 'enableImagePreview', false )
+			&& 'tooltip' === $this->get_option_desc_position()
+			&& product_addons()->is_pro_feature_available();
+	}
+
+	/**
+	 * Get the option description of a single option, when it should render
+	 * below the option title.
+	 *
+	 * @param array $item Option item.
+	 * @return string
+	 */
+	protected function get_option_description( $item ): string {
+		if ( ! $this->is_option_desc_enabled() || 'belowTitle' !== $this->get_option_desc_position() || ! product_addons()->is_pro_feature_available() ) {
+			return '';
+		}
+
+		return isset( $item['optionDesc'] ) ? (string) $item['optionDesc'] : '';
+	}
+
+	/**
+	 * Render the option description below an option title.
+	 *
+	 * @param array $item Option item.
+	 * @return string
+	 */
+	protected function render_option_description( $item ): string {
+		$description = $this->get_option_description( $item );
+
+		if ( '' === $description ) {
+			return '';
+		}
+
+		return sprintf(
+			'<div class="prad-option-description">%s</div>',
+			wp_kses( $description, $this->allowed_html_tags )
+		);
+	}
+
+	/**
+	 * Get the option description used as an image preview tooltip.
+	 *
+	 * @param array $item Option item.
+	 * @return string
+	 */
+	protected function get_option_tooltip_description( $item ): string {
+		if ( ! $this->is_option_desc_in_tooltip() ) {
+			return '';
+		}
+
+		return isset( $item['optionDesc'] ) ? (string) $item['optionDesc'] : '';
 	}
 
 	/**
@@ -538,6 +661,7 @@ abstract class Abstract_Block implements Block_Interface {
 				<div title="<?php echo wp_kses( $item->value, $allowed_tags ); ?>" class="prad-block-content prad-ellipsis-2<?php echo $p_url ? ' prad-cursor-pointer prad-product-link' : ''; ?>" data-phref="<?php echo esc_url( $p_url ); ?>">
 					<?php echo wp_kses( $item->value, $allowed_tags ); ?>
 				</div>
+				<?php echo $this->render_option_description( (array) $item ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				<?php if ( 'no_cost' !== $item->type ) : ?>
 					<div class="prad-block-price prad-text-upper">
 						<?php echo wp_kses( $price_info['html'], $allowed_tags ); ?>
@@ -549,7 +673,7 @@ abstract class Abstract_Block implements Block_Interface {
 				echo wp_kses( $variation_html, $allowed_tags );
 			endif;
 			?>
-			<?php if ( $enable_count ) : ?>
+			<?php if ( $enable_count && product_addons()->is_pro_feature_available() ) : ?>
 				<input
 					id="prad_quantity_<?php echo esc_attr( $blockid . $index ); ?>"
 					name="prad_quantity_<?php echo esc_attr( $blockid . $index ); ?>"

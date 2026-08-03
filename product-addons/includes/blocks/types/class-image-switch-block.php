@@ -182,6 +182,10 @@ class Image_Switch_Block extends Abstract_Block {
 			$html .= $this->render_block_content( (object) $display_item, $index, $price_info );
 		}
 
+		if ( $layout === '_img' ) {
+			$html .= $this->render_option_description( $item );
+		}
+
 		if ( $layout === '_img' && empty( $this->same_price_info['enabled'] ) ) {
 			$html .= sprintf(
 				'<div class="prad-text-center">%s</div>',
@@ -295,10 +299,11 @@ class Image_Switch_Block extends Abstract_Block {
 
 		$html  = sprintf( '<label class="prad-lh-0 prad-mb-0" for="%s">', esc_attr( $blockid . $index ) );
 		$html .= sprintf(
-			'<img class="prad-swatch-item" title="%s" src="%s" alt="swatch item" data-tooltip-label="%s" />',
+			'<img class="prad-swatch-item" title="%s" src="%s" alt="swatch item" data-tooltip-label="%s" data-tooltip-description="%s" />',
 			esc_attr( $price_info['price'] ),
 			esc_url( $img_url ),
 			esc_attr( $item['value'] ?? '' ),
+			esc_attr( $this->get_option_tooltip_description( $item ) ),
 		);
 		$html .= '</label>';
 
@@ -368,6 +373,7 @@ class Image_Switch_Block extends Abstract_Block {
 		<div class="prad-img-tooltip" role="tooltip" aria-hidden="true">
 			<img src="" alt="" />
 			<span class="prad-img-tooltip-label"></span>
+			<span class="prad-img-tooltip-description"></span>
 		</div>';
 	}
 }

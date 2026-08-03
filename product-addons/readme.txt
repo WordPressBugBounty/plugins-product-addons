@@ -4,7 +4,7 @@ Tags: product addons, woocommerce product addons, extra product options, product
 Requires at least: 6.8
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.6.18
+Stable tag: 1.6.19
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -201,6 +201,11 @@ No, for some product fields like Headings, Texts, advanced custom logic options 
 7. Strategic Cross-selling 
 
 == Changelog ==
+= 1.6.19 – 03rd August 2026 =
+* New: Option description for individual choices in Radio, Checkbox, Dropdown, Image and Color Swatches fields.
+* New: Unique URL key per field, so a configured product can be shared.
+* Update: Shop Managers can now create and manage addons. 
+
 = 1.6.18 – 26th July 2026 =
 * New: Guided tour for new users to help set up their first addon.
 * Fix: Product data tabs were hidden on the product edit page.

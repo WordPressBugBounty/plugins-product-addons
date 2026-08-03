@@ -146,6 +146,10 @@ class Color_Switch_Block extends Abstract_Block {
 			$html .= $this->render_block_content( (object) $display_item, $index, $price_info );
 		}
 
+		if ( $layout === '_img' ) {
+			$html .= $this->render_option_description( $item );
+		}
+
 		if ( $layout === '_img' && empty( $this->same_price_info['enabled'] ) ) {
 			$html .= sprintf(
 				'<div class="prad-text-center">%s</div>',
