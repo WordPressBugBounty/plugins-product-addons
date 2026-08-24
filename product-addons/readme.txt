@@ -1,10 +1,10 @@
-=== Product Addons and Product Options With Custom Fields – WowAddons ===
+=== WowAddons – Product Addons and Product Options With Custom Fields ===
 Contributors: wpxpo, anik4e, jakirhasan
 Tags: product addons, woocommerce product addons, extra product options, product fields, WooCommerce product fields
 Requires at least: 6.8
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.6.19
+Stable tag: 1.6.20
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -201,6 +201,11 @@ No, for some product fields like Headings, Texts, advanced custom logic options 
 7. Strategic Cross-selling 
 
 == Changelog ==
+= 1.6.20 – 24th August 2026 =
+* New: Added default country option for Telephone field.
+* Update: Improved system stability with better state management.
+* Update: Enhanced onboarding experience with a cleaner UI.
+
 = 1.6.19 – 03rd August 2026 =
 * New: Option description for individual choices in Radio, Checkbox, Dropdown, Image and Color Swatches fields.
 * New: Unique URL key per field, so a configured product can be shared.

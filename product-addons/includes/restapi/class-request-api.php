@@ -8,6 +8,7 @@
 
 namespace PRAD\Includes\Restapi;
 
+use PRAD\Includes\Admin\Durbin\DurbinClient;
 use PRAD\Includes\Analytics;
 use PRAD\Includes\Xpo;
 use WP_REST_Response;
@@ -240,6 +241,12 @@ class RequestApi {
 				'endpoint'            => 'dismiss_tour',
 				'methods'             => 'POST',
 				'callback'            => array( $this, 'dismiss_tour_callback' ),
+				'permission_callback' => array( $this, 'prad_get_admin_permissions' ),
+			),
+			array(
+				'endpoint'            => 'durbin_subscribe',
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'durbin_subscribe_callback' ),
 				'permission_callback' => array( $this, 'prad_get_admin_permissions' ),
 			),
 		);
@@ -2593,5 +2600,15 @@ class RequestApi {
 			),
 			200
 		);
+	}
+
+	public function durbin_subscribe_callback( \WP_REST_Request $request ) {
+		if ( ! wp_verify_nonce( $request->get_header( 'X-WP-Nonce' ), 'wp_rest' ) ) {
+			return new WP_REST_Response( array( 'message' => 'Invalid nonce.' ), 403 );
+		}
+
+		DurbinClient::send( DurbinClient::WIZARD_ACTION );
+
+		return new WP_REST_Response( array( 'sent' => true ), 200 );
 	}
 }

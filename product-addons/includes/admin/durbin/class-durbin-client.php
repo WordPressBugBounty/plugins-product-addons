@@ -48,7 +48,9 @@ class DurbinClient {
 			}
 		}
 
-		wp_remote_post(
+		error_log( 'Durbin body: ' . print_r( $data, true ) ); // phpcs:ignore
+
+		$response = wp_remote_post(
 			self::URL,
 			array(
 				'timeout'     => 30,
@@ -62,6 +64,13 @@ class DurbinClient {
 				'body'        => $data,
 			)
 		);
+
+		if ( is_wp_error( $response ) ) {
+			error_log( 'Durbin error: ' . $response->get_error_message() ); // phpcs:ignore
+		} else {
+			error_log( 'Durbin response code: ' . wp_remote_retrieve_response_code( $response ) ); // phpcs:ignore
+			error_log( 'Durbin response body: ' . wp_remote_retrieve_body( $response ) ); // phpcs:ignore
+		}
 	}
 
 	/**

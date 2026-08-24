@@ -702,6 +702,24 @@ class Notice {
 				'close_color' => '#000000',
 				'visibility'  => ! Xpo::is_lc_active(),
 			),
+			array(
+				'key'         => 'prad_preco_sale_campaign_262_1',
+				'start'       => '2026-08-23 00:00 Asia/Dhaka', // format YY-MM-DD always set time 00:00 and zone Asia/Dhaka
+				'end'         => '2026-08-29 23:59 Asia/Dhaka', // format YY-MM-DD always set time 23:59 and zone Asia/Dhaka
+				'banner_src'  => PRAD_URL . 'assets/img/dashboard_banner/preco_banner_insider_deal.png',
+				'url'         => 'https://www.wpxpo.com/product/wowrecommend/?utm_source=db-wowaddons-notice&utm_medium=insider-deal&utm_campaign=wowaddons-dashboard/#pricing',
+				'close_color' => '#ffffff',
+				'visibility'  => true,
+			),
+			array(
+				'key'         => 'prad_preco_sale_campaign_262_2',
+				'start'       => '2026-08-30 00:00 Asia/Dhaka', // format YY-MM-DD always set time 00:00 and zone Asia/Dhaka.
+				'end'         => '2026-09-19 23:59 Asia/Dhaka', // format YY-MM-DD always set time 23:59 and zone Asia/Dhaka.
+				'banner_src'  => PRAD_URL . 'assets/img/dashboard_banner/preco_banner_early_bird.png',
+				'url'         => 'https://www.wpxpo.com/product/wowrecommend/?utm_source=db-wowaddons-notice&utm_medium=early-bird&utm_campaign=wowaddons-dashboard/#pricing',
+				'close_color' => '#ffffff',
+				'visibility'  => true,
+			),
 		);
 
 		foreach ( $banner_notices as $notice ) {

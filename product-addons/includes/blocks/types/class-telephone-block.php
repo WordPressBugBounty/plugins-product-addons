@@ -78,6 +78,15 @@ class Telephone_Block extends Abstract_Block {
 		);
 		$block_id   = $this->get_block_id();
 
+		// Country selected in the editor, used for the initial flag and dial code.
+		$default_country = $this->get_property(
+			'defaultCountry',
+			array(
+				'code' => 'bd',
+				'dial' => '880',
+			)
+		);
+
 		// Determine flag display logic once
 		$flag_display = $this->get_flag_display_config( $properties['flag_style'], $properties['show_flag'] );
 
@@ -96,7 +105,11 @@ class Telephone_Block extends Abstract_Block {
 		// Build HTML using array for better performance
 		$html_parts   = array();
 		$html_parts[] = '<div class="sss prad-d-flex prad-item-center prad-gap-12 prad-mb-12">';
-		$html_parts[] = sprintf( '<div class="%s">', $this->build_css_classes( $tel_classes ) );
+		$html_parts[] = sprintf(
+			'<div class="%s" data-default-country="%s">',
+			$this->build_css_classes( $tel_classes ),
+			esc_attr( $default_country ? $default_country['code'] : '' )
+		);
 
 		// Add flag selector if needed
 		if ( $flag_display['show_flag'] ) {
@@ -109,7 +122,12 @@ class Telephone_Block extends Abstract_Block {
 		// Dial code display
 		if ( $flag_display['show_flag'] || $flag_display['show_dial'] ) {
 			$dial_classes = $flag_display['show_dial'] ? '' : 'prad-d-none';
-			$html_parts[] = sprintf( '<div class="prad-dial-code-show %s" data-selected="bd">+880</div>', $dial_classes );
+			$html_parts[] = sprintf(
+				'<div class="prad-dial-code-show %s" data-selected="%s">+%s</div>',
+				esc_attr( $dial_classes ),
+				esc_attr( $default_country ? $default_country['code'] : '' ),
+				esc_html( $default_country ? $default_country['dial'] : '' )
+			);
 		}
 
 		// Input field with optimized attributes
