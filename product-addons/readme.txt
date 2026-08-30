@@ -4,7 +4,7 @@ Tags: product addons, woocommerce product addons, extra product options, product
 Requires at least: 6.8
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.6.20
+Stable tag: 1.6.21
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -201,6 +201,9 @@ No, for some product fields like Headings, Texts, advanced custom logic options 
 7. Strategic Cross-selling 
 
 == Changelog ==
+= 1.6.21 – 30th August 2026 =
+* Fix: Minor bug fixes and performance improved.
+
 = 1.6.20 – 24th August 2026 =
 * New: Added default country option for Telephone field.
 * Update: Improved system stability with better state management.

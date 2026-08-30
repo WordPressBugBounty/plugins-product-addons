@@ -709,7 +709,7 @@ class Notice {
 				'banner_src'  => PRAD_URL . 'assets/img/dashboard_banner/preco_banner_insider_deal.png',
 				'url'         => 'https://www.wpxpo.com/product/wowrecommend/?utm_source=db-wowaddons-notice&utm_medium=insider-deal&utm_campaign=wowaddons-dashboard/#pricing',
 				'close_color' => '#ffffff',
-				'visibility'  => true,
+				'visibility'  => ! Xpo::is_lc_active(),
 			),
 			array(
 				'key'         => 'prad_preco_sale_campaign_262_2',
@@ -718,7 +718,7 @@ class Notice {
 				'banner_src'  => PRAD_URL . 'assets/img/dashboard_banner/preco_banner_early_bird.png',
 				'url'         => 'https://www.wpxpo.com/product/wowrecommend/?utm_source=db-wowaddons-notice&utm_medium=early-bird&utm_campaign=wowaddons-dashboard/#pricing',
 				'close_color' => '#ffffff',
-				'visibility'  => true,
+				'visibility'  => ! Xpo::is_lc_active(),
 			),
 		);
 
