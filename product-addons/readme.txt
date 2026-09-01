@@ -4,7 +4,7 @@ Tags: product addons, woocommerce product addons, extra product options, product
 Requires at least: 6.8
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.6.21
+Stable tag: 1.7.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -201,6 +201,9 @@ No, for some product fields like Headings, Texts, advanced custom logic options 
 7. Strategic Cross-selling 
 
 == Changelog ==
+= 1.7.0 – 1st September 2026 =
+* Update: Redesigned the Addons Builder with a new field list view — drag and drop fields to reorder, move in and out of sections, checkbox multi-select, and quick edit/duplicate/delete actions.
+
 = 1.6.21 – 30th August 2026 =
 * Fix: Minor bug fixes and performance improved.
 

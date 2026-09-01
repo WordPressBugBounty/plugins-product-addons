@@ -256,6 +256,8 @@ class Functions {
 					'url'       => get_permalink( $product_id ),
 					'item_name' => rawurldecode( wp_strip_all_tags( $product->get_name() ) ),
 					'thumbnail' => wp_get_attachment_url( $product->get_image_id() ),
+					'regular'   => $product->get_regular_price(),
+					'sale'      => $product->get_sale_price(),
 				);
 			}
 		}
