@@ -355,13 +355,15 @@ class RequestApi {
 		}
 
 		// Prepare the attributes for the post.
-		$attr = array(
+		$attr    = array(
 			'post_title'   => $title,
 			'post_status'  => $status,
 			'post_content' => $title,
 			'post_type'    => 'prad_option',
 		);
-
+		$message = 'publish' === $status
+				? __( 'Option set updated & published.', 'product-addons' )
+				: __( 'Option set updated & saved as a draft.', 'product-addons' );
 		if ( 'new' === $id ) {
 			$id = wp_insert_post( $attr );
 			if ( is_wp_error( $id ) ) {
@@ -386,7 +388,7 @@ class RequestApi {
 			return new WP_REST_Response(
 				array(
 					'success' => true,
-					'message' => __( 'New option added.', 'product-addons' ),
+					'message' => $message,
 					'id'      => $id,
 				),
 				200
@@ -418,7 +420,7 @@ class RequestApi {
 				array(
 					'success' => true,
 					'content' => $content,
-					'message' => __( 'Option updated.', 'product-addons' ),
+					'message' => $message,
 				),
 				200
 			);

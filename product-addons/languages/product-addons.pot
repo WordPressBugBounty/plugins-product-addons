@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv3.
 msgid ""
 msgstr ""
-"Project-Id-Version: WowAddons – Product Addons and Product Options With Custom Fields 1.7.0\n"
+"Project-Id-Version: WowAddons – Product Addons and Product Options With Custom Fields 1.7.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/build\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-01T09:41:50+00:00\n"
+"POT-Creation-Date: 2026-09-06T09:29:56+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: product-addons\n"
@@ -305,166 +305,166 @@ msgid "Addons Field"
 msgstr ""
 
 #: includes/restapi/class-request-api.php:303
-#: includes/restapi/class-request-api.php:607
+#: includes/restapi/class-request-api.php:609
 msgid "Post not found."
 msgstr ""
 
 #: includes/restapi/class-request-api.php:351
-#: includes/restapi/class-request-api.php:446
-#: includes/restapi/class-request-api.php:518
-#: includes/restapi/class-request-api.php:585
-#: includes/restapi/class-request-api.php:673
-#: includes/restapi/class-request-api.php:720
-#: includes/restapi/class-request-api.php:1209
-#: includes/restapi/class-request-api.php:1420
-#: includes/restapi/class-request-api.php:1485
-#: includes/restapi/class-request-api.php:1521
-#: includes/restapi/class-request-api.php:2442
-#: includes/restapi/class-request-api.php:2522
+#: includes/restapi/class-request-api.php:448
+#: includes/restapi/class-request-api.php:520
+#: includes/restapi/class-request-api.php:587
+#: includes/restapi/class-request-api.php:675
+#: includes/restapi/class-request-api.php:722
+#: includes/restapi/class-request-api.php:1211
+#: includes/restapi/class-request-api.php:1422
+#: includes/restapi/class-request-api.php:1487
+#: includes/restapi/class-request-api.php:1523
+#: includes/restapi/class-request-api.php:2444
+#: includes/restapi/class-request-api.php:2524
 msgid "Invalid or missing nonce."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:371
+#: includes/restapi/class-request-api.php:365
+msgid "Option set updated & published."
+msgstr ""
+
+#: includes/restapi/class-request-api.php:366
+msgid "Option set updated & saved as a draft."
+msgstr ""
+
+#: includes/restapi/class-request-api.php:373
 msgid "Failed to create a new option."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:389
-msgid "New option added."
-msgstr ""
-
-#: includes/restapi/class-request-api.php:402
+#: includes/restapi/class-request-api.php:404
 msgid "Failed to update the option."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:421
-msgid "Option updated."
-msgstr ""
-
-#: includes/restapi/class-request-api.php:456
-#: includes/restapi/class-request-api.php:528
+#: includes/restapi/class-request-api.php:458
+#: includes/restapi/class-request-api.php:530
 msgid "No IDs provided."
 msgstr ""
 
 #. translators: %1s - Post Id, %2s - Error Message
-#: includes/restapi/class-request-api.php:478
+#: includes/restapi/class-request-api.php:480
 msgid "Failed to update post ID: %1$s. Error: %2$s"
 msgstr ""
 
-#: includes/restapi/class-request-api.php:494
+#: includes/restapi/class-request-api.php:496
 msgid "Items updated successfully."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:559
+#: includes/restapi/class-request-api.php:561
 msgid "Items deleted successfully."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:595
+#: includes/restapi/class-request-api.php:597
 msgid "No ID provided."
 msgstr ""
 
 #. translators: %1s - Post Id
-#: includes/restapi/class-request-api.php:632
+#: includes/restapi/class-request-api.php:634
 msgid "Failed to duplicate post ID: %s."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:649
+#: includes/restapi/class-request-api.php:651
 msgid "Item duplicated successfully."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:692
+#: includes/restapi/class-request-api.php:694
 msgid "Imported successfully."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:933
+#: includes/restapi/class-request-api.php:935
 msgid "Invalid assigned data."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1220
+#: includes/restapi/class-request-api.php:1222
 msgid "No ID found"
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1306
+#: includes/restapi/class-request-api.php:1308
 msgid "Option Assigned Updated successfully"
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1445
+#: includes/restapi/class-request-api.php:1447
 msgid "Style saved successfully."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1498
+#: includes/restapi/class-request-api.php:1500
 msgid "Settings saved successfully."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1630
-#: includes/restapi/class-request-api.php:1696
-#: includes/restapi/class-request-api.php:2086
+#: includes/restapi/class-request-api.php:1632
+#: includes/restapi/class-request-api.php:1698
+#: includes/restapi/class-request-api.php:2088
 msgid "Invalid nonce."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1636
+#: includes/restapi/class-request-api.php:1638
 msgid "No file found."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1646
+#: includes/restapi/class-request-api.php:1648
 msgid "File size exceeds the maximum allowed limit (25MB)."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1674
+#: includes/restapi/class-request-api.php:1676
 msgid "Invalid file type."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1706
+#: includes/restapi/class-request-api.php:1708
 msgid "Upload limit exceeded. Please try again later."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:1737
+#: includes/restapi/class-request-api.php:1739
 msgid "SVG file could not be processed. Please check the file and try again."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:2101
+#: includes/restapi/class-request-api.php:2103
 msgid "Analytics data updated."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:2109
+#: includes/restapi/class-request-api.php:2111
 msgid "Invalid Analytics data."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:2256
+#: includes/restapi/class-request-api.php:2258
 msgid "No file found or invalid nonce."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:2270
-#: includes/restapi/class-request-api.php:2542
+#: includes/restapi/class-request-api.php:2272
+#: includes/restapi/class-request-api.php:2544
 msgid "Font title is required."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:2299
+#: includes/restapi/class-request-api.php:2301
 msgid "File size exceeds the maximum allowed limit (10MB)."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:2305
+#: includes/restapi/class-request-api.php:2307
 msgid "Invalid file extension. Allowed types are: woff, woff2, ttf."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:2395
+#: includes/restapi/class-request-api.php:2397
 msgid "Font uploaded successfully."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:2452
-#: includes/restapi/class-request-api.php:2532
+#: includes/restapi/class-request-api.php:2454
+#: includes/restapi/class-request-api.php:2534
 msgid "Font ID is required."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:2488
-#: includes/restapi/class-request-api.php:2568
+#: includes/restapi/class-request-api.php:2490
+#: includes/restapi/class-request-api.php:2570
 msgid "Font not found."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:2497
+#: includes/restapi/class-request-api.php:2499
 msgid "Font deleted successfully."
 msgstr ""
 
-#: includes/restapi/class-request-api.php:2577
+#: includes/restapi/class-request-api.php:2579
 msgid "Font updated successfully."
 msgstr ""
 
@@ -526,7 +526,6 @@ msgid "You are not allowed to do this"
 msgstr ""
 
 #: assets/js/prad-product-edit.js:151
-#: assets/js/wowaddons.js:169
 #: assets/js/wowaddons.js:170
 msgid "Untitled"
 msgstr ""
@@ -623,6 +622,16 @@ msgstr ""
 
 #: assets/js/wowaddons.js:2
 #: assets/js/wowaddons.js:163
+#: assets/js/wowaddons.js:165
+#: assets/js/wowaddons.js:168
+#: assets/js/wowaddons.js:169
+#: assets/js/wowaddons.js:170
+msgid "Cancel"
+msgstr ""
+
+#: assets/js/wowaddons.js:2
+#: assets/js/wowaddons.js:163
+#: assets/js/wowaddons.js:169
 msgid "Apply"
 msgstr ""
 
@@ -669,13 +678,6 @@ msgstr ""
 
 #: assets/js/wowaddons.js:2
 msgid "Are you sure you want to delete this font? Be careful, this procedure is irreversible. Do you want to proceed?"
-msgstr ""
-
-#: assets/js/wowaddons.js:2
-#: assets/js/wowaddons.js:163
-#: assets/js/wowaddons.js:165
-#: assets/js/wowaddons.js:170
-msgid "Cancel"
 msgstr ""
 
 #: assets/js/wowaddons.js:2
@@ -892,6 +894,36 @@ msgid "Specific Brand"
 msgstr ""
 
 #: assets/js/wowaddons.js:2
+#: assets/js/wowaddons.js:168
+msgid "Use This Template"
+msgstr ""
+
+#: assets/js/wowaddons.js:2
+msgid "Choose a template"
+msgstr ""
+
+#: assets/js/wowaddons.js:2
+msgid "Search templates…"
+msgstr ""
+
+#: assets/js/wowaddons.js:2
+#: assets/js/wowaddons.js:170
+msgid "Importing…"
+msgstr ""
+
+#: assets/js/wowaddons.js:2
+msgid "Upgrade Pro"
+msgstr ""
+
+#: assets/js/wowaddons.js:2
+msgid "View"
+msgstr ""
+
+#: assets/js/wowaddons.js:2
+msgid "No templates found for"
+msgstr ""
+
+#: assets/js/wowaddons.js:2
 msgid "Create Option"
 msgstr ""
 
@@ -905,39 +937,8 @@ msgid "Use Template"
 msgstr ""
 
 #: assets/js/wowaddons.js:2
-#: assets/js/wowaddons.js:168
-msgid "Choose a template"
-msgstr ""
-
-#: assets/js/wowaddons.js:2
-#: assets/js/wowaddons.js:168
-msgid "Search templates…"
-msgstr ""
-
-#: assets/js/wowaddons.js:2
-#: assets/js/wowaddons.js:168
-#: assets/js/wowaddons.js:170
-msgid "Importing…"
-msgstr ""
-
-#: assets/js/wowaddons.js:2
-#: assets/js/wowaddons.js:168
-msgid "Upgrade Pro"
-msgstr ""
-
-#: assets/js/wowaddons.js:2
 #: assets/js/wowaddons.js:170
 msgid "Import"
-msgstr ""
-
-#: assets/js/wowaddons.js:2
-#: assets/js/wowaddons.js:168
-msgid "View"
-msgstr ""
-
-#: assets/js/wowaddons.js:2
-#: assets/js/wowaddons.js:168
-msgid "No templates found for"
 msgstr ""
 
 #: assets/js/wowaddons.js:2
@@ -1167,7 +1168,6 @@ msgid "Enable Conditional Logic for this Element"
 msgstr ""
 
 #: assets/js/wowaddons.js:161
-#: assets/js/wowaddons.js:169
 #: assets/js/wowaddons.js:170
 msgid "Watch Tutorial"
 msgstr ""
@@ -1917,27 +1917,28 @@ msgid "Search elements…"
 msgstr ""
 
 #: assets/js/wowaddons.js:165
-msgid "Content & Layout"
+msgid "Input"
 msgstr ""
 
 #: assets/js/wowaddons.js:165
-msgid "Choice & Selection"
+msgid "Selection"
 msgstr ""
 
 #: assets/js/wowaddons.js:165
-msgid "Input & Contact"
+msgid "Media & Content"
 msgstr ""
 
 #: assets/js/wowaddons.js:165
-msgid "Color & Media"
+msgid "Advanced"
 msgstr ""
 
 #: assets/js/wowaddons.js:165
-msgid "Date, Formula & Advanced"
+msgid "Layout"
 msgstr ""
 
 #: assets/js/wowaddons.js:165
-msgid "Actions & Links"
+#: assets/js/wowaddons.js:168
+msgid "Action"
 msgstr ""
 
 #: assets/js/wowaddons.js:165
@@ -1961,12 +1962,12 @@ msgstr ""
 
 #. translators: 1: field label, 2: "Any" or "All", 3: number of rules
 #: assets/js/wowaddons.js:167
-msgid "Show %1$s if %2$s of these %3$d rules match:"
+msgid "<medium>Show { %1$s }</medium> if <medium>%2$s</medium> of these <medium>%3$d</medium> rules match:"
 msgstr ""
 
 #. translators: 1: field label, 2: "Any" or "All", 3: number of rules
 #: assets/js/wowaddons.js:168
-msgid "Hide %1$s if %2$s of these %3$d rules match:"
+msgid "<medium>Hide { %1$s }</medium> if <medium>%2$s</medium> of these <medium>%3$d</medium> rules match:"
 msgstr ""
 
 #: assets/js/wowaddons.js:168
@@ -1991,10 +1992,6 @@ msgstr ""
 
 #: assets/js/wowaddons.js:168
 msgid "Edit Conditions"
-msgstr ""
-
-#: assets/js/wowaddons.js:168
-msgid "Use This Template"
 msgstr ""
 
 #: assets/js/wowaddons.js:168
@@ -2028,11 +2025,23 @@ msgid "Duplicate"
 msgstr ""
 
 #: assets/js/wowaddons.js:168
+msgid "Delete field"
+msgstr ""
+
+#: assets/js/wowaddons.js:168
+msgid "Are you sure you want to delete this field?"
+msgstr ""
+
+#: assets/js/wowaddons.js:168
 msgid "Add Option"
 msgstr ""
 
 #: assets/js/wowaddons.js:168
-msgid "Action"
+msgid "Delete fields"
+msgstr ""
+
+#: assets/js/wowaddons.js:168
+msgid "Are you sure you want to delete the selected fields?"
 msgstr ""
 
 #: assets/js/wowaddons.js:168
@@ -2082,6 +2091,10 @@ msgstr ""
 #: assets/js/wowaddons.js:168
 #: assets/js/wowaddons.js:169
 msgid "Exclude Specific Categories"
+msgstr ""
+
+#: assets/js/wowaddons.js:168
+msgid "Close"
 msgstr ""
 
 #: assets/js/wowaddons.js:168
@@ -2186,7 +2199,7 @@ msgid "Select a Product"
 msgstr ""
 
 #: assets/js/wowaddons.js:169
-msgid "Choose the product where you want to use this add-on, then click Next to continue."
+msgid "Choose the product where you want to use this add-on, then click Apply to continue."
 msgstr ""
 
 #: assets/js/wowaddons.js:169
@@ -2198,19 +2211,11 @@ msgid "Click Publish to save your add-on and make it available on your product."
 msgstr ""
 
 #: assets/js/wowaddons.js:169
+msgid "Please choose at least one product."
+msgstr ""
+
+#: assets/js/wowaddons.js:169
 msgid "You have unsaved changes. Save Before leave. If you want to discard changes, click \"Discard & Exit\"."
-msgstr ""
-
-#: assets/js/wowaddons.js:169
-msgid "Alert"
-msgstr ""
-
-#: assets/js/wowaddons.js:169
-msgid "Please choose at least one product. If you want to save without choosing products, please select \"Draft\" status."
-msgstr ""
-
-#: assets/js/wowaddons.js:169
-msgid "Proceed"
 msgstr ""
 
 #: assets/js/wowaddons.js:169
@@ -2226,8 +2231,19 @@ msgid "Save & Exit"
 msgstr ""
 
 #: assets/js/wowaddons.js:169
-#: assets/js/wowaddons.js:170
-msgid "Woocommerce Product Addons"
+msgid "Title Required"
+msgstr ""
+
+#: assets/js/wowaddons.js:169
+msgid "Please enter a title for this option set before saving."
+msgstr ""
+
+#: assets/js/wowaddons.js:169
+msgid "OK"
+msgstr ""
+
+#: assets/js/wowaddons.js:169
+msgid "Enter Option Set Name"
 msgstr ""
 
 #. translators: %s: assigned product type label, e.g. "All Products"
@@ -2497,6 +2513,10 @@ msgstr ""
 
 #: assets/js/wowaddons.js:170
 msgid "Yes, Delete"
+msgstr ""
+
+#: assets/js/wowaddons.js:170
+msgid "Woocommerce Product Addons"
 msgstr ""
 
 #: assets/js/wowaddons.js:170

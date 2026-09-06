@@ -42,7 +42,7 @@ class WowShippingPromotion {
 				return;
 		}
 
-		add_action( 'admin_menu', array( $this, 'add_submenu' ), 9999 );
+		// add_action( 'admin_menu', array( $this, 'add_submenu' ), 9999 );
 
 		if ( $GLOBALS['wtrs_promotion']['init'] ?? false ) {
 				return;
