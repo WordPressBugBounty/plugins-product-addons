@@ -129,6 +129,7 @@ class Notice {
 			'prad_helloBar_summer_sale_2026_vv1'      => Xpo::get_transient_without_cache( 'prad_helloBar_summer_sale_2026_vv1' ),
 			'prad_helloBar_summer_sale_2026_vv1_x1'   => Xpo::get_transient_without_cache( 'prad_helloBar_summer_sale_2026_vv1_x1' ),
 			'prad_helloBar_summer1_flash_sale_2026_2' => Xpo::get_transient_without_cache( 'prad_helloBar_summer1_flash_sale_2026_2' ),
+			'prad_helloBar_base_price_sale_26'        => Xpo::get_transient_without_cache( 'prad_helloBar_base_price_sale_26' ),
 		);
 	}
 

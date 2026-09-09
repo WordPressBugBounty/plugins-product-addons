@@ -4,7 +4,7 @@ Tags: product addons, woocommerce product addons, extra product options, product
 Requires at least: 6.8
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.7.1
+Stable tag: 1.7.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -17,7 +17,7 @@ Product addons for WooCommerce is the ultimate plugin that lets you add extra pr
 💞 A WPXPO Plugin **Trusted by 60K+** Businesses.
 🤝 Backed by a Dedicated Support Team with **4.9/5** [Trustpilot Rating](https://uk.trustpilot.com/review/wpxpo.com).
 
-😲[View Demo](https://wowaddons.wpxpo.com/) | 🔥[WowAddons Pro](https://www.wpxpo.com/product/wowaddons/) | 📃[Documentation](https://wpxpo.com/docs/wowaddons/)
+😲[View Demo](https://demo.wpxpo.com/wowaddons/) | 🔥[WowAddons Pro](https://www.wpxpo.com/product/wowaddons/) | 📃[Documentation](https://wpxpo.com/docs/wowaddons/)
 
 Simplify product customization with our WooCommerce Custom Fields plugin! Build extra product options, including swatches, radio buttons, file uploads, sliders, date, time, and more with our state-of-the-art product addons customizer.
 
@@ -201,6 +201,9 @@ No, for some product fields like Headings, Texts, advanced custom logic options 
 7. Strategic Cross-selling 
 
 == Changelog ==
+= 1.7.2 – 9th September 2026 =
+* Fix: Minor bug fixes and performance improved.
+
 = 1.7.1 – 6th September 2026 =
 * Update: Polish to the Addons Builder — improved responsiveness, refined confirmation and onboarding modals and a unified template picker experience.
 * Fix: Date field's Year dropdown could show years outside the configured minimum/maximum date range.

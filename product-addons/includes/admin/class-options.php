@@ -77,13 +77,13 @@ class Options {
 				'utmKey' => 'plugin_meta_summer_db',
 			),
 			array(
-				'start'  => '2026-08-02 00:00 Asia/Dhaka',
-				'end'    => '2026-08-16 23:59 Asia/Dhaka',
+				'start'  => '2026-09-02 00:00 Asia/Dhaka',
+				'end'    => '2026-10-10 23:59 Asia/Dhaka',
 				'text'   => __(
-					'Summer Sale - Up to 50% OFF',
+					'Get Pro at $52',
 					'product-addons'
 				),
-				'utmKey' => 'plugin_meta_summer_db',
+				'utmKey' => 'plugin_meta_base_price',
 			),
 		);
 
