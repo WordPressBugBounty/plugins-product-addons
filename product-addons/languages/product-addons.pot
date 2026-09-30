@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv3.
 msgid ""
 msgstr ""
-"Project-Id-Version: WowAddons – Product Addons and Product Options With Custom Fields 1.8.3\n"
+"Project-Id-Version: WowAddons – Product Addons and Product Options With Custom Fields 1.8.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/build\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-27T12:42:18+00:00\n"
+"POT-Creation-Date: 2026-09-30T08:18:05+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: product-addons\n"
@@ -41,7 +41,6 @@ msgid "Create Options"
 msgstr ""
 
 #: includes/admin/class-options.php:59
-#: assets/js/wowaddons.js:161
 msgid "Upgrade to Pro"
 msgstr ""
 
@@ -412,6 +411,10 @@ msgstr ""
 
 #: assets/js/wowaddons.js:1
 msgid "Upgrade Pro"
+msgstr ""
+
+#: assets/js/wowaddons.js:1
+msgid "Pro Features"
 msgstr ""
 
 #: assets/js/wowaddons.js:1
@@ -886,6 +889,7 @@ msgid "Calculate this field’s price with your own custom formula."
 msgstr ""
 
 #: assets/js/wowaddons.js:161
+#: assets/js/wowaddons.js:167
 msgid "Same Price"
 msgstr ""
 
@@ -902,6 +906,7 @@ msgid "Add a thumbnail image to each option so customers see what they’re pick
 msgstr ""
 
 #: assets/js/wowaddons.js:161
+#: assets/js/wowaddons.js:167
 msgid "Sale Price"
 msgstr ""
 
@@ -910,6 +915,7 @@ msgid "Put any option on sale with its own discounted price."
 msgstr ""
 
 #: assets/js/wowaddons.js:161
+#: assets/js/wowaddons.js:167
 msgid "Quantity Selector"
 msgstr ""
 
@@ -934,6 +940,7 @@ msgid "Block off the next few days so orders can’t come in too last-minute."
 msgstr ""
 
 #: assets/js/wowaddons.js:161
+#: assets/js/wowaddons.js:167
 msgid "Option Descriptions"
 msgstr ""
 
@@ -975,6 +982,10 @@ msgstr ""
 
 #: assets/js/wowaddons.js:161
 msgid "Available in WowAddons Pro"
+msgstr ""
+
+#: assets/js/wowaddons.js:161
+msgid "Explore More"
 msgstr ""
 
 #: assets/js/wowaddons.js:161
@@ -1935,6 +1946,290 @@ msgstr ""
 
 #: assets/js/wowaddons.js:167
 msgid "Resources"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Advanced Formula Field"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Set dynamic prices based on selections, quantities, or field values."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Show discounted addon prices alongside the original price."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Font Picker Field"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Let customers choose fonts when personalizing their products."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Add Image to Options"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Add images to options so customers can see what they’re selecting."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Advanced Color Swatches Field"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Let customers choose colors with visual swatches."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Repeater"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Let customers add the same option multiple times when needed."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Advanced Image Swatches Field"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Let customers select options using images instead of text-only choices."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Apply the same price across different option selections."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Advanced Buttons Field"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Give customers clear, clickable buttons for selecting product options."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Add helpful descriptions or tooltips to explain each option."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Let customers easily choose the quantity of an addon or option."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "URL Key"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Pre-fill addon fields via URLs to share links with selected options."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Products Field"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Cross sell by recommending complementary products."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "More File Upload Types"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Accept a wider range of file types for customer uploads."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Image Swatches"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Let customers choose product options using visual image swatches, making it easier to understand and compare different choices."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Visual Option Selection"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Better Comparison"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Easier & More Flexible Choices"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Let customers choose how many units of an addon they want, giving them more control when adding multiple quantities of the same option."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Show a discounted addon price alongside the original price, making offers visible and helping recognize savings."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Keep the addon price consistent across different selections when you want every option to have the same cost."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Let customers add multiple sets of the same addon fields with an “Add Another” button. This allows them to enter different values for the same fields."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Product Field"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Recommend complementary products as add-on options, giving customers relevant products to add to their order."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Relevant Product Recommendations"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Easy Add-On Purchases"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "More Cross-Sell Opportunities"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Add Images to Product Addons"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Make add-on options easier to understand with images, helping customers compare choices and select confidently."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Pre-fill addon fields from product URLs to create personalized links and share pre-configured options."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "What’s the difference between the Free and Pro versions?"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "The Free version helps you create basic product add-ons, while Pro gives you more flexibility to build richer, more engaging customization experiences that can help customers make confident purchase decisions and drive more conversions."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Is WowAddons Pro right for my store?"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "If you want to offer more personalized products, create richer customization experiences, or give customers more control over their purchases, WowAddons Pro gives you more flexibility than the free version."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Will my existing product customizations be affected when I upgrade?"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Upgrading to Pro is designed to preserve your existing setup, so you can expand your customization options without starting everything from scratch."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "What kind of support do I get with Pro?"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Pro includes premium support, so you can get assistance when you need help setting up or using the plugin."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Upgrade WowAddons Pro"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "60+ 5-Star Reviews"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Loved by WooCommerce store owners."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "14-Day Money-Back Guarantee"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Try WowAddons Pro with confidence."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Premium Support"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Get help from experts when you need it."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Give Customers More Ways to Personalize"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Create richer product options with powerful fields, flexible styling, and more ways for customers to customize their purchases."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Explore WowAddons Pro Features"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Unlock advanced features designed to give you more control over every addons workflow."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Switch to the Pro version <em>and unlock</em> limitless possibilities."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Take a Peek Inside WowAddons Pro"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Go beyond basic product addons with powerful fields and controls built to create richer, more flexible product customization experiences."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Loved by Thousands of Store Owners"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "See what store owners have to say about their experience with WowAddons and how it helps them create better product customization experiences."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "5 out of 5 stars"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Frequently Asked Questions"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Find answers to common questions about WowAddons Pro and make a more informed decision before upgrading."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Ready to Create Better Product Addons?"
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "Give your customers more ways to personalize, customize, and add complementary products to their orders with WowAddons Pro."
+msgstr ""
+
+#: assets/js/wowaddons.js:167
+msgid "14-Day Money-Back Guarantee • Cancel Anytime"
 msgstr ""
 
 #: assets/js/wowaddons.js:167

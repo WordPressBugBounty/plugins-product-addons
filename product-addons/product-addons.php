@@ -2,7 +2,7 @@
 /**
  * Plugin Name: WowAddons – Product Addons and Product Options With Custom Fields
  * Description: The ultimate WooCommerce product addons plugin to add extra product options, including radio buttons, checkboxes, file uploads, text areas, and more!
- * Version:     1.8.3
+ * Version:     1.8.4
  * Author:      WPXPO
  * Author URI:  https://www.wpxpo.com/about
  * Text Domain: product-addons
@@ -47,7 +47,7 @@ if ( version_compare( PHP_VERSION, '7.4', '<' ) ) {
 }
 
 // Define Vars.
-define( 'PRAD_VER', '1.8.3' );
+define( 'PRAD_VER', '1.8.4' );
 define( 'PRAD_URL', plugin_dir_url( __FILE__ ) );
 define( 'PRAD_BASE', plugin_basename( __FILE__ ) );
 define( 'PRAD_PATH', plugin_dir_path( __FILE__ ) );

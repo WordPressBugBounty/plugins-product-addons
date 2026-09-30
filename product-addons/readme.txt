@@ -4,7 +4,7 @@ Tags: product addons, woocommerce product addons, extra product options, product
 Requires at least: 6.8
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.8.3
+Stable tag: 1.8.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
  
@@ -243,6 +243,9 @@ Clicking a tutorial play button loads an embedded video from YouTube (Google). Y
 4. Editable Custom Fields (Addon blocks)
 
 == Changelog ==
+= 1.8.4 – 30th September 2026 =
+* Fix: Performance improvements.
+
 = 1.8.3 – 27th September 2026 =
 * Update: The license page, the license expiry notice, the custom fonts page, the Advanced Formula and Font Picker fields, URL Key, the image preview of Radio, Checkbox and Switch options, and the builder controls for Pro settings are removed from the plugin. They are provided by the Pro plugin.
 * Update: Button, Image Swatches, Color Swatches and Products fields are no longer limited in how many options or products they show.
